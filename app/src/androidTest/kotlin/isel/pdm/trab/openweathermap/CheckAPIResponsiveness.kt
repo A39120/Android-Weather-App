@@ -9,7 +9,6 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import isel.pdm.trab.openweathermap.models.MovieDto
 import isel.pdm.trab.openweathermap.GetRequest
 
 import org.junit.Before
@@ -77,7 +76,7 @@ class CheckAPIResponsiveness {
         requestQueue.add(
             StringRequest(
                 Request.Method.GET,
-                MOVIE_URL,
+                    WEATHER_TEST,
                 { response -> executeAndPublishResult { assertFalse(Strings.isNullOrEmpty(response)) } },
                 { error -> executeAndPublishResult { assertNotNull(error.networkResponse) } }
             )
@@ -90,7 +89,7 @@ class CheckAPIResponsiveness {
     fun test_successfulResponseParsing() {
         requestQueue.add(
                 GetRequest(
-                    MOVIE_URL,
+                        WEATHER_TEST,
                     { movie -> executeAndPublishResult { assertNotNull(movie) } },
                     { error -> executeAndPublishResult { fail() } }
                 )

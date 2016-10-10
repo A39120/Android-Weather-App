@@ -1,6 +1,5 @@
 package isel.pdm.trab.openweathermap.models
 
-import isel.pdm.trab.openweathermap.models.MovieDto
 import org.junit.Test
 import kotlin.test.assertEquals
 

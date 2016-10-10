@@ -9,7 +9,6 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonRequest
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
-import isel.pdm.trab.openweathermap.models.MovieDto
 
 import java.io.IOException
 
