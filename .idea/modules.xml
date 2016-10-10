@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Yawa.iml" filepath="$PROJECT_DIR$/Yawa.iml" />
+      <module fileurl="file://$PROJECT_DIR$/16-17-1-LI51D-G11.iml" filepath="$PROJECT_DIR$/16-17-1-LI51D-G11.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lib-volley/lib-volley.iml" filepath="$PROJECT_DIR$/lib-volley/lib-volley.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib-volley/lib-volley.iml" filepath="$PROJECT_DIR$/lib-volley/lib-volley.iml" />
     </modules>
   </component>
