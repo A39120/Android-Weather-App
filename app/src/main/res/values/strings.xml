@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">My Movie DB</string>
+    <string name="app_name" translatable="false">Yawa</string>
+    <string name="closeButtonText">Close</string>
+    <string name="textviewText">
+        App made by: \n
+            \t João Almeida, A36922@alunos.isel.pt \n
+            \t João Lopes, A39120@alunos.isel.pt \n
+            \t Tiago Santos, A40590@alunos.isel.pt \n
+        \n
+        Weather Service Provider: \n
+            \tOpenWeatherMap
+    </string>
+    <string name="titleTextview" translatable="false">YAWA - Yet Another Weather App</string>
 </resources>

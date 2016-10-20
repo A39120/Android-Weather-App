@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="closeButtonText">Sair</string>
+    <string name="app_name" translatable="false"></string>
+    <string name="textviewText">
+        Aplicação realizada por: \n
+            \t João Almeida, A36922@alunos.isel.pt \n
+            \t João Lopes, A39120@alunos.isel.pt \n
+            \t Tiago Santos, A40590@alunos.isel.pt \n
+        \n
+        Fornecedor de Serviço Metereológico: \n
+            \tOpenWeatherMap    </string>
+</resources>
