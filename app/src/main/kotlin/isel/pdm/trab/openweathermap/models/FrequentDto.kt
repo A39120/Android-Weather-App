@@ -1,5 +1,11 @@
 package isel.pdm.trab.openweathermap.models
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
+data class City(val id: Int,
+                val name: String,
+                val country: String)
+
 data class TemperatureInfo(val temp: Float,         // Temperature. Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit.
                            val temp_min: Float,     // Minimum temperature at the moment.
                            val temp_max: Float,     // Maximum temperature at the moment.
@@ -14,6 +20,6 @@ data class Weather(val id: Int,             // Weather condition id
                    val icon: String)        // Weather icon id
 
 data class Clouds(val all: Float)                 //Cloudiness, %
-data class Rain(val h3: Float)                    //Rain volume for the last 3 hours
-data class Snow(val h3: Float)                    //Snow volume for the last 3 hours
+data class Rain(@JsonProperty("3h")val h3: Float) //Rain volume for the last 3 hours
+data class Snow(@JsonProperty("3h")val h3: Float) //Snow volume for the last 3 hours
 data class Wind(val speed: Float, val deg: Float) // Wind speed. Unit Default: meter/sec
