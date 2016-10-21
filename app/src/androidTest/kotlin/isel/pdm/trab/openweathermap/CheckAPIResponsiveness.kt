@@ -3,18 +3,14 @@ package isel.pdm.trab.openweathermap
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.core.deps.guava.base.Strings
 import android.support.test.runner.AndroidJUnit4
-
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import isel.pdm.trab.openweathermap.GetRequest
-
+import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertFalse
@@ -90,10 +86,12 @@ class CheckAPIResponsiveness {
         requestQueue.add(
                 GetRequest(
                         WEATHER_TEST,
-                    { movie -> executeAndPublishResult { assertNotNull(movie) } },
-                    { error -> executeAndPublishResult { fail() } }
+                    { weather -> executeAndPublishResult { assertNotNull(weather) } },
+                    { error -> executeAndPublishResult { fail() } },
+                        CurrentWeatherDto::class.java
                 )
         )
         waitForCompletion()
     }
+
 }
