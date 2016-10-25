@@ -1,4 +1,4 @@
-package isel.pdm.trab.openweathermap
+package isel.pdm.trab.openweathermap.comms
 
 import com.android.volley.NetworkResponse
 import com.android.volley.Response
@@ -33,7 +33,7 @@ class GetRequest<DTO>(url: String,
 
         try {
             // TODO: Refine to handle error responses
-            val dto = GetRequest.mapper.readValue(response.data, dtoType)
+            val dto = mapper.readValue(response.data, dtoType)
             return Response.success(dto, null)
         } catch (e: IOException) {
             e.printStackTrace()

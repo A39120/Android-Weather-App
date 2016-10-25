@@ -1,4 +1,9 @@
 <resources>
+
+    <!-- Splash Screen -->
+    <string name="splash_api_unreachable">OWM API not available</string>
+
+    <!-- Credits screen -->
     <string name="app_name" translatable="false">Yawa</string>
     <string name="closeButtonText">Close</string>
     <string name="textviewText">
@@ -11,4 +16,5 @@
             \tOpenWeatherMap
     </string>
     <string name="titleTextview" translatable="false">YAWA - Yet Another Weather App</string>
+    <string name="infoView">TextView</string>
 </resources>

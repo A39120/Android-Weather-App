@@ -9,12 +9,23 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="isel.pdm.trab.openweathermap.CurrentDayActivity">
+    tools:context="isel.pdm.trab.openweathermap.presentation.CurrentDayActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:title="@string/app_name"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        tools:title="@string/app_name"/>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
 
         <EditText
             android:layout_width="match_parent"
@@ -61,20 +72,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <ImageView
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@color/colorPrimary"
-                    android:id="@+id/curday_image"
-                    android:layout_weight="1"
-                    android:scaleType="centerInside"
-                    android:adjustViewBounds="true"
-                    android:maxWidth="64dp"
-                    android:maxHeight="64dp"
-                    android:minHeight="64dp"
-                    android:minWidth="64dp"
+                <WebView
                     android:layout_width="match_parent"
-                    android:cropToPadding="true"
-                    android:layout_gravity="left|center_vertical" />
+                    android:layout_height="match_parent"
+                    android:id="@+id/curday_image" />
             </LinearLayout>
 
         </LinearLayout>
@@ -82,14 +83,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/curday_weather_desc"
-            android:gravity="center" />
+            android:id="@+id/curday_other_info"
+            android:gravity="center_horizontal" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/curday_other_info"
-            android:gravity="center_horizontal" />
+            android:id="@+id/curday_weather_desc"
+            android:gravity="bottom|center" />
 
     </LinearLayout>
 

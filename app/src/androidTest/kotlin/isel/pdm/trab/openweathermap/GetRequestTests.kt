@@ -4,6 +4,7 @@ package isel.pdm.trab.openweathermap
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import com.android.volley.toolbox.Volley
+import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import org.junit.Test
 import org.junit.runner.RunWith

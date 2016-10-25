@@ -1,7 +1,7 @@
-package isel.pdm.trab.openweathermap
+package isel.pdm.trab.openweathermap.presentation
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 
 class ForecastActivity : AppCompatActivity() {
 
