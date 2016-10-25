@@ -7,6 +7,7 @@ class ForecastActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_forecast)
+        // TODO fix missing activity_forecast
+        //setContentView(R.layout.activity_forecast)
     }
 }
