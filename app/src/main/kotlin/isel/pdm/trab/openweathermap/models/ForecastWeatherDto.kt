@@ -25,8 +25,8 @@ class ForecastWeatherDto(
      */
     constructor(source: Parcel) : this(
             cityDetail = source.readTypedObject(CityDetail.CREATOR),
-            nForecasts = source.readInt()
-            //TODO: forecastDetail
+            nForecasts = source.readInt(),
+            forecastDetail = mutableListOf<ForecastDetail>().apply {source.readTypedList(this, ForecastDetail.CREATOR)}
     )
 
     override fun describeContents() = 0
@@ -64,7 +64,7 @@ class ForecastWeatherDto(
         constructor(source: Parcel) : this(
             utc = source.readInt(),
             info = source.readTypedObject(WeatherInfo.CREATOR),
-            //TODO: shortInfo = mutableListtOf<WeatherShortInfo>().apply { source.readTypedList(this, WeatherShortInfo.CREATOR) },
+            shortInfo = mutableListOf<WeatherShortInfo>().apply {source.readTypedList(this, WeatherShortInfo.CREATOR)},
             windDetail = source.readTypedObject(WindDetail.CREATOR),
             cloudDetail = source.readTypedObject(CloudDetail.CREATOR),
             rainDetail = source.readTypedObject(RainDetail.CREATOR),

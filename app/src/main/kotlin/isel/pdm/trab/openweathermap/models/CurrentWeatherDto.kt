@@ -33,7 +33,7 @@ class CurrentWeatherDto(
             location = source.readString(),
             locationId = source.readInt(),
             coord = source.readTypedObject(Coordinates.CREATOR),
-            //TODO: shortInfo: List<WeatherShortInfo>,
+            shortInfo = mutableListOf<WeatherShortInfo>().apply {source.readTypedList(this, WeatherShortInfo.CREATOR)},
             info = source.readTypedObject(WeatherInfo.CREATOR),
             windDetail = source.readTypedObject(WindDetail.CREATOR),
             cloudDetail= source.readTypedObject(CloudDetail.CREATOR),
@@ -50,7 +50,7 @@ class CurrentWeatherDto(
             writeString(location)
             writeInt(locationId)
             writeTypedObject(coord,0)
-            //TODO: shortInfo: List<WeatherShortInfo>,
+            writeTypedList(shortInfo)
             writeTypedObject(info, 0)
             writeTypedObject(windDetail,0)
             writeTypedObject(cloudDetail,0)
