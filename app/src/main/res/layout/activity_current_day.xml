@@ -76,13 +76,13 @@
                     app:srcCompat="@color/colorPrimary"
                     android:id="@+id/curday_image"
                     android:layout_weight="1"
-                    android:scaleType="centerInside"
+                    android:scaleType="fitXY"
                     android:adjustViewBounds="true"
                     android:maxWidth="64dp"
                     android:maxHeight="64dp"
                     android:minHeight="64dp"
                     android:minWidth="64dp"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:cropToPadding="true"
                     android:layout_gravity="left|center_vertical" />
             </LinearLayout>

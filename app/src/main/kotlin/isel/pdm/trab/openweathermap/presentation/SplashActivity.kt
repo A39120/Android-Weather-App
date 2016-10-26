@@ -22,24 +22,30 @@ class SplashActivity : BaseActivity() {
         return "$baseUrl$configPath?$metric_param$api_key"
     }
 
+    //TODO add proper handling to notify user is he has network disabled (took me some time to figure why it wasn't working)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val aIntent = Intent(this, CurrentDayActivity::class.java)
-            (application as MyWeatherApp).requestQueue.add(
-                GetRequest(buildConfigUrl(),
-                        {
-                            weather ->
-                            run {
-                                aIntent.putExtra("WEATHER_DATA", weather)
-                                startActivity(aIntent)
-                            }
-                        },
-                        {
+
+        (application as MyWeatherApp).requestQueue.add(
+            GetRequest(buildConfigUrl(),
+                    {
+                        weather ->
+                        run {
+                            aIntent.putExtra("WEATHER_DATA", weather)
+                            startActivity(aIntent)
+                        }
+                    },
+                    {
+                        error ->
+                        run {
+                            //System.out.println(error.networkResponse.statusCode)
                             Toast.makeText(this, R.string.splash_api_unreachable, Toast.LENGTH_LONG).show()
-                            Handler(mainLooper).postDelayed( { finish() }, 3000)
-                        },
-                        CurrentWeatherDto::class.java
-                )
+                            Handler(mainLooper).postDelayed({ finish() }, 3000)
+                        }
+                    },
+                    CurrentWeatherDto::class.java
+            )
         )
     }
 }
