@@ -18,7 +18,8 @@ class SplashActivity : BaseActivity() {
         val configPath = resources.getString(R.string.api_config_path)
         // Implementation note: All requests contain the api key. We will implement a general solution
         val api_key = "${resources.getString(R.string.api_key_name)}=${resources.getString(R.string.api_key_value)}"
-        return "$baseUrl$configPath?$api_key"
+        val metric_param = resources.getString(R.string.metric_units_param)
+        return "$baseUrl$configPath?$metric_param$api_key"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

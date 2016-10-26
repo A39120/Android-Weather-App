@@ -48,9 +48,8 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
                 "\nSunset: " + weather.locDetail.sunsetTime
         )
 
-        // TODO: url is to be put in a configuration file; not sure if WebView is the right choice
+        // TODO: url is to be put in a configuration file;
         val imgUrl = "http://openweathermap.org/img/w/" + weather.shortInfo[0].icon + ".png"
-        activity_current_day.curday_image.loadUrl(imgUrl)
 
         if(!listenerSet) {
             activity_current_day.curday_country_edittext.setOnEditorActionListener(this)
