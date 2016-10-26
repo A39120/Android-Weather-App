@@ -21,7 +21,7 @@ class DownloadImageTask(imageV : ImageView) : AsyncTask<String, Void, Bitmap>() 
         } catch (e: Exception) {
             System.err.println("Error getting weather image")
             //TODO probably add a default error image so in case we have an error we display it (hint: sun with a X in bottom right corner)
-            //activity_current_day.curday_image.setImageBitmap(icon)
+            //activity_current_day.curday_image.setImageBitmap(R.drawable.err_icon)
         }
 
         return icon

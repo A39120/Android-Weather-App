@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.android.volley.toolbox.Volley
 import isel.pdm.trab.openweathermap.DownloadImageTask
 import isel.pdm.trab.openweathermap.R
+import isel.pdm.trab.openweathermap.UrlBuilder
 import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import kotlinx.android.synthetic.main.activity_current_day.*
@@ -23,6 +24,8 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
     override val actionBarId: Int? = R.id.toolbar
 
     override val actionBarMenuResId: Int? = R.menu.action_bar_activity_current_day
+
+    var listenerSet = false
 
     override fun onDestroy() {
         super.onDestroy()
@@ -46,34 +49,31 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
             val weather = parcel.getParcelable<CurrentWeatherDto>("WEATHER_DATA")
             onCurrentDayRequestFinished(weather)
         }else{ //restore previous state
-            activity_current_day.curday_temperature.setText(savedInstanceState?.getString("activity_current_day.curday_temperature"))
-            activity_current_day.curday_country_textview.setText(savedInstanceState?.getString("activity_current_day.curday_country_textview"))
-            activity_current_day.curday_country_edittext.isEnabled = savedInstanceState?.getBoolean("activity_current_day.curday_country_edittext")!!
-            activity_current_day.curday_weather_desc.setText(savedInstanceState?.getString("activity_current_day.curday_weather_desc"))
-            activity_current_day.curday_other_info.setText(savedInstanceState?.getString("activity_current_day.curday_other_info"))
+            activity_current_day.curday_temperature.text = savedInstanceState.getString("activity_current_day.curday_temperature")
+            activity_current_day.curday_country_textview.text = savedInstanceState.getString("activity_current_day.curday_country_textview")
+            activity_current_day.curday_country_edittext.isEnabled = savedInstanceState.getBoolean("activity_current_day.curday_country_edittext")!!
+            activity_current_day.curday_weather_desc.text = savedInstanceState.getString("activity_current_day.curday_weather_desc")
+            activity_current_day.curday_other_info.text = savedInstanceState.getString("activity_current_day.curday_other_info")
             val parcel = intent.extras
             activity_current_day.curday_image.setImageBitmap(parcel.getParcelable("WeatherBitmap"))
         }
     }
 
-    var listenerSet = false
+    // TODO: create utility class to convert values between metric and imperial scale
     private fun onCurrentDayRequestFinished(weather: CurrentWeatherDto){
-        activity_current_day.curday_temperature.setText(weather.info.temperature.toString() + "ºC")
-        activity_current_day.curday_country_textview.setText(weather.location)
+        activity_current_day.curday_temperature.text = weather.info.temperature.toString() + "ºC"
+        activity_current_day.curday_country_textview.text = weather.location
         activity_current_day.curday_country_edittext.isEnabled = true // re-enable choosing country
-        activity_current_day.curday_weather_desc.setText(weather.shortInfo.first().description + "\n")
-        activity_current_day.curday_other_info.setText(
-                // TODO: change to translatable strings, check what units are used for pressure and sunrise and sunset
-                "Humidity: " + weather.info.humidity + "%" +
-                "\nMax Temp: " + weather.info.minTemp + "ºC" +
-                "\nMin Temp: " + weather.info.maxTemp + "ºC" +
-                "\nPressure: " + weather.info.pressure +
-                "\nSunrise: " + weather.locDetail.sunriseTime +
-                "\nSunset: " + weather.locDetail.sunsetTime
-        )
+        activity_current_day.curday_weather_desc.text = weather.shortInfo.first().description + "\n"
+        activity_current_day.curday_other_info.text =
+                "${resources.getString(R.string.humidity_text)}: ${weather.info.humidity}%\n" +
+                "${resources.getString(R.string.max_temp_text)}: ${weather.info.maxTemp}ºC\n" +
+                "${resources.getString(R.string.min_temp_text)}: ${weather.info.minTemp}ºC\n" +
+                "${resources.getString(R.string.pressure_text)}: ${weather.info.pressure} hpa\n" +
+                "${resources.getString(R.string.sunrise_text)}: ${weather.locDetail.sunriseTime}\n" +
+                "${resources.getString(R.string.sunset_text)}: ${weather.locDetail.sunsetTime}"
 
-        // TODO: url is to be put in a configuration file;
-        val imgUrl = "http://openweathermap.org/img/w/" + weather.shortInfo[0].icon + ".png"
+        val imgUrl = UrlBuilder().buildImgUrl(resources, weather.shortInfo[0].icon)
 
         if(!listenerSet) {
             activity_current_day.curday_country_edittext.setOnEditorActionListener(this)
@@ -88,18 +88,17 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         if (event?.action == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
             activity_current_day.curday_country_edittext.isEnabled = false
 
-            //TODO build url correctly
-            val url = "http://api.openweathermap.org/data/2.5/weather?q=" + activity_current_day.curday_country_edittext.text + "&units=metric&lang=pt&appid=c7a548f3e5399a3cebb9b39ad5645120"
+            val inputCityName: String = activity_current_day.curday_country_edittext.text.toString()
             Volley.newRequestQueue(this).add(
                     GetRequest(
-                            url,
+                            UrlBuilder().buildWeatherByCityUrl(resources, inputCityName),
                             { weather ->
                                 onCurrentDayRequestFinished(weather)
                             },
                             { error -> System.out.println("Error in response?")},
                             CurrentWeatherDto::class.java)
             )
-            Toast.makeText(this,"Getting current day's weather for " + activity_current_day.curday_country_edittext.text + "...", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Getting current day's weather for $inputCityName...", Toast.LENGTH_LONG).show()
         }
         return true
     }

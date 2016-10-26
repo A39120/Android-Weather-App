@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="closeButtonText">Sair</string>
     <string name="textviewText">
         Aplicação realizada por: \n
             \t João Almeida, A36922@alunos.isel.pt \n
@@ -9,4 +8,13 @@
         \n
         Fornecedor de Serviço Metereológico: \n
             \tOpenWeatherMap    </string>
+
+    <string name="insert_country_edit_text">Insira uma cidade...</string>
+    <string name="splash_api_unreachable">API OWM indisponível</string>
+    <string name="humidity_text">Humidade</string>
+    <string name="max_temp_text">Temp Máxima</string>
+    <string name="min_temp_text">Temp Mínima</string>
+    <string name="pressure_text">Pressão</string>
+    <string name="sunrise_text">Nascer do Sol</string>
+    <string name="sunset_text">Por do Sol</string>
 </resources>

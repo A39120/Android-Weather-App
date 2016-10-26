@@ -32,9 +32,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:hint="Insert country..."
+            android:hint="@string/insert_country_edit_text"
             android:id="@+id/curday_country_edittext" />
 
         <TextView
@@ -48,7 +46,8 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="98dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -58,7 +57,7 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:id="@+id/curday_temperature"
                     android:layout_weight="1"
                     android:gravity="right|center_vertical"
@@ -72,7 +71,7 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     app:srcCompat="@color/colorPrimary"
                     android:id="@+id/curday_image"
                     android:layout_weight="1"
@@ -84,7 +83,8 @@
                     android:minWidth="64dp"
                     android:layout_width="wrap_content"
                     android:cropToPadding="true"
-                    android:layout_gravity="left|center_vertical" />
+                    android:layout_gravity="left|center_vertical"
+                    android:contentDescription="" />
             </LinearLayout>
 
         </LinearLayout>

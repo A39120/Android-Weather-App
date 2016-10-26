@@ -2,11 +2,13 @@
 <resources>
     <!-- Application wide constants -->
     <string name="api_base_url" translatable="false">http://api.openweathermap.org/</string>
-    <string name="api_config_path" translatable="false">data/2.5/weather?q=London</string>
+    <string name="api_config_path" translatable="false">data/2.5/</string>
     <string name="api_key_name" translatable="false">&amp;appid</string>
     <string name="api_key_value" translatable="false">83c7d0f16bdbdd8949896f1be1226258</string>
 
-    <string name="metric_units_param" translatable="false">&amp;units=metric</string>
+    <string name="api_units_name" translatable="false">&amp;units</string>
+    <string name="api_lang_name" translatable="false">&amp;lang</string>
+    <string name="api_city_name" translatable="false">weather?q</string>
 
     <string name="api_img_path" translatable="false">img/w/</string>
 </resources>

@@ -5,7 +5,6 @@
 
     <!-- Credits screen -->
     <string name="app_name" translatable="false">Yawa</string>
-    <string name="closeButtonText">Close</string>
     <string name="textviewText">
         App made by: \n
             \t João Almeida, A36922@alunos.isel.pt \n
@@ -16,5 +15,13 @@
             \tOpenWeatherMap
     </string>
     <string name="titleTextview" translatable="false">YAWA - Yet Another Weather App</string>
-    <string name="infoView">TextView</string>
+
+    <!-- CurrentDay screen -->
+    <string name="humidity_text">Humidity</string>
+    <string name="max_temp_text">Max Temp</string>
+    <string name="min_temp_text">Min Temp</string>
+    <string name="pressure_text">Pressure</string>
+    <string name="sunrise_text">Sunrise</string>
+    <string name="sunset_text">Sunset</string>
+    <string name="insert_country_edit_text">Insert city...</string>
 </resources>
