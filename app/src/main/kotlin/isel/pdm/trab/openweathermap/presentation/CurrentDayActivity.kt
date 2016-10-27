@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.android.volley.toolbox.Volley
 import isel.pdm.trab.openweathermap.DownloadImageTask
+import isel.pdm.trab.openweathermap.MyWeatherApp
 import isel.pdm.trab.openweathermap.R
 import isel.pdm.trab.openweathermap.UrlBuilder
 import isel.pdm.trab.openweathermap.comms.GetRequest
@@ -17,6 +18,7 @@ import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import kotlinx.android.synthetic.main.activity_current_day.*
 import kotlinx.android.synthetic.main.activity_current_day.view.*
 
+//Actually Current Day we're viewing at the moment
 class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
 
     override val layoutResId: Int = R.layout.activity_current_day
@@ -24,12 +26,6 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
     override val actionBarId: Int? = R.id.toolbar
 
     override val actionBarMenuResId: Int? = R.menu.action_bar_activity_current_day
-
-    var listenerSet = false
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
@@ -44,6 +40,7 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         if(savedInstanceState == null) {
             val parcel = intent.extras
             val weather = parcel.getParcelable<CurrentWeatherDto>("WEATHER_DATA")
@@ -57,14 +54,16 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
             val parcel = intent.extras
             activity_current_day.curday_image.setImageBitmap(parcel.getParcelable("WeatherBitmap"))
         }
+        activity_current_day.curday_country_edittext.setOnEditorActionListener(this)
+
     }
 
     // TODO: create utility class to convert values between metric and imperial scale
     private fun onCurrentDayRequestFinished(weather: CurrentWeatherDto){
         activity_current_day.curday_temperature.text = weather.info.temperature.toString() + "ºC"
-        activity_current_day.curday_country_textview.text = weather.location
+        activity_current_day.curday_country_textview.text = weather.location + "," + weather.locDetail.countryCode
         activity_current_day.curday_country_edittext.isEnabled = true // re-enable choosing country
-        activity_current_day.curday_weather_desc.text = weather.shortInfo.first().description + "\n"
+        activity_current_day.curday_weather_desc.text = weather.shortInfo.first().description
         activity_current_day.curday_other_info.text =
                 "${resources.getString(R.string.humidity_text)}: ${weather.info.humidity}%\n" +
                 "${resources.getString(R.string.max_temp_text)}: ${weather.info.maxTemp}ºC\n" +
@@ -75,11 +74,6 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
 
         val imgUrl = UrlBuilder().buildImgUrl(resources, weather.shortInfo[0].icon)
 
-        if(!listenerSet) {
-            activity_current_day.curday_country_edittext.setOnEditorActionListener(this)
-            listenerSet = true
-        }
-
         DownloadImageTask(activity_current_day.curday_image).execute(imgUrl)
     }
 
@@ -88,7 +82,7 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         if (event?.action == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
             activity_current_day.curday_country_edittext.isEnabled = false
 
-            val inputCityName: String = activity_current_day.curday_country_edittext.text.toString()
+            val inputCityName: String = activity_current_day.curday_country_edittext.text.toString().trim()
             Volley.newRequestQueue(this).add(
                     GetRequest(
                             UrlBuilder().buildWeatherByCityUrl(resources, inputCityName),
@@ -104,6 +98,27 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
+        R.id.action_refresh -> {
+            /*
+            TODO maybe add last url inserted to MyWeatherApp's companion object ???
+            TODO probably UrlBuilder
+            */
+            Toast.makeText(this, "Not implemented yet",Toast.LENGTH_SHORT).show()
+            true
+        }
+
+        R.id.action_language -> {
+            if(MyWeatherApp.language.equals("pt")){
+                MyWeatherApp.language = "en"
+                item?.setIcon(R.drawable.en_flag)
+            }else{ // en
+                MyWeatherApp.language = "pt"
+                item?.setIcon(R.drawable.pt_flag)
+            }
+            Toast.makeText(this, getResources().getString(R.string.language_set_to) + " " + MyWeatherApp.language.toUpperCase(),Toast.LENGTH_SHORT).show()
+            true
+        }
+
         R.id.action_credits -> {
             startActivity(Intent(this, CreditsActivity::class.java))
             true

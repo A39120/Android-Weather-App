@@ -23,5 +23,11 @@
     <string name="pressure_text">Pressure</string>
     <string name="sunrise_text">Sunrise</string>
     <string name="sunset_text">Sunset</string>
-    <string name="insert_country_edit_text">Insert city...</string>
+    <string name="insert_country_edit_text">Insert a city...</string>
+    <string name="could_not_download_icon_for_weather">Could not download icon for weather</string>
+    <string name="about_us">About us</string>
+    <string name="language">Language/Idioma</string>
+    <string name="refresh">Refresh</string>
+    <string name="connection_problem_wifi_off">Could not establish connection (Wifi is turned off)</string>
+    <string name="language_set_to">Language set to:</string>
 </resources>

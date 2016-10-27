@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import android.widget.ImageView
+import android.widget.Toast
 
 class DownloadImageTask(imageV : ImageView) : AsyncTask<String, Void, Bitmap>() {
     lateinit var imageView: ImageView
@@ -19,11 +20,9 @@ class DownloadImageTask(imageV : ImageView) : AsyncTask<String, Void, Bitmap>() 
             val stream = java.net.URL(uri).openStream()
             icon = BitmapFactory.decodeStream(stream)
         } catch (e: Exception) {
-            System.err.println("Error getting weather image")
-            //TODO probably add a default error image so in case we have an error we display it (hint: sun with a X in bottom right corner)
-            //activity_current_day.curday_image.setImageBitmap(R.drawable.err_icon)
+            icon = BitmapFactory.decodeResource(imageView.context.getResources(), R.drawable.error_icon)
+            Toast.makeText(imageView.context , R.string.could_not_download_icon_for_weather,Toast.LENGTH_SHORT)
         }
-
         return icon
     }
 

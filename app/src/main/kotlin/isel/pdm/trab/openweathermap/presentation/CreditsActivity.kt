@@ -6,7 +6,7 @@ import isel.pdm.trab.openweathermap.R
 
 class CreditsActivity : BaseActivity() {
 
-    override val layoutResId: Int = R.layout.activity_credits
+    override var layoutResId: Int = R.layout.activity_credits
 
     override val actionBarId: Int? = R.id.toolbar
 

@@ -12,9 +12,14 @@
     <string name="insert_country_edit_text">Insira uma cidade...</string>
     <string name="splash_api_unreachable">API OWM indisponível</string>
     <string name="humidity_text">Humidade</string>
-    <string name="max_temp_text">Temp Máxima</string>
-    <string name="min_temp_text">Temp Mínima</string>
+    <string name="max_temp_text">Temp. Máxima</string>
+    <string name="min_temp_text">Temp. Mínima</string>
     <string name="pressure_text">Pressão</string>
     <string name="sunrise_text">Nascer do Sol</string>
-    <string name="sunset_text">Por do Sol</string>
+    <string name="sunset_text">Pôr do Sol</string>
+    <string name="could_not_download_icon_for_weather">Não foi possível descarregar o ícone para o tempo</string>
+    <string name="about_us">Acerca de nós</string>
+    <string name="refresh">Actualizar</string>
+    <string name="connection_problem_wifi_off">Não foi possível estabelecer conexão (Wifi desligado)</string>
+    <string name="language_set_to">Idioma definido para: </string>
 </resources>

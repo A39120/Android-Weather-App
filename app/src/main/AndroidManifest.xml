@@ -3,6 +3,7 @@
     package="isel.pdm.trab.openweathermap">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +14,8 @@
             android:name=".MyWeatherApp">
 
             <activity android:name=".presentation.CreditsActivity" />
-            <activity android:name=".presentation.CurrentDayActivity"/>
+            <activity android:name=".presentation.CurrentDayActivity" />
+
             <activity
                 android:name=".presentation.SplashActivity"
                 android:noHistory="true"

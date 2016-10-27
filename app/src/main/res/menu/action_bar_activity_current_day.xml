@@ -4,9 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_refresh"
+        android:icon="@android:drawable/ic_popup_sync"
+        android:title="@string/refresh"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_language"
+        android:icon="@drawable/en_flag"
+        android:title="@string/language"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/action_credits"
         android:icon="@android:drawable/ic_menu_help"
-        android:title="About us"
+        android:title="@string/about_us"
         app:showAsAction="ifRoom|withText" />
-
 </menu>
