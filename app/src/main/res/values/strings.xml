@@ -5,16 +5,16 @@
 
     <!-- Credits screen -->
     <string name="app_name" translatable="false">Yawa</string>
-    <string name="textviewText">
-        App made by: \n
-            \t João Almeida, A36922@alunos.isel.pt \n
-            \t João Lopes, A39120@alunos.isel.pt \n
-            \t Tiago Santos, A40590@alunos.isel.pt \n
-        \n
-        Weather Service Provider: \n
-            \tOpenWeatherMap
-    </string>
     <string name="titleTextview" translatable="false">YAWA - Yet Another Weather App</string>
+    <string name="by">By</string>
+    <string name="textviewText">João Almeida</string>
+    <string name="jo_o_lopes" translatable="false">João Lopes</string>
+    <string name="tiago_santos" translatable="false">Tiago Santos</string>
+    <string name="https_github_com_a39120" translatable="false">https://github.com/A39120</string>
+    <string name="https_github_com_tiagossantos" translatable="false">https://github.com/TiagoSSantos</string>
+    <string name="https_github_com_joaoccalmeida" translatable="false">https://github.com/joaoccalmeida</string>
+    <string name="jo_o_almeida" translatable="false">João Almeida</string>
+    <string name="github" translatable="false">github</string>
 
     <!-- CurrentDay screen -->
     <string name="humidity_text">Humidity</string>

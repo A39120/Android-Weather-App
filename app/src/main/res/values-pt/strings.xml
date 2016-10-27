@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="textviewText">
-        Aplicação realizada por: \n
-            \t João Almeida, A36922@alunos.isel.pt \n
-            \t João Lopes, A39120@alunos.isel.pt \n
-            \t Tiago Santos, A40590@alunos.isel.pt \n
-        \n
-        Fornecedor de Serviço Metereológico: \n
-            \tOpenWeatherMap    </string>
+    <string name="by">Por</string>
 
     <string name="insert_country_edit_text">Insira uma cidade...</string>
     <string name="splash_api_unreachable">API OWM indisponível</string>

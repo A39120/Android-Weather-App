@@ -17,6 +17,7 @@ import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import kotlinx.android.synthetic.main.activity_current_day.*
 import kotlinx.android.synthetic.main.activity_current_day.view.*
+import java.util.*
 
 //Actually Current Day we're viewing at the moment
 class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
@@ -48,7 +49,7 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         }else{ //restore previous state
             activity_current_day.curday_temperature.text = savedInstanceState.getString("activity_current_day.curday_temperature")
             activity_current_day.curday_country_textview.text = savedInstanceState.getString("activity_current_day.curday_country_textview")
-            activity_current_day.curday_country_edittext.isEnabled = savedInstanceState.getBoolean("activity_current_day.curday_country_edittext")!!
+            activity_current_day.curday_country_edittext.isEnabled = savedInstanceState.getBoolean("activity_current_day.curday_country_edittext")
             activity_current_day.curday_weather_desc.text = savedInstanceState.getString("activity_current_day.curday_weather_desc")
             activity_current_day.curday_other_info.text = savedInstanceState.getString("activity_current_day.curday_other_info")
             val parcel = intent.extras
@@ -107,15 +108,18 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
             true
         }
 
+
+
         R.id.action_language -> {
-            if(MyWeatherApp.language.equals("pt")){
-                MyWeatherApp.language = "en"
+            val currentLanguage = Locale.getDefault().language
+            if(/*MyWeatherApp.language*/currentLanguage.equals("pt")){
+                //MyWeatherApp.language = "en"
                 item?.setIcon(R.drawable.en_flag)
             }else{ // en
-                MyWeatherApp.language = "pt"
+                //MyWeatherApp.language = "pt"
                 item?.setIcon(R.drawable.pt_flag)
             }
-            Toast.makeText(this, getResources().getString(R.string.language_set_to) + " " + MyWeatherApp.language.toUpperCase(),Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, resources.getString(R.string.language_set_to) + " " + /*MyWeatherApp.language*/currentLanguage.toUpperCase(),Toast.LENGTH_SHORT).show()
             true
         }
 

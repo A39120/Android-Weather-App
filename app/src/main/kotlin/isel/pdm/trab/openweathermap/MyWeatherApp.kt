@@ -16,7 +16,6 @@ class MyWeatherApp : Application(){
 
     override fun onCreate(){
         super.onCreate()
-        language = "en" // TODO carregar de um ficheiro de configuração
         requestQueue = Volley.newRequestQueue(this)
     }
 }

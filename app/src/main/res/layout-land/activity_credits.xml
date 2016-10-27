@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_credits"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="isel.pdm.trab.openweathermap.presentation.CreditsActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:title="@string/app_name"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <TextView
+        android:text="@string/by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/byTextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_below="@+id/titleTextView"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="@string/titleTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleTextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:layout_alignBottom="@+id/toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="11dp" />
+
+    <RelativeLayout
+        android:id="@+id/person1Layout"
+        android:layout_height="90dp"
+        android:layout_below="@+id/byTextView"
+        android:layout_alignParentStart="true"
+        android:layout_width="275dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            app:srcCompat="@drawable/github_logo"
+            android:id="@+id/githubImageView"
+            android:layout_height="40dp"
+            android:contentDescription="@string/github"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/person1NameView"
+            android:text="@string/jo_o_almeida"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            app:srcCompat="@drawable/person1_img"
+            android:id="@+id/person1ImageView"
+            android:contentDescription="@string/jo_o_almeida"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/person1Url"
+            android:layout_alignEnd="@+id/person1Url" />
+
+        <TextView
+            android:text="@string/https_github_com_joaoccalmeida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/person1Url"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/githubImageView" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/owm_logo"
+        android:id="@+id/imageView2"
+        android:contentDescription="OWM Logo"
+        tools:ignore="HardcodedText"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/person3Layout"
+        android:layout_marginBottom="54dp" />
+
+    <RelativeLayout
+        android:id="@+id/person2Layout"
+        android:layout_height="90dp"
+        android:layout_alignBottom="@+id/imageView2"
+        android:layout_alignParentStart="true"
+        android:layout_width="275dp">
+
+        <TextView
+            android:text="@string/https_github_com_tiagossantos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/person2Url"
+            android:layout_alignParentBottom="true"
+            tools:ignore="RelativeOverlap"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/gitLogo" />
+
+        <ImageView
+            android:layout_width="40dp"
+            app:srcCompat="@drawable/github_logo"
+            android:id="@+id/gitLogo"
+            android:layout_height="40dp"
+            android:contentDescription="github"
+            tools:ignore="HardcodedText"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="@string/tiago_santos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/person2NameView"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            app:srcCompat="@drawable/person2_img"
+            android:id="@+id/person2ImageView"
+            android:contentDescription="Tiago Santos"
+            tools:ignore="HardcodedText"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/person2Url"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_height="90dp"
+        android:id="@+id/person3Layout"
+        android:layout_alignBaseline="@+id/person1Layout"
+        android:layout_alignBottom="@+id/person1Layout"
+        android:layout_alignParentEnd="true"
+        android:layout_width="275dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            app:srcCompat="@drawable/github_logo"
+            android:id="@+id/githubLogo"
+            android:layout_height="40dp"
+            android:contentDescription="github"
+            tools:ignore="HardcodedText"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="@string/https_github_com_a39120"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/person3Url"
+            tools:ignore="RelativeOverlap"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/githubLogo" />
+
+        <TextView
+            android:text="@string/jo_o_lopes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/person3NameView"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            app:srcCompat="@drawable/person3_img"
+            android:id="@+id/person3ImageView"
+            android:contentDescription="João Lopes"
+            tools:ignore="HardcodedText"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/person3Url"
+            android:layout_alignEnd="@+id/person3Url" />
+    </RelativeLayout>
+
+</RelativeLayout>

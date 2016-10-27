@@ -25,7 +25,7 @@ class SplashActivity : BaseActivity() {
         //TODO ask to turn wifi on, right about here
 
         (application as MyWeatherApp).requestQueue.add(
-            GetRequest(UrlBuilder().buildWeatherByCityUrl(resources, Locale.getDefault().displayCountry),
+            GetRequest(UrlBuilder().buildWeatherByCityUrl(resources),
                     {
                         weather ->
                         run {
