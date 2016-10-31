@@ -1,67 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/forecast_weather_desc"
-        android:layout_below="@+id/forecast_item_date"
-        android:gravity="bottom|center" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/forecast_temp_max"
-        android:background="@color/maxTempRed"
-        android:layout_toEndOf="@+id/forecast_icon"
-        android:gravity="bottom|center" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:ems="10"
-        android:id="@+id/forecast_item_date"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/forecast_other_info"
-        android:gravity="center_horizontal"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/forecast_weather_desc" />
-
     <ImageView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         app:srcCompat="?android:attr/windowBackground"
         android:id="@+id/forecast_icon"
+        android:layout_weight="3"
         android:scaleType="fitStart"
         android:adjustViewBounds="true"
         android:maxWidth="64dp"
         android:maxHeight="64dp"
         android:minHeight="64dp"
         android:minWidth="64dp"
+        android:layout_width="match_parent"
         android:cropToPadding="false"
-        android:contentDescription=""
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/forecast_item_date" />
+        android:layout_gravity="left|center_vertical"
+        android:contentDescription="" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/forecast_temp_min"
-        android:background="@color/minTempBlue"
-        android:gravity="bottom|center"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/forecast_temp_max" />
+        android:layout_weight="1"
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"
+        android:id="@+id/forecast_short_info"
+        android:textSize="24sp" />
 
-
-</RelativeLayout>
+</LinearLayout>

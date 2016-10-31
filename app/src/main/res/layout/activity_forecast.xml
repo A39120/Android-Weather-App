@@ -12,31 +12,45 @@
     tools:context="isel.pdm.trab.openweathermap.presentation.ForecastActivity">
 
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:title="@string/app_name"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        tools:title="@string/app_name"/>
+        android:layout_height="match_parent">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_below="@+id/toolbar"
-        android:hint="@string/insert_country_edit_text"
-        android:id="@+id/forecastList_country_edittext" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:title="@string/app_name"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            tools:title="@string/app_name"/>
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/forecastList_weather_list"
-        android:layout_below="@+id/forecastList_country_edittext"
-        android:layout_alignParentStart="true" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:layout_below="@+id/toolbar"
+            android:hint="@string/insert_country_edit_text"
+            android:id="@+id/forecastList_country_edittext" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:id="@+id/forecast_country_textview"
+            android:layout_below="@+id/forecastList_country_edittext"
+            android:textSize="36sp" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/forecastList_weather_list"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/forecastList_country_edittext" />
+    </LinearLayout>
 
 
 </RelativeLayout>

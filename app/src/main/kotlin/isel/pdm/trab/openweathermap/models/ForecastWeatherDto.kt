@@ -114,13 +114,15 @@ class ForecastWeatherDto(
         override fun describeContents() = 0
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
-            dest.writeInt(utc)
-            dest.writeTypedObject(temp, 0)
-            dest.writeDouble(pressure)
-            dest.writeInt(humidity)
-            dest.writeTypedList(weather)
-            dest.writeDouble(windSpeed)
-            dest.writeInt(clouds)
+            dest.apply {
+                writeInt(utc)
+                writeTypedObject(temp, 0)
+                writeDouble(pressure)
+                writeInt(humidity)
+                writeTypedList(weather)
+                writeDouble(windSpeed)
+                writeInt(clouds)
+            }
         }
     }
 
