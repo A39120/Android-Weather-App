@@ -9,6 +9,7 @@
     <string name="api_units_name" translatable="false">&amp;units</string>
     <string name="api_lang_name" translatable="false">&amp;lang</string>
     <string name="api_city_name" translatable="false">weather?q</string>
+    <string name="api_forecast_city_name" translatable="false">forecast/daily?q</string>
 
     <string name="api_img_path" translatable="false">img/w/</string>
 </resources>

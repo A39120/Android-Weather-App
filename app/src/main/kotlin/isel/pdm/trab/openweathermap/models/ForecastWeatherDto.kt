@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 import java.util.*
 
+
 class ForecastWeatherDto(
         @JsonProperty("city") val cityDetail: CityDetail,
         @JsonProperty("cnt")  val nForecasts: Int,
@@ -33,21 +34,58 @@ class ForecastWeatherDto(
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.apply {
-            writeTypedObject(cityDetail, 0)
+            writeTypedObject(cityDetail,0)
             writeInt(nForecasts)
             writeTypedList(forecastDetail)
         }
     }
 
+
+    data class ForecastWeatherInfo(
+            @JsonProperty("main") val weather: String,
+            @JsonProperty("description") val weatherDesc: String,
+            val icon: String
+    ): Parcelable{
+
+        companion object {
+            @JvmField @Suppress("unused")
+            val CREATOR = object : Parcelable.Creator<ForecastWeatherInfo> {
+                override fun createFromParcel(source: Parcel) = ForecastWeatherInfo(source)
+                override fun newArray(size: Int): Array<ForecastWeatherInfo?> = arrayOfNulls(size)
+            }
+        }
+
+        /**
+         * Initiates an instance from the given parcel.
+         * @param source The parcel from where the data is to be loaded from
+         */
+        constructor(source: Parcel) : this(
+                weather = source.readString(),
+                weatherDesc = source.readString(),
+                icon = source.readString()
+        )
+
+        override fun describeContents() = 0
+
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            dest.apply {
+                writeString(weather)
+                writeString(weatherDesc)
+                writeString(icon)
+            }
+        }
+    }
+
+
     data class ForecastDetail(
             @JsonProperty("dt")      val utc:         Int,
-            @JsonProperty("main")    val info:        WeatherInfo,
-            @JsonProperty("weather") val shortInfo:   List<WeatherShortInfo>,
-            @JsonProperty("wind")    val windDetail:  WindDetail,
-            @JsonProperty("clouds")  val cloudDetail: CloudDetail,
-            @JsonProperty("rain")    val rainDetail:  RainDetail?,
-            @JsonProperty("snow")    val snowDetail:  SnowDetail?,
-            @JsonProperty("dt_txt")  val dateText:    String
+            val temp: TempDetail,
+            val pressure: Double,
+            val humidity: Int,
+            val weather: List<ForecastWeatherInfo>,
+            @JsonProperty("speed") val windSpeed: Double,
+            val clouds: Int
+
     ): Parcelable{
         companion object {
             @JvmField @Suppress("unused")
@@ -62,36 +100,78 @@ class ForecastWeatherDto(
          * @param source The parcel from where the data is to be loaded from
          */
         constructor(source: Parcel) : this(
-            utc = source.readInt(),
-            info = source.readTypedObject(WeatherInfo.CREATOR),
-            shortInfo = mutableListOf<WeatherShortInfo>().apply {source.readTypedList(this, WeatherShortInfo.CREATOR)},
-            windDetail = source.readTypedObject(WindDetail.CREATOR),
-            cloudDetail = source.readTypedObject(CloudDetail.CREATOR),
-            rainDetail = source.readTypedObject(RainDetail.CREATOR),
-            snowDetail = source.readTypedObject(SnowDetail.CREATOR),
-            dateText = source.readString()
+                utc = source.readInt(),
+                temp = source.readTypedObject(TempDetail.CREATOR),
+                pressure = source.readDouble(),
+                humidity = source.readInt(),
+                weather = mutableListOf<ForecastWeatherInfo>().apply {
+                    source.readTypedList(this, ForecastWeatherInfo.CREATOR)
+                },
+                windSpeed = source.readDouble(),
+                clouds = source.readInt()
+        )
+
+        override fun describeContents() = 0
+
+        override fun writeToParcel(dest: Parcel, flags: Int) {
+            dest.writeInt(utc)
+            dest.writeTypedObject(temp, 0)
+            dest.writeDouble(pressure)
+            dest.writeInt(humidity)
+            dest.writeTypedList(weather)
+            dest.writeDouble(windSpeed)
+            dest.writeInt(clouds)
+        }
+    }
+
+    data class TempDetail(
+            val day: Double,
+            val min: Double,
+            val max: Double,
+            val night: Double,
+            val eve: Double,
+            val morn: Double
+    ) : Parcelable {
+        companion object {
+            @JvmField @Suppress("unused")
+            val CREATOR = object : Parcelable.Creator<TempDetail> {
+                override fun createFromParcel(source: Parcel) = TempDetail(source)
+                override fun newArray(size: Int): Array<TempDetail?> = arrayOfNulls(size)
+            }
+        }
+
+        /**
+         * Initiates an instance from the given parcel.
+         * @param source The parcel from where the data is to be loaded from
+         */
+        constructor(source: Parcel) : this(
+                day = source.readDouble(),
+                min = source.readDouble(),
+                max = source.readDouble(),
+                night = source.readDouble(),
+                eve = source.readDouble(),
+                morn = source.readDouble()
         )
 
         override fun describeContents() = 0
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
             dest.apply {
-                writeInt(utc)
-                writeTypedObject(info, 0)
-                writeTypedObject(windDetail, 0)
-                writeTypedObject(cloudDetail, 0)
-                writeTypedObject(rainDetail, 0)
-                writeTypedObject(snowDetail, 0)
-                writeString(dateText)
+                writeDouble(day)
+                writeDouble(min)
+                writeDouble(max)
+                writeDouble(night)
+                writeDouble(eve)
+                writeDouble(morn)
             }
         }
     }
 
     data class CityDetail(
-            @JsonProperty("id")      val id:              Int,
+            val id:              Int,
             @JsonProperty("name")    val cityName:        String,
             @JsonProperty("coord")   val cityCoordinates: Coordinates,
-            @JsonProperty("country") val country:         String
+            val country:         String
     ) : Parcelable {
         companion object {
             @JvmField @Suppress("Unused")
