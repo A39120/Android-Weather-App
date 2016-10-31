@@ -7,8 +7,8 @@ class UrlBuilder(){
 
     fun buildWeatherByCityUrl(
             resources: Resources,
-            city: String = Locale.getDefault().displayCountry,
-            lang: String = Locale.getDefault().language,
+            city: String = MyWeatherApp.city, // TODO: to put in a configuration file
+            lang: String = MyWeatherApp.language,
             units: String = "metric"): String
     {
         val baseUrl = resources.getString(R.string.api_base_url)

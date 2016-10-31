@@ -20,16 +20,6 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <TextView
-        android:text="@string/titleTextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/titleTextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:layout_marginTop="13dp"
-        android:layout_below="@+id/toolbar"
-        android:layout_alignParentStart="true" />
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -186,5 +176,15 @@
             android:layout_alignStart="@+id/person3Url"
             android:layout_marginStart="50dp" />
     </RelativeLayout>
+
+    <TextView
+        android:text="@string/titleTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleTextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:layout_alignBottom="@+id/toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="11dp" />
 
 </RelativeLayout>

@@ -3,6 +3,7 @@ package isel.pdm.trab.openweathermap
 import android.app.Application
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
+import java.util.*
 
 
 class MyWeatherApp : Application(){
@@ -11,6 +12,7 @@ class MyWeatherApp : Application(){
 
     companion object {
         lateinit var language: String
+        var city: String = Locale.getDefault().displayCountry
         //TODO add last url inserted with timestamp to check for future requests ???
     }
 

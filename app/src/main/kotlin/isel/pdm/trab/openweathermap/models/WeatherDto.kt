@@ -232,8 +232,8 @@ data class SnowDetail(
 
 data class LocationDetail(
         @JsonProperty("country") val countryCode: String,
-        @JsonProperty("sunrise") val sunriseTime: Int,
-        @JsonProperty("sunset")  val sunsetTime:  Int
+        @JsonProperty("sunrise") val sunriseTime: Long,
+        @JsonProperty("sunset")  val sunsetTime:  Long
 ): Parcelable{
     companion object {
         @JvmField @Suppress("unused")
@@ -249,8 +249,8 @@ data class LocationDetail(
      */
     constructor(source: Parcel) : this(
             countryCode = source.readString(),
-            sunriseTime = source.readInt(),
-            sunsetTime = source.readInt()
+            sunriseTime = source.readLong(),
+            sunsetTime = source.readLong()
     )
 
     override fun describeContents() = 0
@@ -258,8 +258,8 @@ data class LocationDetail(
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.apply {
             writeString(countryCode)
-            writeInt(sunriseTime)
-            writeInt(sunsetTime)
+            writeLong(sunriseTime)
+            writeLong(sunsetTime)
         }
     }
 }

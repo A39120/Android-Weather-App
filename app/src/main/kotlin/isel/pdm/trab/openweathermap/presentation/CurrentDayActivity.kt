@@ -9,15 +9,11 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.Toast
 import com.android.volley.toolbox.Volley
-import isel.pdm.trab.openweathermap.DownloadImageTask
-import isel.pdm.trab.openweathermap.MyWeatherApp
-import isel.pdm.trab.openweathermap.R
-import isel.pdm.trab.openweathermap.UrlBuilder
+import isel.pdm.trab.openweathermap.*
 import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import kotlinx.android.synthetic.main.activity_current_day.*
 import kotlinx.android.synthetic.main.activity_current_day.view.*
-import java.util.*
 
 //Actually Current Day we're viewing at the moment
 class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
@@ -36,7 +32,7 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         outState?.putBoolean("activity_current_day.curday_country_edittext", activity_current_day.curday_country_edittext.isEnabled)
         outState?.putString("activity_current_day.curday_weather_desc", activity_current_day.curday_weather_desc.text.toString())
         outState?.putString("activity_current_day.curday_other_info", activity_current_day.curday_other_info.text.toString())
-        intent.putExtra("WeatherBitmap", (activity_current_day.curday_image.drawable as BitmapDrawable).bitmap)
+        val putExtra = intent.putExtra("WeatherBitmap", (activity_current_day.curday_image.drawable as BitmapDrawable).bitmap)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,9 +53,14 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         }
         activity_current_day.curday_country_edittext.setOnEditorActionListener(this)
 
+        /*
+        Handler(mainLooper).postDelayed({
+            Toast.makeText(this, "updating...", Toast.LENGTH_LONG).show()
+            // TODO: make another request
+        }, 5000)
+        */
     }
 
-    // TODO: create utility class to convert values between metric and imperial scale
     private fun onCurrentDayRequestFinished(weather: CurrentWeatherDto){
         activity_current_day.curday_temperature.text = weather.info.temperature.toString() + "ºC"
         activity_current_day.curday_country_textview.text = weather.location + "," + weather.locDetail.countryCode
@@ -70,8 +71,8 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
                 "${resources.getString(R.string.max_temp_text)}: ${weather.info.maxTemp}ºC\n" +
                 "${resources.getString(R.string.min_temp_text)}: ${weather.info.minTemp}ºC\n" +
                 "${resources.getString(R.string.pressure_text)}: ${weather.info.pressure} hpa\n" +
-                "${resources.getString(R.string.sunrise_text)}: ${weather.locDetail.sunriseTime}\n" +
-                "${resources.getString(R.string.sunset_text)}: ${weather.locDetail.sunsetTime}"
+                "${resources.getString(R.string.sunrise_text)}: ${ConvertUtils().convertUnixToTime(weather.locDetail.sunriseTime)}\n" +
+                "${resources.getString(R.string.sunset_text)}: ${ConvertUtils().convertUnixToTime(weather.locDetail.sunsetTime)}"
 
         val imgUrl = UrlBuilder().buildImgUrl(resources, weather.shortInfo[0].icon)
 
@@ -108,18 +109,15 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
             true
         }
 
-
-
         R.id.action_language -> {
-            val currentLanguage = Locale.getDefault().language
-            if(/*MyWeatherApp.language*/currentLanguage.equals("pt")){
-                //MyWeatherApp.language = "en"
+            if(MyWeatherApp.language.equals("pt")){
+                MyWeatherApp.language = "en"
                 item?.setIcon(R.drawable.en_flag)
             }else{ // en
-                //MyWeatherApp.language = "pt"
+                MyWeatherApp.language = "pt"
                 item?.setIcon(R.drawable.pt_flag)
             }
-            Toast.makeText(this, resources.getString(R.string.language_set_to) + " " + /*MyWeatherApp.language*/currentLanguage.toUpperCase(),Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, resources.getString(R.string.language_set_to) + " " + MyWeatherApp.language.toUpperCase(),Toast.LENGTH_SHORT).show()
             true
         }
 
