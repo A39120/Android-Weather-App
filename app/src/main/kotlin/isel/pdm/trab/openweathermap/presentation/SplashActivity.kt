@@ -25,30 +25,30 @@ class SplashActivity : BaseActivity() {
         //TODO ask to turn wifi on, right about here
 
         (application as MyWeatherApp).requestQueue.add(
-            GetRequest(UrlBuilder().buildWeatherByCityUrl(resources),
-                    {
-                        weather ->
-                        run {
-                            aIntent.putExtra("WEATHER_DATA", weather)
-                            startActivity(aIntent)
-                        }
-                    },
-                    {
-                        error ->
-                        run {
-                            //check if it was caused because wifi was turned off (stackoverflow)
-                            val connManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                            if (connManager.activeNetworkInfo != null) {
-                                if(connManager.activeNetworkInfo.isConnected) // problem in the web api
-                                    Toast.makeText(this, R.string.splash_api_unreachable, Toast.LENGTH_LONG).show()
-                            }else{ // user problem (wifi turned off)
-                                Toast.makeText(this, R.string.connection_problem_wifi_off, Toast.LENGTH_LONG).show()
+                GetRequest(UrlBuilder().buildWeatherByCityUrl(resources),
+                        {
+                            weather ->
+                            run {
+                                aIntent.putExtra("WEATHER_DATA", weather)
+                                startActivity(aIntent)
                             }
-                            Handler(mainLooper).postDelayed({ finish() }, 3000)
-                        }
-                    },
-                    CurrentWeatherDto::class.java
-            )
+                        },
+                        {
+                            error ->
+                            run {
+                                //check if it was caused because wifi was turned off (stackoverflow)
+                                val connManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                                if (connManager.activeNetworkInfo != null) {
+                                    if(connManager.activeNetworkInfo.isConnected) // problem in the web api
+                                        Toast.makeText(this, R.string.splash_api_unreachable, Toast.LENGTH_LONG).show()
+                                }else{ // user problem (wifi turned off)
+                                    Toast.makeText(this, R.string.connection_problem_wifi_off, Toast.LENGTH_LONG).show()
+                                }
+                                Handler(mainLooper).postDelayed({ finish() }, 3000)
+                            }
+                        },
+                        CurrentWeatherDto::class.java
+                )
         )
     }
 }

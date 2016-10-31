@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +18,8 @@ import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.ForecastWeatherDto
 import kotlinx.android.synthetic.main.activity_forecast.*
 import kotlinx.android.synthetic.main.activity_forecast.view.*
+import java.util.*
+import kotlin.collections.List
 
 class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
 
@@ -26,16 +27,54 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
     override val actionBarId: Int? = R.id.toolbar
     override val actionBarMenuResId: Int? = R.menu.action_bar_activity_current_day
 
-    private val parcelableForecast : Parcelable? = null
+    private var adapterBackup : ForecastAdapter? = null
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+
+        outState?.putString("activity_forecast_city", activity_forecast.forecast_country_textview.text.toString())
+
+        if(adapterBackup != null) {
+            var i: Int = 0
+            outState?.putInt("activity_forecast_list_count", adapterBackup?.count as Int)
+            while (i < adapterBackup?.count as Int) {
+                outState?.putParcelable("activity_forecast_list_item" + i, adapterBackup?.getItem(i))
+                i++
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //if(savedInstanceState == null) {
-        //    val parcel = intent.extras
-        //    val weather = parcel.getParcelable<ForecastWeatherDto>("FORECAST_DATA")
-        //    fillListView(weather)
-        //}
+        if(savedInstanceState == null) {
+            //TODO recebe dados por intent.extra ?
+            //if(savedInstanceState == null) {
+            //    val parcel = intent.extras
+            //    val weather = parcel.getParcelable<ForecastWeatherDto>("FORECAST_DATA")
+            //    fillListView(weather)
+            //}
+        }else{
+            activity_forecast.forecast_country_textview.text = savedInstanceState.getString("activity_forecast_city")
+
+            var list : ArrayList<ForecastWeatherDto.ForecastDetail> = ArrayList<ForecastWeatherDto.ForecastDetail>()
+            var i: Int = savedInstanceState.getInt("activity_forecast_list_count")
+            var j: Int = 0
+            while(j < i){
+                //se não for usado um tmp, ele queixa-se de lista de 'ForecastDetail?'
+                val tmp : ForecastWeatherDto.ForecastDetail = savedInstanceState?.getParcelable("activity_forecast_list_item" + j)
+                list.add(tmp)
+                j++
+            }
+
+            var adapter : ForecastAdapter = ForecastAdapter(ForecastActivity@this, list, resources)
+
+            (activity_forecast.forecastList_weather_list as ListView).adapter = adapter
+            activity_forecast.forecastList_country_edittext.isEnabled = true // re-enable choosing country
+
+            adapterBackup = adapter
+        }
+
         activity_forecast.forecastList_country_edittext.setOnEditorActionListener(this)
     }
 
@@ -73,6 +112,8 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
         val adapter = ForecastAdapter(ForecastActivity@this,fwDto.forecastDetail, resources)
         (activity_forecast.forecastList_weather_list as ListView).adapter = adapter
         activity_forecast.forecastList_country_edittext.isEnabled = true // re-enable choosing country
+
+        adapterBackup = adapter
     }
 
     private class ForecastAdapter(context : Context,
