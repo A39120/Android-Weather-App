@@ -75,7 +75,7 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
         R.id.action_refresh -> {
-            refreshWeatherInfo(activity_current_day.curday_country_textview.text.toString())
+            refreshWeatherInfo(activity_current_day.curday_country_textview.text.toString().trim())
             Toast.makeText(this, resources.getString(R.string.get_curday_updating_text),Toast.LENGTH_LONG).show()
             true
         }
@@ -100,7 +100,7 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
             resources.updateConfiguration(configuration, displayMetrics)
 
             activity_current_day.curday_country_edittext.hint = getString(R.string.insert_country_edit_text)
-            refreshWeatherInfo(activity_current_day.curday_country_textview.text.toString())
+            refreshWeatherInfo(activity_current_day.curday_country_textview.text.toString().trim())
 
             Toast.makeText(this,
                     resources.getString(R.string.language_set_to) + " " + MyWeatherApp.language.toUpperCase(),

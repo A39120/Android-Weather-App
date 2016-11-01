@@ -4,14 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import com.android.volley.toolbox.Volley
 import isel.pdm.trab.openweathermap.DownloadImageTask
+import isel.pdm.trab.openweathermap.MyWeatherApp
 import isel.pdm.trab.openweathermap.R
 import isel.pdm.trab.openweathermap.UrlBuilder
 import isel.pdm.trab.openweathermap.comms.GetRequest
@@ -152,5 +150,59 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
 
             return itemView
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
+        R.id.action_refresh -> {
+            refreshWeatherInfo(activity_forecast.forecast_country_textview.text.toString().trim())
+            Toast.makeText(this, resources.getString(R.string.get_curday_updating_text),Toast.LENGTH_LONG).show()
+            true
+        }
+
+        R.id.action_language -> {
+            if(MyWeatherApp.language.equals("pt")){
+                MyWeatherApp.language = "en"
+                item?.setIcon(R.drawable.en_flag)
+            }else{ // en
+                MyWeatherApp.language = "pt"
+                item?.setIcon(R.drawable.pt_flag)
+            }
+
+            val displayMetrics = resources.displayMetrics
+            val configuration = resources.configuration
+            configuration.setLocale(Locale(MyWeatherApp.language))
+            resources.updateConfiguration(configuration, displayMetrics)
+
+            activity_forecast.forecastList_country_edittext.hint = getString(R.string.insert_country_edit_text)
+            refreshWeatherInfo(activity_forecast.forecastList_country_edittext.text.toString().trim())
+
+            Toast.makeText(this,
+                    resources.getString(R.string.language_set_to) + " " + MyWeatherApp.language.toUpperCase(),
+                    Toast.LENGTH_SHORT
+            ).show()
+            true
+        }
+
+        R.id.action_credits -> {
+            startActivity(Intent(this, CreditsActivity::class.java))
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun onForecastRequestFinished(weather: ForecastWeatherDto){
+        // TODO see how it was made in CurrentDayActivity
+    }
+
+    private fun refreshWeatherInfo(currentCity: String){
+        Volley.newRequestQueue(this).add(
+                GetRequest(
+                        UrlBuilder().buildForecastByCityUrl(resources, currentCity),
+                        { weather ->
+                            onForecastRequestFinished(weather)
+                        },
+                        { error -> System.out.println("Error in response?")},
+                        ForecastWeatherDto::class.java)
+        )
     }
 }
