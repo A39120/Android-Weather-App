@@ -10,19 +10,13 @@
     <string name="textviewText">João Almeida</string>
     <string name="jo_o_lopes" translatable="false">João Lopes</string>
     <string name="tiago_santos" translatable="false">Tiago Santos</string>
-    <string name="https_github_com_a39120" translatable="false">https://github.com/A39120</string>
-    <string name="https_github_com_tiagossantos" translatable="false">https://github.com/TiagoSSantos</string>
-    <string name="https_github_com_joaoccalmeida" translatable="false">https://github.com/joaoccalmeida</string>
+    <string name="person3_url" translatable="false">https://github.com/A39120</string>
+    <string name="person2_url" translatable="false">https://github.com/TiagoSSantos</string>
+    <string name="person1_url" translatable="false">https://github.com/joaoccalmeida</string>
     <string name="jo_o_almeida" translatable="false">João Almeida</string>
     <string name="github" translatable="false">github</string>
 
     <!-- CurrentDay screen -->
-    <string name="humidity_text">Humidity</string>
-    <string name="max_temp_text">Max Temp</string>
-    <string name="min_temp_text">Min Temp</string>
-    <string name="pressure_text">Pressure</string>
-    <string name="sunrise_text">Sunrise</string>
-    <string name="sunset_text">Sunset</string>
     <string name="insert_country_edit_text">Insert a city...</string>
     <string name="could_not_download_icon_for_weather">Could not download icon for weather</string>
     <string name="about_us">About us</string>
@@ -30,4 +24,9 @@
     <string name="refresh">Refresh</string>
     <string name="connection_problem_wifi_off">Could not establish connection (Wifi is turned off)</string>
     <string name="language_set_to">Language set to:</string>
+    <string name="get_curday_text">Getting current day\'s weather for</string>
+    <string name="get_curday_updating_text">Updating weather info</string>
+    <string name="snow">Snow Volume</string>
+    <string name="precipitation">Precipitation</string>
+    <string name="curday_other_info">Wind Speed: %1$.2f %2$s\nWind Direction: %3$s\nCloudiness: %4$d %% %5$s %6$s\nHumidity: %7$d %%\nMax Temp: %8$.2f %9$s\nMin Temp: %10$.2f %11$s\nPressure: %12$.2f hpa\nSunrise: %13$s \nSunset: %14$s\nLast updated at: %15$s</string>
 </resources>

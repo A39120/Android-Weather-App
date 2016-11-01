@@ -14,7 +14,7 @@ class CurrentWeatherDto(
         @JsonProperty("clouds")  val cloudDetail: CloudDetail,
         @JsonProperty("rain")    val rainDetail: RainDetail?,
         @JsonProperty("snow")    val snowDetail: SnowDetail?,
-        @JsonProperty("dt")      val utc: Int,
+        @JsonProperty("dt")      val utc: Long,
         @JsonProperty("sys")     val locDetail: LocationDetail
 ): Parcelable {
     companion object {
@@ -39,7 +39,7 @@ class CurrentWeatherDto(
             cloudDetail= source.readTypedObject(CloudDetail.CREATOR),
             rainDetail = source.readTypedObject(RainDetail.CREATOR),
             snowDetail = source.readTypedObject(SnowDetail.CREATOR),
-            utc = source.readInt(),
+            utc = source.readLong(),
             locDetail = source.readTypedObject(LocationDetail.CREATOR)
     )
 
@@ -56,7 +56,7 @@ class CurrentWeatherDto(
             writeTypedObject(cloudDetail,0)
             writeTypedObject(rainDetail,0)
             writeTypedObject(snowDetail,0)
-            writeInt(utc)
+            writeLong(utc)
             writeTypedObject(locDetail, 0)
         }
     }}

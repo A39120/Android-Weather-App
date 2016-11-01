@@ -4,15 +4,14 @@
 
     <string name="insert_country_edit_text">Insira uma cidade...</string>
     <string name="splash_api_unreachable">API OWM indisponível</string>
-    <string name="humidity_text">Humidade</string>
-    <string name="max_temp_text">Temp. Máxima</string>
-    <string name="min_temp_text">Temp. Mínima</string>
-    <string name="pressure_text">Pressão</string>
-    <string name="sunrise_text">Nascer do Sol</string>
-    <string name="sunset_text">Pôr do Sol</string>
     <string name="could_not_download_icon_for_weather">Não foi possível descarregar o ícone para o tempo</string>
     <string name="about_us">Acerca de nós</string>
     <string name="refresh">Actualizar</string>
     <string name="connection_problem_wifi_off">Não foi possível estabelecer conexão (Wifi desligado)</string>
     <string name="language_set_to">Idioma definido para: </string>
+    <string name="get_curday_text">Recebendo o tempo de hoje para</string>
+    <string name="get_curday_updating_text">Atualizando informação metereológica</string>
+    <string name="snow">Volume de Neve</string>
+    <string name="precipitation">Precipitação</string>
+    <string name="curday_other_info">Velocidade do Vento: %1$.2f %2$s\nDireção do Vento: %3$s\nNebulosidade: %4$d %% %5$s %6$s\nHumidade: %7$d %%\nTemperatura Máxima: %8$.2f %9$s\nTemperatura Mínima: %10$.2f %11$s\nPressão: %12$.2f hpa\nNascer do Sol: %13$s \nOcaso: %14$s\nActualizado a: %15$s</string>
 </resources>

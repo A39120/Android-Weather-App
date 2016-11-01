@@ -11,7 +11,7 @@ class MyWeatherApp : Application(){
     lateinit var requestQueue: RequestQueue
 
     companion object {
-        /*lateinit*/ var language: String = "en"
+        var language: String = "en" // default
         var city: String = Locale.getDefault().displayCountry
         //TODO add last url inserted with timestamp to check for future requests ???
     }

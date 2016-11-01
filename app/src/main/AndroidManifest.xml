@@ -25,7 +25,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".presentation.ForecastActivity" />
-        <activity android:name=".presentation.ForeacastDayActivity"></activity>
     </application>
 
 </manifest>

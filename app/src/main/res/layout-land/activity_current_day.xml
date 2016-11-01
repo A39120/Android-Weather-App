@@ -126,7 +126,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/curday_other_info"
-                    android:gravity="center_horizontal" />
+                    android:gravity="center_horizontal"
+                    android:hint="@string/curday_other_info"/>
             </ScrollView>
         </LinearLayout>
     </LinearLayout>

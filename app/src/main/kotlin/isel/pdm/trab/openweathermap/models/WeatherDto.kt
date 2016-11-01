@@ -175,7 +175,7 @@ data class CloudDetail(
 }
 
 data class RainDetail(
-        @JsonProperty("3h") val rainVolume: Int
+        @JsonProperty("3h") val rainVolume: Double
 ): Parcelable{
     companion object {
         @JvmField @Suppress("unused")
@@ -190,20 +190,20 @@ data class RainDetail(
      * @param source The parcel from where the data is to be loaded from
      */
     constructor(source: Parcel) : this(
-            rainVolume = source.readInt()
+            rainVolume = source.readDouble()
     )
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.apply {
-            writeInt(rainVolume)
+            writeDouble(rainVolume)
         }
     }
 }
 
 data class SnowDetail(
-        @JsonProperty("3h") val snowVolume: Int
+        @JsonProperty("3h") val snowVolume: Double
 ): Parcelable{
     companion object {
         @JvmField @Suppress("unused")
@@ -218,14 +218,14 @@ data class SnowDetail(
      * @param source The parcel from where the data is to be loaded from
      */
     constructor(source: Parcel) : this(
-            snowVolume = source.readInt()
+            snowVolume = source.readDouble()
     )
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.apply {
-            writeInt(snowVolume)
+            writeDouble(snowVolume)
         }
     }
 }

@@ -22,8 +22,13 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         val aIntent = Intent(this, CurrentDayActivity::class.java)
 
-        //TODO ask to turn wifi on, right about here
+        // To force the Locale to the one set in @MyWeatherApp.language
+        val displayMetrics = resources.displayMetrics
+        val configuration = resources.configuration
+        configuration.setLocale(Locale(MyWeatherApp.language))
+        resources.updateConfiguration(configuration, displayMetrics)
 
+        //TODO ask to turn wifi on, right about here
         (application as MyWeatherApp).requestQueue.add(
                 GetRequest(UrlBuilder().buildWeatherByCityUrl(resources),
                         {
