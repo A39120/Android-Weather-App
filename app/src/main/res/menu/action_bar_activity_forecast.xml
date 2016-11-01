@@ -10,12 +10,6 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_forecast"
-        android:icon="@drawable/forecast"
-        android:title="@string/forecast"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/action_language"
         android:icon="@drawable/en_flag"
         android:title="@string/language"

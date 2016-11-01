@@ -23,9 +23,7 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
     val UPDATE_TIMEOUT: Long = 1000 * 60 * 60 // (1000 milis) * (60 seconds) * (60 minutes) = 1 hour
 
     override val layoutResId: Int = R.layout.activity_current_day
-
     override val actionBarId: Int? = R.id.toolbar
-
     override val actionBarMenuResId: Int? = R.menu.action_bar_activity_current_day
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -82,11 +80,15 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
             true
         }
 
+        R.id.action_forecast -> {
+            startActivity(Intent(this, ForecastActivity::class.java))
+            true
+        }
+
         R.id.action_language -> {
             if(MyWeatherApp.language.equals("pt")){
                 MyWeatherApp.language = "en"
                 item?.setIcon(R.drawable.en_flag)
-
             }else{ // en
                 MyWeatherApp.language = "pt"
                 item?.setIcon(R.drawable.pt_flag)
@@ -96,7 +98,6 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
             val configuration = resources.configuration
             configuration.setLocale(Locale(MyWeatherApp.language))
             resources.updateConfiguration(configuration, displayMetrics)
-
 
             activity_current_day.curday_country_edittext.hint = getString(R.string.insert_country_edit_text)
             refreshWeatherInfo(activity_current_day.curday_country_textview.text.toString())
@@ -130,9 +131,9 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         var rain: String = ""
         var snow: String = ""
         if(weather.rainDetail != null)
-            rain = "\n" + getString(R.string.precipitation) + ": " + weather.rainDetail.rainVolume + " mm"
+            rain = "\n" + getString(R.string.precipitation) + ": " + weather.rainDetail.rainVolume + "mm"
         if(weather.snowDetail != null)
-            snow = "\n" + getString(R.string.snow) + ": " + weather.snowDetail.snowVolume + " mm"
+            snow = "\n" + getString(R.string.snow) + ": " + weather.snowDetail.snowVolume + "mm"
         activity_current_day.curday_other_info.text = String.format(getString(R.string.curday_other_info),
                 weather.windDetail.speed, "km/h",
                 ConvertUtils().convertDegreesToTextDescription(weather.windDetail.windDegrees),

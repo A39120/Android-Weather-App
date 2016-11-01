@@ -25,7 +25,7 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
 
     override val layoutResId: Int = R.layout.activity_forecast
     override val actionBarId: Int? = R.id.toolbar
-    override val actionBarMenuResId: Int? = R.menu.action_bar_activity_current_day
+    override val actionBarMenuResId: Int? = R.menu.action_bar_activity_forecast
 
     private var adapterBackup : ForecastAdapter? = null
 

@@ -29,4 +29,6 @@
     <string name="snow">Snow Volume</string>
     <string name="precipitation">Precipitation</string>
     <string name="curday_other_info">Wind Speed: %1$.2f %2$s\nWind Direction: %3$s\nCloudiness: %4$d %% %5$s %6$s\nHumidity: %7$d %%\nMax Temp: %8$.2f %9$s\nMin Temp: %10$.2f %11$s\nPressure: %12$.2f hpa\nSunrise: %13$s \nSunset: %14$s\nLast updated at: %15$s</string>
+
+    <string name="forecast">Forecast</string>
 </resources>
