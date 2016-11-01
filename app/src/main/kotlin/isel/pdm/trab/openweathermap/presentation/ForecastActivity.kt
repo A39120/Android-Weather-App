@@ -46,12 +46,9 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
         super.onCreate(savedInstanceState)
 
         if(savedInstanceState == null) {
-            //TODO recebe dados por intent.extra ?
-            //if(savedInstanceState == null) {
-            //    val parcel = intent.extras
-            //    val weather = parcel.getParcelable<ForecastWeatherDto>("FORECAST_DATA")
-            //    fillListView(weather)
-            //}
+            val parcel = intent.extras
+            val weather = parcel.getParcelable<ForecastWeatherDto>("FORECAST_DATA")
+            fillListView(weather)
         }else{
             activity_forecast.forecast_country_textview.text = savedInstanceState.getString("activity_forecast_city")
 
@@ -65,7 +62,7 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
                 j++
             }
 
-            var adapter : ForecastAdapter = ForecastAdapter(ForecastActivity@this, list, resources)
+            var adapter : ForecastAdapter = ForecastAdapter(ForecastActivity@this, list, null,resources)
 
             (activity_forecast.forecastList_weather_list as ListView).adapter = adapter
             activity_forecast.forecastList_country_edittext.isEnabled = true // re-enable choosing country
@@ -107,7 +104,7 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
     fun fillListView(fwDto: ForecastWeatherDto){
 
         activity_forecast.forecast_country_textview.text = fwDto.cityDetail.cityName+","+fwDto.cityDetail.country
-        val adapter = ForecastAdapter(ForecastActivity@this,fwDto.forecastDetail, resources)
+        val adapter = ForecastAdapter(ForecastActivity@this,fwDto.forecastDetail, fwDto, resources)
         (activity_forecast.forecastList_weather_list as ListView).adapter = adapter
         activity_forecast.forecastList_country_edittext.isEnabled = true // re-enable choosing country
 
@@ -116,6 +113,7 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
 
     private class ForecastAdapter(context : Context,
                                   list: List<ForecastWeatherDto.ForecastDetail>,
+                                  val source : ForecastWeatherDto?,
                                   val resources : Resources):
             ArrayAdapter<ForecastWeatherDto.ForecastDetail>(
                     context,
@@ -142,14 +140,16 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
             val imgUrl = UrlBuilder().buildImgUrl(resources, current.weather[0].icon)
             DownloadImageTask((itemView!!.findViewById(R.id.forecast_icon) as ImageView)).execute(imgUrl)
 
-            itemView.setOnClickListener {
-                val anIntent = Intent(context, CurrentDayActivity::class.java)
-                anIntent.putExtra("WEATHER_DATA", current)
-                context.startActivity(anIntent)
-            }
+            itemView.setOnClickListener(object: View.OnClickListener {
+                override fun onClick(view: View): Unit{
+                    val anIntent = Intent(context, ForecastDayActivity::class.java)
+                    anIntent.putExtra("POSITION", position)
+                    anIntent.putExtra("FORECAST_DATA", source)
+                    context.startActivity(anIntent)
+                }})
 
-            return itemView
-        }
+                return itemView
+            }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {

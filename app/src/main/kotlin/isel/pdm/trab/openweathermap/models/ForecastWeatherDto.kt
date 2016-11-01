@@ -78,13 +78,16 @@ class ForecastWeatherDto(
 
 
     data class ForecastDetail(
-            @JsonProperty("dt")      val utc:         Int,
+            @JsonProperty("dt")      val utc:         Long,
             val temp: TempDetail,
             val pressure: Double,
             val humidity: Int,
             val weather: List<ForecastWeatherInfo>,
+            @JsonProperty("deg") val windDegrees: Double,
             @JsonProperty("speed") val windSpeed: Double,
-            val clouds: Int
+            val clouds: Int,
+            val rain: Int = 0,
+            val snow: Int = 0
 
     ): Parcelable{
         companion object {
@@ -100,28 +103,34 @@ class ForecastWeatherDto(
          * @param source The parcel from where the data is to be loaded from
          */
         constructor(source: Parcel) : this(
-                utc = source.readInt(),
+                utc = source.readLong(),
                 temp = source.readTypedObject(TempDetail.CREATOR),
                 pressure = source.readDouble(),
                 humidity = source.readInt(),
                 weather = mutableListOf<ForecastWeatherInfo>().apply {
                     source.readTypedList(this, ForecastWeatherInfo.CREATOR)
                 },
+                windDegrees = source.readDouble(),
                 windSpeed = source.readDouble(),
-                clouds = source.readInt()
+                clouds = source.readInt(),
+                rain = source.readInt(),
+                snow = source.readInt()
         )
 
         override fun describeContents() = 0
 
         override fun writeToParcel(dest: Parcel, flags: Int) {
             dest.apply {
-                writeInt(utc)
+                writeLong(utc)
                 writeTypedObject(temp, 0)
                 writeDouble(pressure)
                 writeInt(humidity)
                 writeTypedList(weather)
+                writeDouble(windDegrees)
                 writeDouble(windSpeed)
                 writeInt(clouds)
+                writeInt(rain)
+                writeInt(snow)
             }
         }
     }

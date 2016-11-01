@@ -13,6 +13,7 @@ import com.android.volley.toolbox.Volley
 import isel.pdm.trab.openweathermap.*
 import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
+import isel.pdm.trab.openweathermap.models.ForecastWeatherDto
 import kotlinx.android.synthetic.main.activity_current_day.*
 import kotlinx.android.synthetic.main.activity_current_day.view.*
 import java.util.*
@@ -81,7 +82,20 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         }
 
         R.id.action_forecast -> {
-            startActivity(Intent(this, ForecastActivity::class.java))
+            val anIntent = Intent(CurrentDayActivity@this, ForecastActivity::class.java)
+            val city = (activity_current_day.curday_country_textview.text as String).split(",")[0]
+            Volley.newRequestQueue(this).add(
+                    GetRequest(
+                            UrlBuilder().buildForecastByCityUrl(resources, city),
+                            { weather ->
+                                run {
+                                    anIntent.putExtra("FORECAST_DATA", weather)
+                                    startActivity(anIntent)
+                                }
+                            },
+                            { error -> System.out.println("Error in response?")},
+                            ForecastWeatherDto::class.java)
+            )
             true
         }
 
