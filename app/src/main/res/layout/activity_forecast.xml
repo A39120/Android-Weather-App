@@ -32,9 +32,8 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:layout_below="@+id/toolbar"
             android:hint="@string/insert_country_edit_text"
-            android:id="@+id/forecastList_country_edittext" />
+            android:id="@+id/forecast_country_edittext" />
 
         <TextView
             android:layout_width="match_parent"
