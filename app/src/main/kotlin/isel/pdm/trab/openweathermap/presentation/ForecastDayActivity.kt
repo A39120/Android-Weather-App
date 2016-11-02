@@ -1,6 +1,7 @@
 package isel.pdm.trab.openweathermap.presentation
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +12,8 @@ import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.Toast
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
 import isel.pdm.trab.openweathermap.*
 import isel.pdm.trab.openweathermap.comms.GetRequest
@@ -85,9 +88,32 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         activity_forecast_day.curday_weather_desc.text = weather.forecastDetail[pos].weather.first().weatherDesc
 
         val imgUrl = UrlBuilder().buildImgUrl(resources, weather.forecastDetail[pos].weather.first().icon)
-        DownloadImageTask(activity_forecast_day.curday_image).execute(imgUrl)
+
+        (application as MyWeatherApp).imageLoader.get(imgUrl, object : ImageLoader.ImageListener {
+            override fun onResponse(response: ImageLoader.ImageContainer, isImmediate: Boolean) {
+                if (response == null) {
+                    setErrorImg()
+                    return
+                }
+                val bitmap = response.bitmap
+                if (bitmap != null) {
+                    activity_forecast_day.curday_image.setImageBitmap(bitmap)
+                } else {
+                    setErrorImg()
+                    return
+                }
+            }
+            override fun onErrorResponse(error: VolleyError) {
+                setErrorImg()
+            }
+        })
 
         writeOtherWeatherInfo(weather.forecastDetail[pos])
+    }
+
+    fun setErrorImg(){
+        activity_forecast_day.curday_image.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.error_icon))
+        Toast.makeText(this , R.string.could_not_download_icon_for_weather,Toast.LENGTH_SHORT)
     }
 
     private fun writeOtherWeatherInfo(weather: ForecastWeatherDto.ForecastDetail){

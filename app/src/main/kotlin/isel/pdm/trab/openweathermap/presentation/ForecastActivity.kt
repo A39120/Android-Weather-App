@@ -3,12 +3,14 @@ package isel.pdm.trab.openweathermap.presentation
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
-import isel.pdm.trab.openweathermap.DownloadImageTask
 import isel.pdm.trab.openweathermap.MyWeatherApp
 import isel.pdm.trab.openweathermap.R
 import isel.pdm.trab.openweathermap.UrlBuilder
@@ -138,7 +140,32 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
             }
 
             val imgUrl = UrlBuilder().buildImgUrl(resources, current.weather[0].icon)
-            DownloadImageTask((itemView!!.findViewById(R.id.forecast_icon) as ImageView)).execute(imgUrl)
+            var imgView = (itemView!!.findViewById(R.id.forecast_icon) as ImageView)
+
+            MyWeatherApp.instance.imageLoader.get(imgUrl, object : ImageLoader.ImageListener {
+                override fun onResponse(response: ImageLoader.ImageContainer, isImmediate: Boolean) {
+                    if (response == null) {
+                        setErrorImg(imgView)
+                        return
+                    }
+                    val bitmap = response.bitmap
+                    if (bitmap != null) {
+                        imgView.setImageBitmap(bitmap)
+                    } else {
+                        setErrorImg(imgView)
+                        return
+                    }
+                }
+
+                override fun onErrorResponse(error: VolleyError) {
+                    setErrorImg(imgView)
+                }
+
+                private fun setErrorImg(imgView: ImageView){
+                    imgView.setImageBitmap(BitmapFactory.decodeResource(imgView.context.getResources(), R.drawable.error_icon))
+                    Toast.makeText(imgView.context , R.string.could_not_download_icon_for_weather,Toast.LENGTH_SHORT)
+                }
+            })
 
             itemView.setOnClickListener(object: View.OnClickListener {
                 override fun onClick(view: View): Unit{
@@ -151,7 +178,6 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
                 return itemView
             }
     }
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
         R.id.action_refresh -> {
             refreshWeatherInfo(activity_forecast.forecast_country_textview.text.toString().trim())

@@ -1,6 +1,7 @@
 package isel.pdm.trab.openweathermap.presentation
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +10,8 @@ import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import android.widget.Toast
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
 import isel.pdm.trab.openweathermap.*
 import isel.pdm.trab.openweathermap.comms.GetRequest
@@ -20,7 +23,6 @@ import java.util.*
 
 //Actually Current Day we're viewing at the moment
 class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
-
     val UPDATE_TIMEOUT: Long = 1000 * 60 * 60 // (1000 milis) * (60 seconds) * (60 minutes) = 1 hour
 
     override val layoutResId: Int = R.layout.activity_current_day
@@ -138,8 +140,33 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         writeOtherWeatherInfo(weather)
 
         val imgUrl = UrlBuilder().buildImgUrl(resources, weather.shortInfo[0].icon)
-        DownloadImageTask(activity_current_day.curday_image).execute(imgUrl)
+
+        (application as MyWeatherApp).imageLoader.get(imgUrl, object : ImageLoader.ImageListener {
+            override fun onResponse(response: ImageLoader.ImageContainer, isImmediate: Boolean) {
+                if (response == null) {
+                    setErrorImg()
+                    return
+                }
+                val bitmap = response.bitmap
+                if (bitmap != null) {
+                    activity_current_day.curday_image.setImageBitmap(bitmap)
+                } else {
+                    setErrorImg()
+                    return
+                }
+            }
+            override fun onErrorResponse(error: VolleyError) {
+                setErrorImg()
+            }
+        })
+
     }
+
+    fun setErrorImg(){
+        activity_current_day.curday_image.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.error_icon))
+        Toast.makeText(this , R.string.could_not_download_icon_for_weather,Toast.LENGTH_SHORT)
+    }
+
 
     private fun writeOtherWeatherInfo(weather: CurrentWeatherDto){
         var rain: String = ""
