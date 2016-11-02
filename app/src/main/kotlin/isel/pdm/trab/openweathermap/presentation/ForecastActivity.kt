@@ -67,19 +67,21 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
             var adapter : ForecastAdapter = ForecastAdapter(ForecastActivity@this, list, null,resources)
 
             (activity_forecast.forecastList_weather_list as ListView).adapter = adapter
-            activity_forecast.forecastList_country_edittext.isEnabled = true // re-enable choosing country
+            activity_forecast.forecast_country_edittext.isEnabled = true // re-enable choosing country
 
             adapterBackup = adapter
         }
 
-        activity_forecast.forecastList_country_edittext.setOnEditorActionListener(this)
+        activity_forecast.forecast_country_edittext.setOnEditorActionListener(this)
     }
 
     override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-        if(activity_forecast.forecastList_country_edittext.text.equals("")) return true // don't send request if empty string
-        if(event?.action == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
-            activity_forecast.forecastList_country_edittext.isEnabled = false
-            val inputCityName: String = activity_forecast.forecastList_country_edittext.text.toString()
+        val name = activity_forecast.forecast_country_edittext.text
+        if(name.equals("")) return true // don't send request if empty string
+        if(event?.action == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE
+                || actionId == EditorInfo.IME_ACTION_NEXT) {
+            activity_forecast.forecast_country_edittext.isEnabled = false
+            val inputCityName: String = activity_forecast.forecast_country_edittext.text.toString()
             val url : String = UrlBuilder().buildForecastByCityUrl(resources, inputCityName)
             Volley.newRequestQueue(this).add(
                     GetRequest(
@@ -97,7 +99,6 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
                             ForecastWeatherDto::class.java)
             )
             Toast.makeText(this, "Getting forecast for the next 5 days for $inputCityName...", Toast.LENGTH_LONG).show()
-
         }
         return true
     }
@@ -108,7 +109,7 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
         activity_forecast.forecast_country_textview.text = fwDto.cityDetail.cityName+","+fwDto.cityDetail.country
         val adapter = ForecastAdapter(ForecastActivity@this,fwDto.forecastDetail, fwDto, resources)
         (activity_forecast.forecastList_weather_list as ListView).adapter = adapter
-        activity_forecast.forecastList_country_edittext.isEnabled = true // re-enable choosing country
+        activity_forecast.forecast_country_edittext.isEnabled = true // re-enable choosing country
 
         adapterBackup = adapter
     }
@@ -199,7 +200,7 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
             configuration.setLocale(Locale(MyWeatherApp.language))
             resources.updateConfiguration(configuration, displayMetrics)
 
-            activity_forecast.forecastList_country_edittext.hint = getString(R.string.insert_country_edit_text)
+            activity_forecast.forecast_country_edittext.hint = getString(R.string.insert_country_edit_text)
             refreshWeatherInfo(activity_forecast.forecast_country_textview.text.toString().trim())
 
             Toast.makeText(this,
