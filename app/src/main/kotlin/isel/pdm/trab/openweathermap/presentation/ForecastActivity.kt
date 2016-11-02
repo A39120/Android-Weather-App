@@ -130,9 +130,9 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
             val current = this.getItem(position)
 
             if(position == 0){
-                (itemView?.findViewById(R.id.forecast_short_info) as TextView).text =  current.temp.day.toString() + "ºC, Today"
+                (itemView?.findViewById(R.id.forecast_short_info) as TextView).text =  current.temp.day.toString() + "ºC, " + itemView!!.context.getString(R.string.today)
             }else{
-                var str : String = current.temp.day.toString() + "ºC, in "+position+" day"
+                var str : String = current.temp.day.toString() + "ºC, " + String.format(itemView!!.context.getString(R.string.in_x_day), position)//"ºC, in "+position+" day"
                 if(position > 1) str += "s"
                 (itemView?.findViewById(R.id.forecast_short_info) as TextView).text = str
             }
@@ -174,7 +174,7 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
             resources.updateConfiguration(configuration, displayMetrics)
 
             activity_forecast.forecastList_country_edittext.hint = getString(R.string.insert_country_edit_text)
-            refreshWeatherInfo(activity_forecast.forecastList_country_edittext.text.toString().trim())
+            refreshWeatherInfo(activity_forecast.forecast_country_textview.text.toString().trim())
 
             Toast.makeText(this,
                     resources.getString(R.string.language_set_to) + " " + MyWeatherApp.language.toUpperCase(),
@@ -191,7 +191,7 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
     }
 
     private fun onForecastRequestFinished(weather: ForecastWeatherDto){
-        // TODO see how it was made in CurrentDayActivity
+        fillListView(weather)
     }
 
     private fun refreshWeatherInfo(currentCity: String){

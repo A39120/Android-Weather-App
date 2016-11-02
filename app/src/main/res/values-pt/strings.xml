@@ -16,4 +16,6 @@
     <string name="curday_other_info">Velocidade do Vento: %1$.2f %2$s\nDireção do Vento: %3$s\nNebulosidade: %4$d %% %5$s %6$s\nHumidade: %7$d %%\nTemperatura Máxima: %8$.2f %9$s\nTemperatura Mínima: %10$.2f %11$s\nPressão: %12$.2f hpa\nNascer do Sol: %13$s \nOcaso: %14$s\nActualizado a: %15$s</string>
 
     <string name="forecast">Previsão</string>
+    <string name="today">Hoje</string>
+    <string name="in_x_day">em %1$d dia</string>
 </resources>
