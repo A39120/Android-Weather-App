@@ -19,6 +19,8 @@ import isel.pdm.trab.openweathermap.*
 import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import isel.pdm.trab.openweathermap.models.ForecastWeatherDto
+import isel.pdm.trab.openweathermap.services.ConvertUtils
+import isel.pdm.trab.openweathermap.services.UrlBuilder
 import kotlinx.android.synthetic.main.activity_forecast_day.*
 import kotlinx.android.synthetic.main.activity_forecast_day.view.*
 import kotlinx.android.synthetic.main.activity_forecast_day.*
@@ -78,6 +80,44 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
             Toast.makeText(this, resources.getString(R.string.get_curday_text) + " $inputCityName...", Toast.LENGTH_LONG).show()
         }
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
+        R.id.action_refresh -> {
+            refreshWeatherInfo(activity_forecast_day.curday_country_textview.text.toString().trim())
+            Toast.makeText(this, resources.getString(R.string.get_curday_updating_text),Toast.LENGTH_LONG).show()
+            true
+        }
+
+        R.id.action_language -> {
+            if(MyWeatherApp.language.equals("pt")){
+                MyWeatherApp.language = "en"
+                item?.setIcon(R.drawable.en_flag)
+            }else{ // en
+                MyWeatherApp.language = "pt"
+                item?.setIcon(R.drawable.pt_flag)
+            }
+
+            val displayMetrics = resources.displayMetrics
+            val configuration = resources.configuration
+            configuration.setLocale(Locale(MyWeatherApp.language))
+            resources.updateConfiguration(configuration, displayMetrics)
+
+            activity_forecast_day.curday_country_edittext.hint = getString(R.string.insert_country_edit_text)
+            refreshWeatherInfo(activity_forecast_day.curday_country_textview.text.toString().trim())
+
+            Toast.makeText(this,
+                    resources.getString(R.string.language_set_to) + " " + MyWeatherApp.language.toUpperCase(),
+                    Toast.LENGTH_SHORT
+            ).show()
+            true
+        }
+
+        R.id.action_credits -> {
+            startActivity(Intent(this, CreditsActivity::class.java))
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 
     private fun onForecastDayRequestFinished(weather: ForecastWeatherDto, pos: Int){

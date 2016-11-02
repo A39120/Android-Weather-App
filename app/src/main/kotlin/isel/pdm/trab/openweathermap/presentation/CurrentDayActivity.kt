@@ -17,6 +17,8 @@ import isel.pdm.trab.openweathermap.*
 import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import isel.pdm.trab.openweathermap.models.ForecastWeatherDto
+import isel.pdm.trab.openweathermap.services.ConvertUtils
+import isel.pdm.trab.openweathermap.services.UrlBuilder
 import kotlinx.android.synthetic.main.activity_current_day.*
 import kotlinx.android.synthetic.main.activity_current_day.view.*
 import java.util.*
@@ -163,8 +165,8 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
     }
 
     fun setErrorImg(){
-        activity_current_day.curday_image.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.error_icon))
-        Toast.makeText(this , R.string.could_not_download_icon_for_weather,Toast.LENGTH_SHORT)
+        activity_current_day.curday_image.setImageBitmap(BitmapFactory.decodeResource(this.resources, R.drawable.error_icon))
+        Toast.makeText(this , R.string.could_not_download_icon_for_weather,Toast.LENGTH_SHORT).show()
     }
 
 

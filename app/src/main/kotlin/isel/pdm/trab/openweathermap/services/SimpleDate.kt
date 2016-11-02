@@ -1,4 +1,4 @@
-package isel.pdm.trab.openweathermap
+package isel.pdm.trab.openweathermap.services
 
 import java.text.SimpleDateFormat
 import java.util.*

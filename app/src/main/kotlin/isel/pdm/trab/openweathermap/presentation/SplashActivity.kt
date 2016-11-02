@@ -8,7 +8,7 @@ import android.os.Handler
 import android.widget.Toast
 import isel.pdm.trab.openweathermap.MyWeatherApp
 import isel.pdm.trab.openweathermap.R
-import isel.pdm.trab.openweathermap.UrlBuilder
+import isel.pdm.trab.openweathermap.services.UrlBuilder
 import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import java.util.*

@@ -1,13 +1,15 @@
-package isel.pdm.trab.openweathermap
+package isel.pdm.trab.openweathermap.services
 
 import android.content.res.Resources
+import isel.pdm.trab.openweathermap.MyWeatherApp
+import isel.pdm.trab.openweathermap.R
 import java.util.*
 
 class UrlBuilder(){
 
     fun buildWeatherByCityUrl(
             resources: Resources,
-            city: String = MyWeatherApp.city, // TODO: to put in a configuration file
+            city: String = MyWeatherApp.city,
             lang: String = MyWeatherApp.language,
             units: String = "metric"): String
     {
@@ -22,8 +24,8 @@ class UrlBuilder(){
 
     fun buildForecastByCityUrl(
             resources: Resources,
-            city: String = Locale.getDefault().displayCountry,
-            lang: String = Locale.getDefault().language,
+            city: String = MyWeatherApp.city,
+            lang: String = MyWeatherApp.language,
             units: String = "metric"): String
     {
         val baseUrl = resources.getString(R.string.api_base_url)

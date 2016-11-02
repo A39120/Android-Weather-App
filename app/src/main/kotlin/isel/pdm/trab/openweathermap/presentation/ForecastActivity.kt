@@ -13,7 +13,7 @@ import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
 import isel.pdm.trab.openweathermap.MyWeatherApp
 import isel.pdm.trab.openweathermap.R
-import isel.pdm.trab.openweathermap.UrlBuilder
+import isel.pdm.trab.openweathermap.services.UrlBuilder
 import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.ForecastWeatherDto
 import kotlinx.android.synthetic.main.activity_forecast.*
@@ -59,7 +59,7 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
             var j: Int = 0
             while(j < i){
                 //se não for usado um tmp, ele queixa-se de lista de 'ForecastDetail?'
-                val tmp : ForecastWeatherDto.ForecastDetail = savedInstanceState?.getParcelable("activity_forecast_list_item" + j)
+                val tmp : ForecastWeatherDto.ForecastDetail = savedInstanceState.getParcelable("activity_forecast_list_item" + j)
                 list.add(tmp)
                 j++
             }
@@ -136,11 +136,11 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
             }else{
                 var str : String = current.temp.day.toString() + "ºC, " + String.format(itemView!!.context.getString(R.string.in_x_day), position)//"ºC, in "+position+" day"
                 if(position > 1) str += "s"
-                (itemView?.findViewById(R.id.forecast_short_info) as TextView).text = str
+                (itemView.findViewById(R.id.forecast_short_info) as TextView).text = str
             }
 
             val imgUrl = UrlBuilder().buildImgUrl(resources, current.weather[0].icon)
-            var imgView = (itemView!!.findViewById(R.id.forecast_icon) as ImageView)
+            var imgView = (itemView.findViewById(R.id.forecast_icon) as ImageView)
 
             MyWeatherApp.instance.imageLoader.get(imgUrl, object : ImageLoader.ImageListener {
                 override fun onResponse(response: ImageLoader.ImageContainer, isImmediate: Boolean) {

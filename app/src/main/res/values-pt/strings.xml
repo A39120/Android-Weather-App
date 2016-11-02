@@ -13,8 +13,8 @@
     <string name="get_curday_updating_text">Atualizando informação metereológica</string>
     <string name="snow">Volume de Neve</string>
     <string name="precipitation">Precipitação</string>
-    <string name="curday_other_info">Velocidade do Vento: %1$.2f %2$s\nDireção do Vento: %3$s\nNebulosidade: %4$d %% %5$s %6$s\nHumidade: %7$d %%\nTemperatura Máxima: %8$.2f %9$s\nTemperatura Mínima: %10$.2f %11$s\nPressão: %12$.2f hpa\nNascer do Sol: %13$s \nOcaso: %14$s\nActualizado a: %15$s</string>
-
+    <string name="curday_other_info">Velocidade do Vento: %1$.2f %2$s\nDireção do Vento: %3$s\nNebulosidade: %4$d %% %5$s %6$s\nHumidade: %7$d %%\nTemperatura Máxima: %8$.2f %9$s\nTemperatura Mínima: %10$.2f %11$s\nPressão: %12$.2f hpa\nNascer do Sol: %13$s \nOcaso: %14$s</string>
+    <string name="forday_other_info">Previsão para o dia: %19$s\nVelocidade do Vento: %1$.2f %2$s\nDireção do Vento: %3$s\nNebulosidade: %4$d %% %5$s %6$s\nHumidade: %7$d %%\nPressão: %8$.2f hpa\nTemperatura Máxima: %9$.2f %10$s\nTemperatura Mínima: %11$.2f %12$s\nTemperatura à Noite: %13$.2f %14$s\nTemperatura à Tarde: %15$.2f %16$s\nTemperatura de Manhã:%17$.2f %18$s</string>
     <string name="forecast">Previsão</string>
     <string name="today">Hoje</string>
     <string name="in_x_day">em %1$d dia</string>
