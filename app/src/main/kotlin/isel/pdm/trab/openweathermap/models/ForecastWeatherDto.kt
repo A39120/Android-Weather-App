@@ -86,8 +86,8 @@ class ForecastWeatherDto(
             @JsonProperty("deg") val windDegrees: Double,
             @JsonProperty("speed") val windSpeed: Double,
             val clouds: Int,
-            val rain: Int = 0,
-            val snow: Int = 0
+            val rain: Double = 0.0,
+            val snow: Double = 0.0
 
     ): Parcelable{
         companion object {
@@ -113,8 +113,8 @@ class ForecastWeatherDto(
                 windDegrees = source.readDouble(),
                 windSpeed = source.readDouble(),
                 clouds = source.readInt(),
-                rain = source.readInt(),
-                snow = source.readInt()
+                rain = source.readDouble(),
+                snow = source.readDouble()
         )
 
         override fun describeContents() = 0
@@ -129,8 +129,8 @@ class ForecastWeatherDto(
                 writeDouble(windDegrees)
                 writeDouble(windSpeed)
                 writeInt(clouds)
-                writeInt(rain)
-                writeInt(snow)
+                writeDouble(rain)
+                writeDouble(snow)
             }
         }
     }

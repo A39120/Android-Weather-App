@@ -93,12 +93,12 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
     private fun writeOtherWeatherInfo(weather: ForecastWeatherDto.ForecastDetail){
         var rain: String = ""
         var snow: String = ""
-        if(weather.rain != 0)
+        if(weather.rain != 0.0)
             rain = "\n" + getString(R.string.precipitation) + ": " + weather.rain + "mm"
-        if(weather.snow != 0)
+        if(weather.snow != 0.0)
             snow = "\n" + getString(R.string.snow) + ": " + weather.snow + "mm"
 
-        activity_forecast_day.curday_other_info.text = String.format(getString(R.string.curday_other_info),
+        activity_forecast_day.curday_other_info.text = String.format(getString(R.string.forday_other_info),
                 weather.windSpeed, "km/h",
                 ConvertUtils().convertDegreesToTextDescription(weather.windDegrees),
                 weather.clouds,
