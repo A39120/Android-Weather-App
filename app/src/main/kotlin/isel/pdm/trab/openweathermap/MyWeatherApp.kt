@@ -17,9 +17,17 @@ class MyWeatherApp : Application(){
     companion object {
         lateinit var instance: MyWeatherApp
 
-        var language: String = "en" // default
+        /**
+         *  The language for the app UI
+         *  English by default
+         */
+        var language: String = "en"
+
+        /**
+         *  The city for which the weather requests will be made
+         *  Is set by default to the device's country
+         */
         var city: String = Locale.getDefault().displayCountry
-        //TODO add last url inserted with timestamp to check for future requests ???
     }
 
     override fun onCreate(){

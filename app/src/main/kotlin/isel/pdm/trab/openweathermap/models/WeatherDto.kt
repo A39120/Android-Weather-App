@@ -4,13 +4,18 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonProperty
 
-open class WeatherDto(val location: String){}
-
+/**
+ *  Class whose instances represent coordinates of a weather request from the remote API.
+ *
+ *  @property longitude: The longitude
+ *  @property latitude: The latitude
+ */
 data class Coordinates(
         @JsonProperty("lon") val longitude: Double,
         @JsonProperty("lat") val latitude:  Double
 ): Parcelable{
     companion object {
+        /** Factory of Coordinates instances */
         @JvmField @Suppress("unused")
         val CREATOR = object : Parcelable.Creator<Coordinates> {
             override fun createFromParcel(source: Parcel) = Coordinates(source)
@@ -37,6 +42,14 @@ data class Coordinates(
     }
 }
 
+/**
+ *  Class whose instances represent a short description of the weather request from the remote API.
+ *
+ *  @property id: The weather condition id
+ *  @property mainWeather: Group of weather parameters (Rain, Snow, Extreme etc.)
+ *  @property description: A short description of the weather
+ *  @property icon: The weather icon identifier
+ */
 data class WeatherShortInfo(
         @JsonProperty("id")          val id:          Int,
         @JsonProperty("main")        val mainWeather: String,
@@ -44,6 +57,7 @@ data class WeatherShortInfo(
         @JsonProperty("icon")        val icon:        String
 ) : Parcelable{
     companion object {
+        /** Factory of WeatherShortInfo instances */
         @JvmField @Suppress("unused")
         val CREATOR = object : Parcelable.Creator<WeatherShortInfo> {
             override fun createFromParcel(source: Parcel) = WeatherShortInfo(source)
@@ -74,6 +88,16 @@ data class WeatherShortInfo(
     }
 }
 
+/**
+ * Class whose instances represent information about temperature, pressure and humidity from the
+ *      weather request of the remote API.
+ *
+ * @property temperature: The location's temperature
+ * @property pressure: The location's atmospheric pressure in hPa
+ * @property humidity: The location's humidity in %
+ * @property minTemp: The location's minimum temperature at the moment
+ * @property maxTemp: The location's maximum temperature at the moment
+ */
 data class WeatherInfo(
         @JsonProperty("temp")     val temperature: Double,
         @JsonProperty("pressure") val pressure:    Double,
@@ -83,6 +107,7 @@ data class WeatherInfo(
 ): Parcelable{
 
     companion object {
+        /** Factory of WeatherInfo instances */
         @JvmField @Suppress("unused")
         val CREATOR = object : Parcelable.Creator<WeatherInfo> {
             override fun createFromParcel(source: Parcel) = WeatherInfo(source)
@@ -115,11 +140,18 @@ data class WeatherInfo(
     }
 }
 
+/**
+ * Class whose instances represent information about the wind conditions
+ *
+ * @property speed: The wind's speed
+ * @property windDegrees: The wind direction, in degrees
+ */
 data class WindDetail(
         @JsonProperty("speed") val speed:       Double,
         @JsonProperty("deg")   val windDegrees: Double
 ) : Parcelable{
     companion object {
+        /** Factory of WindDetail instances */
         @JvmField @Suppress("unused")
         val CREATOR = object : Parcelable.Creator<WindDetail> {
             override fun createFromParcel(source: Parcel) = WindDetail(source)
@@ -146,10 +178,16 @@ data class WindDetail(
     }
 }
 
+/**
+ * Class whose instances represent information about cloudiness
+ *
+ * @property clouds: Cloudiness in %
+ */
 data class CloudDetail(
         @JsonProperty("all") val clouds: Int
 ): Parcelable{
     companion object {
+        /** Factory of CloudDetail instances */
         @JvmField @Suppress("unused")
         val CREATOR = object : Parcelable.Creator<CloudDetail> {
             override fun createFromParcel(source: Parcel) = CloudDetail(source)
@@ -174,10 +212,16 @@ data class CloudDetail(
     }
 }
 
+/**
+ * Class whose instances represent information about rain
+ *
+ * @property rainVolume: Rain volume for the last 3 hours, in mm
+ */
 data class RainDetail(
         @JsonProperty("3h") val rainVolume: Double
 ): Parcelable{
     companion object {
+        /** Factory of RainDetail instances */
         @JvmField @Suppress("unused")
         val CREATOR = object : Parcelable.Creator<RainDetail> {
             override fun createFromParcel(source: Parcel) = RainDetail(source)
@@ -202,10 +246,16 @@ data class RainDetail(
     }
 }
 
+/**
+ * Class whose instances represent information about snow
+ *
+ * @property snowVolume: Snow volume for the last 3 hours, in mm
+ */
 data class SnowDetail(
         @JsonProperty("3h") val snowVolume: Double
 ): Parcelable{
     companion object {
+        /** Factory of SnowDetail instances */
         @JvmField @Suppress("unused")
         val CREATOR = object : Parcelable.Creator<SnowDetail> {
             override fun createFromParcel(source: Parcel) = SnowDetail(source)
@@ -230,12 +280,20 @@ data class SnowDetail(
     }
 }
 
+/**
+ * Class whose instances represent information about the country and the sun
+ *
+ * @property countryCode: The country code
+ * @property sunriseTime: The sunsire time, unix, UTC
+ * @property sunsetTime: The sunset time, unix, UTC
+ */
 data class LocationDetail(
         @JsonProperty("country") val countryCode: String,
         @JsonProperty("sunrise") val sunriseTime: Long,
         @JsonProperty("sunset")  val sunsetTime:  Long
 ): Parcelable{
     companion object {
+        /** Factory of LocationDetail instances */
         @JvmField @Suppress("unused")
         val CREATOR = object : Parcelable.Creator<LocationDetail> {
             override fun createFromParcel(source: Parcel) = LocationDetail(source)

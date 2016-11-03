@@ -14,8 +14,10 @@ import java.io.IOException
  *
  * TODO: Inject cache policy provider
  *
- * @param DTO The concrete type of DTO contained in the payload of the API response
- * @property
+ * @param url: The URL that is used to make the HTTP request
+ * @param success: The callback in case of a HTTP GET request made a successful response
+ * @param error: The VolleyError callback in case of an error
+ * @param dtoType: The concrete type of DTO contained in the payload of the API response
  */
 class GetRequest<DTO>(url: String,
                       success: (DTO) -> Unit,

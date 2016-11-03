@@ -4,6 +4,22 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonProperty
 
+/**
+ *  Class whose instances represent weather information for a specific day (the current day)
+ *      obtained from the remote API
+ *
+ *  @property location:  The location of which the API request has been made
+ *  @property locationId:    The location identifier
+ *  @property coord: The coordinates of the location
+ *  @property shortInfo: A short decription of the weather
+ *  @property info: Information about temperature, pressure and humidity
+ *  @property windDetail: Information about the wind
+ *  @property cloudDetail: Information about cloudiness
+ *  @property rainDetail: Information about rain
+ *  @property snowDetail: Information about snow
+ *  @property utc: The time of data calculation, UTC
+ *  @property locDetail: Internal information
+ */
 class CurrentWeatherDto(
         @JsonProperty("name")    val location: String,
         @JsonProperty("id")      val locationId: Int,
@@ -18,6 +34,7 @@ class CurrentWeatherDto(
         @JsonProperty("sys")     val locDetail: LocationDetail
 ): Parcelable {
     companion object {
+        /** Factory of CurrentWeatherDtos instances */
         @JvmField @Suppress("unused")
         val CREATOR = object : Parcelable.Creator<CurrentWeatherDto> {
             override fun createFromParcel(source: Parcel) = CurrentWeatherDto(source)
