@@ -13,6 +13,9 @@ import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import java.util.*
 
+/**
+ * Activity responsible for displaying a splash screen while the app is launching
+ */
 class SplashActivity : BaseActivity() {
 
     override var layoutResId: Int = R.layout.activity_splash

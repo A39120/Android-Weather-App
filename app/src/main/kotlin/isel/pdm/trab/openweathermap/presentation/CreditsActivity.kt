@@ -6,7 +6,10 @@ import android.os.Bundle
 import isel.pdm.trab.openweathermap.R
 import kotlinx.android.synthetic.main.activity_credits.*
 
-
+/**
+ * Activity responsible for displaying the authors' information
+ * and references to what was used in the project
+ */
 class CreditsActivity : BaseActivity() {
 
     override var layoutResId: Int = R.layout.activity_credits
@@ -28,6 +31,10 @@ class CreditsActivity : BaseActivity() {
         person3Url.setOnClickListener { navigateToUrlPage(R.string.person3_url) }
     }
 
+    /**
+     * Method that starts the device's web browser and goes to a specific address
+     * @param address an Int that points to a resource string containing the address string
+     */
     private fun navigateToUrlPage(address: Int) {
         val url = Uri.parse(resources.getString(address))
         startActivity(Intent(Intent.ACTION_VIEW, url))

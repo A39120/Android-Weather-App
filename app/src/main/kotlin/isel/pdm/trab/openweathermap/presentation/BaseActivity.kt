@@ -6,6 +6,10 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 
+/**
+ * Abstract class to be extended by any other Activity,
+ * that class has to define it's own layoytResId
+ */
 abstract class BaseActivity : AppCompatActivity() {
 
     protected abstract val layoutResId: Int
@@ -35,7 +39,6 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initContents()
-        //setContentView(R.layout.activity_base)
     }
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {

@@ -23,7 +23,9 @@ import kotlinx.android.synthetic.main.activity_current_day.*
 import kotlinx.android.synthetic.main.activity_current_day.view.*
 import java.util.*
 
-//Actually Current Day we're viewing at the moment
+/**
+ * Activity responsible for displaying the current day's weather information
+ */
 class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
     val UPDATE_TIMEOUT: Long = 1000 * 60 * 60 // (1000 milis) * (60 seconds) * (60 minutes) = 1 hour
 
@@ -31,6 +33,10 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
     override val actionBarId: Int? = R.id.toolbar
     override val actionBarMenuResId: Int? = R.menu.action_bar_activity_current_day
 
+    /**
+     * Method responsible for loading a previously saved state of this activity
+     * @param outState Bundle containing information from a previously saved state
+     */
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
 
@@ -66,6 +72,14 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         }, UPDATE_TIMEOUT)
     }
 
+    /**
+     * Callback method from the interface TextView.OnEditorActionListener
+     * to be invoked when an action is performed on the editor
+     * @param v TextView in which the action occurred
+     * @param actionId Int that identifies the action
+     * @param event If triggered by an enter key, this is the event, otherwise this is null.
+     * @return Returns true if action was consumed
+     */
     override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
         if(activity_current_day.curday_country_edittext.text.equals("")) return true // don't send request if empty string
         if (event?.action == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
@@ -78,6 +92,11 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         return true
     }
 
+    /**
+     * Callback method invoked when an item from the options menu is selected
+     * @param item MenuItem that was selected
+     * @returns Returns true when the menu item is successfully handled
+     */
     override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
         R.id.action_refresh -> {
             refreshWeatherInfo(activity_current_day.curday_country_textview.text.toString().trim())
@@ -134,6 +153,11 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         else -> super.onOptionsItemSelected(item)
     }
 
+    /**
+     * Method called when the CurrentDayActivity is to be updated with new information
+     * from a new CurrentWeatherDto
+     * @param weather CurrentWeatherDto with the new information
+     */
     private fun onCurrentDayRequestFinished(weather: CurrentWeatherDto){
         activity_current_day.curday_temperature.text = weather.info.temperature.toString() + "ºC"
         activity_current_day.curday_country_textview.text = weather.location + "," + weather.locDetail.countryCode
@@ -164,12 +188,18 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
 
     }
 
-    fun setErrorImg(){
+    /**
+     * Method used to display an error icon
+     */
+    private fun setErrorImg(){
         activity_current_day.curday_image.setImageBitmap(BitmapFactory.decodeResource(this.resources, R.drawable.error_icon))
         Toast.makeText(this , R.string.could_not_download_icon_for_weather,Toast.LENGTH_SHORT).show()
     }
 
-
+    /**
+     * Method used to fill the "other info" textview with information from a CurrentWeatherDto
+     * @param weather a CurrentWeatherDto with information to fill the textview
+     */
     private fun writeOtherWeatherInfo(weather: CurrentWeatherDto){
         var rain: String = ""
         var snow: String = ""
@@ -192,6 +222,10 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
                 ConvertUtils().convertUnixToDateTime(weather.utc))
     }
 
+    /**
+     * Method used to get weather information for a specific city
+     * @param currentCity City to get weather information about
+     */
     private fun refreshWeatherInfo(currentCity: String){
         Volley.newRequestQueue(this).add(
                 GetRequest(

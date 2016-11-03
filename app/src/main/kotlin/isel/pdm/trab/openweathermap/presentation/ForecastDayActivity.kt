@@ -3,10 +3,8 @@ package isel.pdm.trab.openweathermap.presentation
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.os.Parcelable
 import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
@@ -17,15 +15,16 @@ import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
 import isel.pdm.trab.openweathermap.*
 import isel.pdm.trab.openweathermap.comms.GetRequest
-import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import isel.pdm.trab.openweathermap.models.ForecastWeatherDto
 import isel.pdm.trab.openweathermap.services.ConvertUtils
 import isel.pdm.trab.openweathermap.services.UrlBuilder
 import kotlinx.android.synthetic.main.activity_forecast_day.*
 import kotlinx.android.synthetic.main.activity_forecast_day.view.*
-import kotlinx.android.synthetic.main.activity_forecast_day.*
 import java.util.*
 
+/**
+ * Activity responsible for displaying specific information from a day in the forecast
+ */
 class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
 
     val UPDATE_TIMEOUT: Long = 1000 * 60 * 60 // (1000 milis) * (60 seconds) * (60 minutes) = 1 hour
@@ -34,6 +33,10 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
     override val actionBarId: Int? = R.id.toolbar
     override val actionBarMenuResId: Int? = R.menu.action_bar_activity_forecast
 
+    /**
+     * Method responsible for loading a previously saved state of this activity
+     * @param outState Bundle containing information from a previously saved state
+     */
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
 
@@ -70,6 +73,14 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         }, UPDATE_TIMEOUT)
     }
 
+    /**
+     * Callback method from the interface TextView.OnEditorActionListener
+     * to be invoked when an action is performed on the editor
+     * @param v TextView in which the action occurred
+     * @param actionId Int that identifies the action
+     * @param event If triggered by an enter key, this is the event, otherwise this is null.
+     * @return Returns true if action was consumed
+     */
     override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
         if(activity_forecast_day.curday_country_edittext.text.equals("")) return true // don't send request if empty string
         if (event?.action == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
@@ -82,6 +93,11 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         return true
     }
 
+    /**
+     * Callback method invoked when an item from the options menu is selected
+     * @param item MenuItem that was selected
+     * @returns Returns true when the menu item is successfully handled
+     */
     override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
         R.id.action_refresh -> {
             refreshWeatherInfo(activity_forecast_day.curday_country_textview.text.toString().trim())
@@ -120,6 +136,11 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         else -> super.onOptionsItemSelected(item)
     }
 
+    /**
+     * Method called when the ForecastDayActivity is to be updated with new information
+     * from a new ForecastWeatherDto
+     * @param weather ForecastWeatherDto with the new information
+     */
     private fun onForecastDayRequestFinished(weather: ForecastWeatherDto, pos: Int){
         activity_forecast_day.curday_temperature.text = weather.forecastDetail[pos].temp.day.toString() + "ºC"
         activity_forecast_day.curday_country_textview.text = weather.cityDetail.cityName + "," +
@@ -151,11 +172,18 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         writeOtherWeatherInfo(weather.forecastDetail[pos])
     }
 
+    /**
+     * Method used to display an error icon
+     */
     fun setErrorImg(){
         activity_forecast_day.curday_image.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.error_icon))
         Toast.makeText(this , R.string.could_not_download_icon_for_weather,Toast.LENGTH_SHORT)
     }
 
+    /**
+     * Method used to fill the "other info" textview with information from a ForecastWeatherDto.ForecastDetail
+     * @param weather a ForecastWeatherDto.ForecastDetail with information to fill the textview
+     */
     private fun writeOtherWeatherInfo(weather: ForecastWeatherDto.ForecastDetail){
         var rain: String = ""
         var snow: String = ""
@@ -180,6 +208,10 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
                 ConvertUtils().convertUnixToDateTime(weather.utc))
     }
 
+    /**
+     * Method used to get weather information for a specific city
+     * @param currentCity City to get weather information about
+     */
     private fun refreshWeatherInfo(currentCity: String){
         val aIntent = Intent(this, ForecastActivity::class.java)
         Volley.newRequestQueue(this).add(
@@ -194,8 +226,5 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
                         { error -> System.out.println("Error in response?")},
                         ForecastWeatherDto::class.java)
         )
-
     }
-
-
 }

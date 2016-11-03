@@ -21,6 +21,9 @@ import kotlinx.android.synthetic.main.activity_forecast.view.*
 import java.util.*
 import kotlin.collections.List
 
+/**
+ * Activity responsible for displaying the weather forecast for a city
+ */
 class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
 
     override val layoutResId: Int = R.layout.activity_forecast
@@ -29,6 +32,10 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
 
     private var adapterBackup : ForecastAdapter? = null
 
+    /**
+     * Method responsible for loading a previously saved state of this activity
+     * @param outState Bundle containing information from a previously saved state
+     */
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
 
@@ -75,6 +82,14 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
         activity_forecast.forecast_country_edittext.setOnEditorActionListener(this)
     }
 
+    /**
+     * Callback method from the interface TextView.OnEditorActionListener
+     * to be invoked when an action is performed on the editor
+     * @param v TextView in which the action occurred
+     * @param actionId Int that identifies the action
+     * @param event If triggered by an enter key, this is the event, otherwise this is null.
+     * @return Returns true if action was consumed
+     */
     override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
         val name = activity_forecast.forecast_country_edittext.text
         if(name.equals("")) return true // don't send request if empty string
@@ -103,9 +118,11 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
         return true
     }
 
-
+    /**
+     * Method called to fill a ListView with information from a ForecastWeatherDto
+     * @param fwDto ForecastWeatherDto with the info to populate the ListView with
+     */
     fun fillListView(fwDto: ForecastWeatherDto){
-
         activity_forecast.forecast_country_textview.text = fwDto.cityDetail.cityName+","+fwDto.cityDetail.country
         val adapter = ForecastAdapter(ForecastActivity@this,fwDto.forecastDetail, fwDto, resources)
         (activity_forecast.forecastList_weather_list as ListView).adapter = adapter
@@ -114,15 +131,21 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
         adapterBackup = adapter
     }
 
+    /**
+     * Class responsible for converting a List<ForecastWeatherDto> to a ListView
+     */
     private class ForecastAdapter(context : Context,
                                   list: List<ForecastWeatherDto.ForecastDetail>,
                                   val source : ForecastWeatherDto?,
                                   val resources : Resources):
-            ArrayAdapter<ForecastWeatherDto.ForecastDetail>(
-                    context,
-                    R.layout.forecast_item,
-                    list) {
+        ArrayAdapter<ForecastWeatherDto.ForecastDetail>(context, R.layout.forecast_item, list) {
 
+        /**
+         * Method that returns a View that displays the data at the specified position in the data set
+         * @param position The position of the item within the adapter's data set of the item whose view we want.
+         * @param convertView The old view to reuse, if possible
+         * @param parent The parent that this view will eventually be attached to
+         */
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             // Make sure we have a view to work with (may have been given null)
             var itemView: View? = convertView
@@ -174,11 +197,16 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
                     anIntent.putExtra("POSITION", position)
                     anIntent.putExtra("FORECAST_DATA", source)
                     context.startActivity(anIntent)
-                }})
-
-                return itemView
-            }
+            }})
+        return itemView
+        }
     }
+
+    /**
+     * Callback method invoked when an item from the options menu is selected
+     * @param item MenuItem that was selected
+     * @returns Returns true when the menu item is successfully handled
+     */
     override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
         R.id.action_refresh -> {
             refreshWeatherInfo(activity_forecast.forecast_country_textview.text.toString().trim())
@@ -217,10 +245,19 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
         else -> super.onOptionsItemSelected(item)
     }
 
+    /**
+     * Method called when the ForecastActivity is to be updated with new information
+     * from a new ForecastWeatherDto
+     * @param weather ForecastWeatherDto with the new information
+     */
     private fun onForecastRequestFinished(weather: ForecastWeatherDto){
         fillListView(weather)
     }
 
+    /**
+     * Method used to get the forecast information for a specific city
+     * @param currentCity City to get weather information about
+     */
     private fun refreshWeatherInfo(currentCity: String){
         Volley.newRequestQueue(this).add(
                 GetRequest(
