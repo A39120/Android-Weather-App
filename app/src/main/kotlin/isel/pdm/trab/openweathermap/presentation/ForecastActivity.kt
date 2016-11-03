@@ -175,9 +175,6 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
                     val bitmap = response.bitmap
                     if (bitmap != null) {
                         imgView.setImageBitmap(bitmap)
-                    } else {
-                        setErrorImg(imgView)
-                        return
                     }
                 }
 

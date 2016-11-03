@@ -159,9 +159,6 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
                 val bitmap = response.bitmap
                 if (bitmap != null) {
                     activity_forecast_day.curday_image.setImageBitmap(bitmap)
-                } else {
-                    setErrorImg()
-                    return
                 }
             }
             override fun onErrorResponse(error: VolleyError) {

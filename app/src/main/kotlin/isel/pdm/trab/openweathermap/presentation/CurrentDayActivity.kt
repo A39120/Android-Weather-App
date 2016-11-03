@@ -176,9 +176,6 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
                 val bitmap = response.bitmap
                 if (bitmap != null) {
                     activity_current_day.curday_image.setImageBitmap(bitmap)
-                } else {
-                    setErrorImg()
-                    return
                 }
             }
             override fun onErrorResponse(error: VolleyError) {
