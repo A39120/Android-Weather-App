@@ -176,6 +176,9 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
                 val bitmap = response.bitmap
                 if (bitmap != null) {
                     activity_current_day.curday_image.setImageBitmap(bitmap)
+                } else {
+                    setLoadingImg()
+                    return
                 }
             }
             override fun onErrorResponse(error: VolleyError) {
@@ -186,7 +189,13 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
     }
 
     /**
-     * Method used to display an error icon
+     * Method used to display a loading icon
+     */
+    private fun setLoadingImg(){
+        activity_current_day.curday_image.setImageBitmap(BitmapFactory.decodeResource(this.resources, R.drawable.loading_icon))
+    }
+    /**
+     * Method used to display an error icon showing a toast
      */
     private fun setErrorImg(){
         activity_current_day.curday_image.setImageBitmap(BitmapFactory.decodeResource(this.resources, R.drawable.error_icon))

@@ -159,6 +159,9 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
                 val bitmap = response.bitmap
                 if (bitmap != null) {
                     activity_forecast_day.curday_image.setImageBitmap(bitmap)
+                }else{
+                    setLoadingImg()
+                    return
                 }
             }
             override fun onErrorResponse(error: VolleyError) {
@@ -170,7 +173,13 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
     }
 
     /**
-     * Method used to display an error icon
+     * Method used to display a loading icon
+     */
+    private fun setLoadingImg(){
+        activity_forecast_day.curday_image.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.loading_icon))
+    }
+    /**
+     * Method used to display an error icon showing a toast
      */
     fun setErrorImg(){
         activity_forecast_day.curday_image.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.error_icon))

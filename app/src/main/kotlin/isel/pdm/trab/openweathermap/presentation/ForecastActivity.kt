@@ -175,6 +175,9 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
                     val bitmap = response.bitmap
                     if (bitmap != null) {
                         imgView.setImageBitmap(bitmap)
+                    }else{
+                        setLoadingImg(imgView)
+                        return
                     }
                 }
 
@@ -182,6 +185,16 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
                     setErrorImg(imgView)
                 }
 
+                /**
+                 * Method used to display a loading icon
+                 */
+                private fun setLoadingImg(imgView: ImageView){
+                    imgView.setImageBitmap(BitmapFactory.decodeResource(imgView.context.getResources(), R.drawable.loading_icon))
+                }
+
+                /**
+                 * Method used to display an error icon showing a toast
+                 */
                 private fun setErrorImg(imgView: ImageView){
                     imgView.setImageBitmap(BitmapFactory.decodeResource(imgView.context.getResources(), R.drawable.error_icon))
                     Toast.makeText(imgView.context , R.string.could_not_download_icon_for_weather,Toast.LENGTH_SHORT)
