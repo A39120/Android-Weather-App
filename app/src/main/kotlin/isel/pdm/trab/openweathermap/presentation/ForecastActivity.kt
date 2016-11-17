@@ -164,40 +164,25 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
             }
 
             val imgUrl = UrlBuilder().buildImgUrl(resources, current.weather[0].icon)
-            var imgView = (itemView.findViewById(R.id.forecast_icon) as ImageView)
+            val imgView = (itemView.findViewById(R.id.forecast_icon) as ImageView)
 
             MyWeatherApp.instance.imageLoader.get(imgUrl, object : ImageLoader.ImageListener {
                 override fun onResponse(response: ImageLoader.ImageContainer, isImmediate: Boolean) {
                     if (response == null) {
-                        setErrorImg(imgView)
+                        (context as ForecastActivity).setErrorImg(imgView)
                         return
                     }
                     val bitmap = response.bitmap
                     if (bitmap != null) {
                         imgView.setImageBitmap(bitmap)
                     }else{
-                        setLoadingImg(imgView)
+                        (context as ForecastActivity).setLoadingImg(imgView)
                         return
                     }
                 }
 
                 override fun onErrorResponse(error: VolleyError) {
-                    setErrorImg(imgView)
-                }
-
-                /**
-                 * Method used to display a loading icon
-                 */
-                private fun setLoadingImg(imgView: ImageView){
-                    imgView.setImageBitmap(BitmapFactory.decodeResource(imgView.context.getResources(), R.drawable.loading_icon))
-                }
-
-                /**
-                 * Method used to display an error icon showing a toast
-                 */
-                private fun setErrorImg(imgView: ImageView){
-                    imgView.setImageBitmap(BitmapFactory.decodeResource(imgView.context.getResources(), R.drawable.error_icon))
-                    Toast.makeText(imgView.context , R.string.could_not_download_icon_for_weather,Toast.LENGTH_SHORT)
+                    (context as ForecastActivity).setErrorImg(imgView)
                 }
             })
 

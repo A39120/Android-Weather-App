@@ -153,37 +153,23 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         (application as MyWeatherApp).imageLoader.get(imgUrl, object : ImageLoader.ImageListener {
             override fun onResponse(response: ImageLoader.ImageContainer, isImmediate: Boolean) {
                 if (response == null) {
-                    setErrorImg()
+                    setErrorImg(activity_forecast_day.curday_image)
                     return
                 }
                 val bitmap = response.bitmap
                 if (bitmap != null) {
                     activity_forecast_day.curday_image.setImageBitmap(bitmap)
                 }else{
-                    setLoadingImg()
+                    setLoadingImg(activity_forecast_day.curday_image)
                     return
                 }
             }
             override fun onErrorResponse(error: VolleyError) {
-                setErrorImg()
+                setErrorImg(activity_forecast_day.curday_image)
             }
         })
 
         writeOtherWeatherInfo(weather.forecastDetail[pos])
-    }
-
-    /**
-     * Method used to display a loading icon
-     */
-    private fun setLoadingImg(){
-        activity_forecast_day.curday_image.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.loading_icon))
-    }
-    /**
-     * Method used to display an error icon showing a toast
-     */
-    fun setErrorImg(){
-        activity_forecast_day.curday_image.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.error_icon))
-        Toast.makeText(this , R.string.could_not_download_icon_for_weather,Toast.LENGTH_SHORT)
     }
 
     /**

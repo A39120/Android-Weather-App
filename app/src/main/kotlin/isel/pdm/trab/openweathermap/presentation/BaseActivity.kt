@@ -1,10 +1,14 @@
 package isel.pdm.trab.openweathermap.presentation
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.widget.ImageView
+import android.widget.Toast
+import isel.pdm.trab.openweathermap.*
 
 /**
  * Abstract class to be extended by any other Activity,
@@ -58,6 +62,20 @@ abstract class BaseActivity : AppCompatActivity() {
         }
 
         return super.onCreateOptionsMenu(menu)
+    }
+
+    /**
+     * Method used to display a loading icon
+     */
+    protected fun setLoadingImg(img: ImageView){
+        img.setImageBitmap(BitmapFactory.decodeResource(this.resources, R.drawable.loading_icon))
+    }
+    /**
+     * Method used to display an error icon showing a toast
+     */
+    protected fun setErrorImg(img: ImageView){
+        img.setImageBitmap(BitmapFactory.decodeResource(this.resources, R.drawable.error_icon))
+        Toast.makeText(this , R.string.could_not_download_icon_for_weather, Toast.LENGTH_SHORT).show()
     }
 }
 
