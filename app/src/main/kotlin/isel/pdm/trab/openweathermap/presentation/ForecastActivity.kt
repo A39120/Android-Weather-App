@@ -61,8 +61,8 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
         }else{
             activity_forecast.forecast_country_textview.text = savedInstanceState.getString("activity_forecast_city")
 
-            var list : ArrayList<ForecastWeatherDto.ForecastDetail> = ArrayList<ForecastWeatherDto.ForecastDetail>()
-            var i: Int = savedInstanceState.getInt("activity_forecast_list_count")
+            val list : ArrayList<ForecastWeatherDto.ForecastDetail> = ArrayList<ForecastWeatherDto.ForecastDetail>()
+            val i: Int = savedInstanceState.getInt("activity_forecast_list_count")
             var j: Int = 0
             while(j < i){
                 //se não for usado um tmp, ele queixa-se de lista de 'ForecastDetail?'
@@ -71,7 +71,7 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
                 j++
             }
 
-            var adapter : ForecastAdapter = ForecastAdapter(ForecastActivity@this, list, null,resources)
+            val adapter : ForecastAdapter = ForecastAdapter(ForecastActivity@this, list, null,resources)
 
             (activity_forecast.forecastList_weather_list as ListView).adapter = adapter
             activity_forecast.forecast_country_edittext.isEnabled = true // re-enable choosing country
@@ -95,24 +95,10 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
         if(name.equals("")) return true // don't send request if empty string
         if(event?.action == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE
                 || actionId == EditorInfo.IME_ACTION_NEXT) {
+
             activity_forecast.forecast_country_edittext.isEnabled = false
             val inputCityName: String = activity_forecast.forecast_country_edittext.text.toString()
-            val url : String = UrlBuilder().buildForecastByCityUrl(resources, inputCityName)
-            Volley.newRequestQueue(this).add(
-                    GetRequest(
-                            url,
-                            {
-                                weather ->
-                                run {
-                                    intent.putExtra("FORECAST_DATA", weather)
-                                    fillListView(weather)
-                                }
-                            },
-                            {
-                                error -> System.out.println(error.cause.toString())
-                            },
-                            ForecastWeatherDto::class.java)
-            )
+            refreshWeatherInfo(inputCityName)
             Toast.makeText(this, "Getting forecast for the next 5 days for $inputCityName...", Toast.LENGTH_LONG).show()
         }
         return true
@@ -168,10 +154,6 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
 
             MyWeatherApp.instance.imageLoader.get(imgUrl, object : ImageLoader.ImageListener {
                 override fun onResponse(response: ImageLoader.ImageContainer, isImmediate: Boolean) {
-                    if (response == null) {
-                        (context as ForecastActivity).setErrorImg(imgView)
-                        return
-                    }
                     val bitmap = response.bitmap
                     if (bitmap != null) {
                         imgView.setImageBitmap(bitmap)
@@ -254,14 +236,21 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
      * @param currentCity City to get weather information about
      */
     private fun refreshWeatherInfo(currentCity: String){
-        Volley.newRequestQueue(this).add(
-                GetRequest(
-                        UrlBuilder().buildForecastByCityUrl(resources, currentCity),
-                        { weather ->
-                            onForecastRequestFinished(weather)
-                        },
-                        { error -> System.out.println("Error in response?")},
-                        ForecastWeatherDto::class.java)
-        )
+        val currCity = currentCity.toLowerCase()
+        val apl = (application as MyWeatherApp)
+
+        if(apl.lruDtoCache.contains(currCity))
+            onForecastRequestFinished(apl.lruDtoCache[currCity] as ForecastWeatherDto)
+        else
+            Volley.newRequestQueue(this).add(
+                    GetRequest(
+                            UrlBuilder().buildForecastByCityUrl(resources, currCity),
+                            { weather ->
+                                apl.lruDtoCache.put(weather.cityDetail.cityName.toLowerCase(), weather)
+                                onForecastRequestFinished(weather)
+                            },
+                            { error -> System.out.println("Error in response?")},
+                            ForecastWeatherDto::class.java)
+            )
     }
 }

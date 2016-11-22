@@ -152,10 +152,6 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
 
         (application as MyWeatherApp).imageLoader.get(imgUrl, object : ImageLoader.ImageListener {
             override fun onResponse(response: ImageLoader.ImageContainer, isImmediate: Boolean) {
-                if (response == null) {
-                    setErrorImg(activity_forecast_day.curday_image)
-                    return
-                }
                 val bitmap = response.bitmap
                 if (bitmap != null) {
                     activity_forecast_day.curday_image.setImageBitmap(bitmap)
@@ -206,17 +202,27 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
      */
     private fun refreshWeatherInfo(currentCity: String){
         val aIntent = Intent(this, ForecastActivity::class.java)
-        Volley.newRequestQueue(this).add(
-                GetRequest(
-                        UrlBuilder().buildForecastByCityUrl(resources, currentCity),
-                        { weather ->
-                            run {
-                                    aIntent.putExtra("FORECAST_DATA", weather)
-                                    startActivity(aIntent)
-                                }
-                        },
-                        { error -> System.out.println("Error in response?")},
-                        ForecastWeatherDto::class.java)
-        )
+        val currCity = currentCity.toLowerCase()
+
+        val apl = (application as MyWeatherApp)
+
+        if(apl.lruDtoCache.contains(currCity)){
+            aIntent.putExtra("FORECAST_DATA", apl.lruDtoCache[currCity] as ForecastWeatherDto)
+            startActivity(aIntent)
+        }
+        else
+            Volley.newRequestQueue(this).add(
+                    GetRequest(
+                            UrlBuilder().buildForecastByCityUrl(resources, currCity),
+                            { weather ->
+                                run {
+                                        apl.lruDtoCache.put(weather.cityDetail.cityName.toLowerCase(), weather)
+                                        aIntent.putExtra("FORECAST_DATA", weather)
+                                        startActivity(aIntent)
+                                    }
+                            },
+                            { error -> System.out.println("Error in response?")},
+                            ForecastWeatherDto::class.java)
+            )
     }
 }

@@ -31,12 +31,14 @@ class SplashActivity : BaseActivity() {
         configuration.setLocale(Locale(MyWeatherApp.language))
         resources.updateConfiguration(configuration, displayMetrics)
 
+        val url = UrlBuilder().buildWeatherByCityUrl(resources)
         //TODO ask to turn wifi on, right about here
         (application as MyWeatherApp).requestQueue.add(
-                GetRequest(UrlBuilder().buildWeatherByCityUrl(resources),
+                GetRequest(url,
                         {
                             weather ->
                             run {
+                                (application as MyWeatherApp).lruDtoCache.put(weather.location.toLowerCase(), weather)
                                 aIntent.putExtra("WEATHER_DATA", weather)
                                 startActivity(aIntent)
                             }

@@ -57,7 +57,7 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         actionBarMenuResId?.let {
-            menuInflater.inflate(it, menu);
+            menuInflater.inflate(it, menu)
             return true
         }
 

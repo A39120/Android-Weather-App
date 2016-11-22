@@ -106,19 +106,27 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
 
         R.id.action_forecast -> {
             val anIntent = Intent(CurrentDayActivity@this, ForecastActivity::class.java)
-            val city = (activity_current_day.curday_country_textview.text as String).split(",")[0]
-            Volley.newRequestQueue(this).add(
-                    GetRequest(
-                            UrlBuilder().buildForecastByCityUrl(resources, city),
-                            { weather ->
-                                run {
-                                    anIntent.putExtra("FORECAST_DATA", weather)
-                                    startActivity(anIntent)
-                                }
-                            },
-                            { error -> System.out.println("Error in response?")},
-                            ForecastWeatherDto::class.java)
-            )
+            val city = (activity_current_day.curday_country_textview.text as String).split(",")[0].toLowerCase()
+
+            val apl = (application as MyWeatherApp)
+            if(apl.lruDtoCache.contains(city)){
+                anIntent.putExtra("FORECAST_DATA", apl.lruDtoCache[city] as ForecastWeatherDto)
+                startActivity(anIntent)
+            }
+            else
+                Volley.newRequestQueue(this).add(
+                        GetRequest(
+                                UrlBuilder().buildForecastByCityUrl(resources, city),
+                                { weather ->
+                                    run {
+                                        apl.lruDtoCache.put(weather.cityDetail.cityName.toLowerCase(), weather)
+                                        anIntent.putExtra("FORECAST_DATA", weather)
+                                        startActivity(anIntent)
+                                    }
+                                },
+                                { error -> System.out.println("Error in response?")},
+                                ForecastWeatherDto::class.java)
+                )
             true
         }
 
@@ -169,10 +177,6 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
 
         (application as MyWeatherApp).imageLoader.get(imgUrl, object : ImageLoader.ImageListener {
             override fun onResponse(response: ImageLoader.ImageContainer, isImmediate: Boolean) {
-                if (response == null) {
-                    setErrorImg(activity_current_day.curday_image)
-                    return
-                }
                 val bitmap = response.bitmap
                 if (bitmap != null) {
                     activity_current_day.curday_image.setImageBitmap(bitmap)
@@ -219,15 +223,22 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
      * @param currentCity City to get weather information about
      */
     private fun refreshWeatherInfo(currentCity: String){
-        Volley.newRequestQueue(this).add(
-                GetRequest(
-                        UrlBuilder().buildWeatherByCityUrl(resources, currentCity),
-                        { weather ->
-                            onCurrentDayRequestFinished(weather)
-                        },
-                        { error -> System.out.println("Error in response?")},
-                        CurrentWeatherDto::class.java)
-        )
+        val currCity = currentCity.toLowerCase()
+        val apl = (application as MyWeatherApp)
+
+        if(apl.lruDtoCache.contains(currCity))
+            onCurrentDayRequestFinished(apl.lruDtoCache[currCity] as CurrentWeatherDto)
+        else
+            Volley.newRequestQueue(this).add(
+                    GetRequest(
+                            UrlBuilder().buildWeatherByCityUrl(resources, currCity),
+                            { weather ->
+                                apl.lruDtoCache.put(weather.location.toLowerCase(), weather)
+                                onCurrentDayRequestFinished(weather)
+                            },
+                            { error -> System.out.println("Error in response?")},
+                            CurrentWeatherDto::class.java)
+            )
 
     }
 }
