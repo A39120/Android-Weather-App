@@ -29,7 +29,7 @@ class UrlBuilder(){
         val lang_param = "${resources.getString(R.string.api_lang_name)}=" + lang
         val metric_param = "${resources.getString(R.string.api_units_name)}=" + units
         val api_key = "${resources.getString(R.string.api_key_name)}=${resources.getString(R.string.api_key_value)}"
-        return "$baseUrl$configPath$city_param$lang_param$metric_param$api_key"
+        return "$baseUrl$configPath$city_param$lang_param$metric_param$api_key".toLowerCase()
     }
 
     /**

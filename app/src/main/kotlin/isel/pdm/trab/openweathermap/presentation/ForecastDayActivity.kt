@@ -202,21 +202,21 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
      */
     private fun refreshWeatherInfo(currentCity: String){
         val aIntent = Intent(this, ForecastActivity::class.java)
-        val currCity = currentCity.toLowerCase()
+        val url = UrlBuilder().buildForecastByCityUrl(resources, currentCity)
 
         val apl = (application as MyWeatherApp)
 
-        if(apl.lruDtoCache.contains(currCity)){
-            aIntent.putExtra("FORECAST_DATA", apl.lruDtoCache[currCity] as ForecastWeatherDto)
+        if(apl.lruDtoCache.contains(url)){
+            aIntent.putExtra("FORECAST_DATA", apl.lruDtoCache[url] as ForecastWeatherDto)
             startActivity(aIntent)
         }
         else
             Volley.newRequestQueue(this).add(
                     GetRequest(
-                            UrlBuilder().buildForecastByCityUrl(resources, currCity),
+                            url,
                             { weather ->
                                 run {
-                                        apl.lruDtoCache.put(weather.cityDetail.cityName.toLowerCase(), weather)
+                                        apl.lruDtoCache.put(url, weather)
                                         aIntent.putExtra("FORECAST_DATA", weather)
                                         startActivity(aIntent)
                                     }

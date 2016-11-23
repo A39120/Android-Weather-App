@@ -98,7 +98,7 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
 
             activity_forecast.forecast_country_edittext.isEnabled = false
             val inputCityName: String = activity_forecast.forecast_country_edittext.text.toString()
-            refreshWeatherInfo(inputCityName)
+			refreshWeatherInfo(inputCityName)
             Toast.makeText(this, "Getting forecast for the next 5 days for $inputCityName...", Toast.LENGTH_LONG).show()
         }
         return true
@@ -236,17 +236,17 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
      * @param currentCity City to get weather information about
      */
     private fun refreshWeatherInfo(currentCity: String){
-        val currCity = currentCity.toLowerCase()
+        val url = UrlBuilder().buildForecastByCityUrl(resources, currentCity)
         val apl = (application as MyWeatherApp)
 
-        if(apl.lruDtoCache.contains(currCity))
-            onForecastRequestFinished(apl.lruDtoCache[currCity] as ForecastWeatherDto)
+        if(apl.lruDtoCache.contains(url))
+            onForecastRequestFinished(apl.lruDtoCache[url] as ForecastWeatherDto)
         else
             Volley.newRequestQueue(this).add(
                     GetRequest(
-                            UrlBuilder().buildForecastByCityUrl(resources, currCity),
+                            url,
                             { weather ->
-                                apl.lruDtoCache.put(weather.cityDetail.cityName.toLowerCase(), weather)
+                                apl.lruDtoCache.put(url, weather)
                                 onForecastRequestFinished(weather)
                             },
                             { error -> System.out.println("Error in response?")},

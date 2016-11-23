@@ -38,7 +38,7 @@ class SplashActivity : BaseActivity() {
                         {
                             weather ->
                             run {
-                                (application as MyWeatherApp).lruDtoCache.put(weather.location.toLowerCase(), weather)
+                                (application as MyWeatherApp).lruDtoCache.put(url, weather)
                                 aIntent.putExtra("WEATHER_DATA", weather)
                                 startActivity(aIntent)
                             }

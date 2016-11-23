@@ -106,20 +106,21 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
 
         R.id.action_forecast -> {
             val anIntent = Intent(CurrentDayActivity@this, ForecastActivity::class.java)
-            val city = (activity_current_day.curday_country_textview.text as String).split(",")[0].toLowerCase()
+            val city = (activity_current_day.curday_country_textview.text as String).split(",")[0]
 
+            val url = UrlBuilder().buildForecastByCityUrl(resources, city)
             val apl = (application as MyWeatherApp)
-            if(apl.lruDtoCache.contains(city)){
-                anIntent.putExtra("FORECAST_DATA", apl.lruDtoCache[city] as ForecastWeatherDto)
+            if(apl.lruDtoCache.contains(url)){
+                anIntent.putExtra("FORECAST_DATA", apl.lruDtoCache[url] as ForecastWeatherDto)
                 startActivity(anIntent)
             }
             else
                 Volley.newRequestQueue(this).add(
                         GetRequest(
-                                UrlBuilder().buildForecastByCityUrl(resources, city),
+                                url,
                                 { weather ->
                                     run {
-                                        apl.lruDtoCache.put(weather.cityDetail.cityName.toLowerCase(), weather)
+                                        apl.lruDtoCache.put(url, weather)
                                         anIntent.putExtra("FORECAST_DATA", weather)
                                         startActivity(anIntent)
                                     }
@@ -223,17 +224,17 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
      * @param currentCity City to get weather information about
      */
     private fun refreshWeatherInfo(currentCity: String){
-        val currCity = currentCity.toLowerCase()
+        val url = UrlBuilder().buildWeatherByCityUrl(resources, currentCity)
         val apl = (application as MyWeatherApp)
 
-        if(apl.lruDtoCache.contains(currCity))
-            onCurrentDayRequestFinished(apl.lruDtoCache[currCity] as CurrentWeatherDto)
+        if(apl.lruDtoCache.contains(url))
+            onCurrentDayRequestFinished(apl.lruDtoCache[url] as CurrentWeatherDto)
         else
             Volley.newRequestQueue(this).add(
                     GetRequest(
-                            UrlBuilder().buildWeatherByCityUrl(resources, currCity),
+                            url,
                             { weather ->
-                                apl.lruDtoCache.put(weather.location.toLowerCase(), weather)
+                                apl.lruDtoCache.put(url, weather)
                                 onCurrentDayRequestFinished(weather)
                             },
                             { error -> System.out.println("Error in response?")},
