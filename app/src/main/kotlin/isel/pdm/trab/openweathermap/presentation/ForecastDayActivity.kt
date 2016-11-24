@@ -25,7 +25,7 @@ import java.util.*
 /**
  * Activity responsible for displaying specific information from a day in the forecast
  */
-class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
+class ForecastDayActivity : BaseActivity() {
 
     val UPDATE_TIMEOUT: Long = 1000 * 60 * 60 // (1000 milis) * (60 seconds) * (60 minutes) = 1 hour
 
@@ -59,38 +59,15 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         }else{ //restore previous state
             activity_forecast_day.curday_temperature.text = savedInstanceState.getString("activity_forecast_day.curday_temperature")
             activity_forecast_day.curday_country_textview.text = savedInstanceState.getString("activity_forecast_day.curday_country_textview")
-            activity_forecast_day.curday_country_edittext.isEnabled = savedInstanceState.getBoolean("activity_forecast_day.curday_country_edittext")
             activity_forecast_day.curday_weather_desc.text = savedInstanceState.getString("activity_forecast_day.curday_weather_desc")
             activity_forecast_day.curday_other_info.text = savedInstanceState.getString("activity_forecast_day.curday_other_info")
 
             activity_forecast_day.curday_image.setImageBitmap(parcel.getParcelable("WeatherBitmap"))
         }
-        activity_forecast_day.curday_country_edittext.setOnEditorActionListener(this)
-
 
         Handler(mainLooper).postDelayed({
             refreshWeatherInfo(activity_forecast_day.curday_country_textview.text.toString())
         }, UPDATE_TIMEOUT)
-    }
-
-    /**
-     * Callback method from the interface TextView.OnEditorActionListener
-     * to be invoked when an action is performed on the editor
-     * @param v TextView in which the action occurred
-     * @param actionId Int that identifies the action
-     * @param event If triggered by an enter key, this is the event, otherwise this is null.
-     * @return Returns true if action was consumed
-     */
-    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-        if(activity_forecast_day.curday_country_edittext.text.equals("")) return true // don't send request if empty string
-        if (event?.action == KeyEvent.ACTION_DOWN || actionId == EditorInfo.IME_ACTION_DONE) {
-            activity_forecast_day.curday_country_edittext.isEnabled = false
-
-            val inputCityName: String = activity_forecast_day.curday_country_edittext.text.toString().trim()
-            refreshWeatherInfo(inputCityName)
-            Toast.makeText(this, resources.getString(R.string.get_curday_text) + " $inputCityName...", Toast.LENGTH_LONG).show()
-        }
-        return true
     }
 
     /**
@@ -145,7 +122,6 @@ class ForecastDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         activity_forecast_day.curday_temperature.text = weather.forecastDetail[pos].temp.day.toString() + "ºC"
         activity_forecast_day.curday_country_textview.text = weather.cityDetail.cityName + "," +
                 weather.cityDetail.country
-        activity_forecast_day.curday_country_edittext.isEnabled = true // re-enable choosing country
         activity_forecast_day.curday_weather_desc.text = weather.forecastDetail[pos].weather.first().weatherDesc
 
         val imgUrl = UrlBuilder().buildImgUrl(resources, weather.forecastDetail[pos].weather.first().icon)
