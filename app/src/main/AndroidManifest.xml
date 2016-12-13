@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".presentation.ForecastActivity" />
-        <activity android:name=".presentation.ForecastDayActivity"></activity>
+        <activity android:name=".presentation.ForecastDayActivity" />
+        <activity android:name=".presentation.PreferencesActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

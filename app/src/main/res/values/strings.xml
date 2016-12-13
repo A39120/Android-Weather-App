@@ -34,4 +34,15 @@
     <string name="forecast">Forecast</string>
     <string name="today">Today</string>
     <string name="in_x_day">in %1$d day</string>
+
+    <!-- Preference Activity screen -->
+    <string name="pref_insertCity">Insert City...</string>
+    <string name="pref_sub">Subscribe</string>
+    <string name="pref_unsub">Unsubscribe</string>
+    <string name="pref_favloc">Favourite Location:</string>
+    <string name="pref_refreshInterval">Refresh Interval:</string>
+    <string name="pref_savePref">Save Preferences</string>
+    <string name="pref_cancelTip">to cancel simply go back</string>
+    <string name="preferences">Preferences</string>
+
 </resources>

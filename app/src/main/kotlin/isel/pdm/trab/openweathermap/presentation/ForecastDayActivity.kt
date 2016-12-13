@@ -105,11 +105,6 @@ class ForecastDayActivity : BaseActivity() {
             ).show()
             true
         }
-
-        R.id.action_credits -> {
-            startActivity(Intent(this, CreditsActivity::class.java))
-            true
-        }
         else -> super.onOptionsItemSelected(item)
     }
 

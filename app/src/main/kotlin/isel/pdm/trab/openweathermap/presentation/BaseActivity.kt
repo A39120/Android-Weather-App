@@ -1,11 +1,13 @@
 package isel.pdm.trab.openweathermap.presentation
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
 import isel.pdm.trab.openweathermap.*
@@ -76,6 +78,24 @@ abstract class BaseActivity : AppCompatActivity() {
     protected fun setErrorImg(img: ImageView){
         img.setImageBitmap(BitmapFactory.decodeResource(this.resources, R.drawable.error_icon))
         Toast.makeText(this , R.string.could_not_download_icon_for_weather, Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     * Callback method invoked when an item from the options menu is selected
+     * @param item MenuItem that was selected
+     * @returns Returns true when the menu item is successfully handled
+     */
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean = when (item?.itemId) {
+        R.id.action_preferences -> {
+            startActivity(Intent(this, PreferencesActivity::class.java))
+            true
+        }
+
+        R.id.action_credits -> {
+            startActivity(Intent(this, CreditsActivity::class.java))
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 }
 

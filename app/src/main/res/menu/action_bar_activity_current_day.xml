@@ -22,6 +22,12 @@
         app:showAsAction="ifRoom"/>
 
     <item
+        android:id="@+id/action_preferences"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="@string/preferences"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/action_credits"
         android:icon="@android:drawable/ic_menu_help"
         android:title="@string/about_us"
