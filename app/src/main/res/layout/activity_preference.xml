@@ -76,6 +76,32 @@
 
             <LinearLayout
                 android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp">
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/notificationSwitch"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:text="@string/pref_timeForNotifications"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/timeForNotificationText"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <TimePicker
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/timePicker"
+                style="@android:style/Widget.Material.Light.TimePicker" />
+
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -83,25 +109,17 @@
                     android:text="@string/pref_refreshInterval"
                     android:layout_height="match_parent"
                     android:id="@+id/refreshIntervalText"
-                    android:layout_width="wrap_content" />
+                    android:layout_width="wrap_content"
+                    android:gravity="center_vertical" />
 
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
-                    android:id="@+id/refreshIntervalSpinner" />
+                    android:id="@+id/refreshIntervalSpinner"
+                    android:entries="@array/pref_refresh_interval_values"
+                    android:layout_gravity="center_vertical" />
             </LinearLayout>
 
-            <Button
-                android:text="@string/pref_savePref"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/savePreferencesButton" />
-
-            <TextView
-                android:text="@string/pref_cancelTip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/preferencesHintText" />
         </LinearLayout>
     </ScrollView>
 
