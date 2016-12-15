@@ -28,10 +28,23 @@
         <activity android:name=".presentation.ForecastDayActivity" />
 
         <provider
-            android:name=".models.WeatherProvider"
+            android:name=".models.content.WeatherProvider"
             android:authorities="isel.pdm.trab.openweathermap"
             android:enabled="true"
             android:exported="true"></provider>
+
+        <activity
+            android:name=".presentation.PreferencesActivity"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name=".services.RefreshCurrentDayService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".services.RefreshForecastService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
