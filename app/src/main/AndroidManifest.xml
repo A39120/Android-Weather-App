@@ -25,7 +25,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".presentation.ForecastActivity" />
-        <activity android:name=".presentation.ForecastDayActivity"></activity>
+        <activity android:name=".presentation.ForecastDayActivity" />
+
+        <provider
+            android:name=".models.WeatherProvider"
+            android:authorities="isel.pdm.trab.openweathermap"
+            android:enabled="true"
+            android:exported="true"></provider>
     </application>
 
 </manifest>
