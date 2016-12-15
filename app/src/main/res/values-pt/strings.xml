@@ -18,4 +18,19 @@
     <string name="forecast">Previsão</string>
     <string name="today">Hoje</string>
     <string name="in_x_day">em %1$d dia</string>
+
+    <!-- Preference Activity screen -->
+    <string name="pref_insertCity">Insira uma cidade...</string>
+    <string name="pref_sub">Subscrever</string>
+    <string name="pref_unsub">Cancelar Subscrição</string>
+    <string name="pref_favloc">Local Favorito:</string>
+    <string name="pref_refreshInterval">Intervalo de refrescamento de dados climáticos:</string>
+    <string name="preferences">Preferências</string>
+    <string name="pref_timeForNotifications">Tempo para notificações:</string>
+
+    <string-array name="pref_refresh_interval_values">
+        <item>12 horas</item>
+        <item>1 dia</item> <!-- <item>24h</item> -->
+        <item>2 dias</item> <!-- <item>48h</item> -->
+    </string-array>
 </resources>

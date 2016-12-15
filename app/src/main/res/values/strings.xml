@@ -40,9 +40,14 @@
     <string name="pref_sub">Subscribe</string>
     <string name="pref_unsub">Unsubscribe</string>
     <string name="pref_favloc">Favourite Location:</string>
-    <string name="pref_refreshInterval">Refresh Interval:</string>
-    <string name="pref_savePref">Save Preferences</string>
-    <string name="pref_cancelTip">to cancel simply go back</string>
+    <string name="pref_refreshInterval">Weather data refresh interval:</string>
     <string name="preferences">Preferences</string>
+    <string name="pref_timeForNotifications">Time for notifications:</string>
+
+    <string-array name="pref_refresh_interval_values">
+        <item>12 hours</item>
+        <item>1 day</item> <!-- <item>24h</item> -->
+        <item>2 days</item> <!-- <item>48h</item> -->
+    </string-array>
 
 </resources>
