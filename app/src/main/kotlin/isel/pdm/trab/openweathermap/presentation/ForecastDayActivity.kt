@@ -170,25 +170,27 @@ class ForecastDayActivity : BaseActivity() {
      * @param currentCity City to get weather information about
      */
     private fun refreshWeatherInfo(currentCity: String){
-        val aIntent = Intent(this, ForecastActivity::class.java)
+        //val aIntent = Intent(this, ForecastDayActivity::class.java)
         val url = UrlBuilder().buildForecastByCityUrl(resources, currentCity)
 
         val apl = (application as MyWeatherApp)
 
         if(apl.lruDtoCache.contains(url)){
-            aIntent.putExtra("FORECAST_DATA", apl.lruDtoCache[url] as ForecastWeatherDto)
-            startActivity(aIntent)
+            onForecastDayRequestFinished(
+                    apl.lruDtoCache[url] as ForecastWeatherDto,
+                    intent.extras.getInt("POSITION")
+            )
         }
         else
             Volley.newRequestQueue(this).add(
                     GetRequest(
                             url,
                             { weather ->
-                                run {
-                                        apl.lruDtoCache.put(url, weather)
-                                        aIntent.putExtra("FORECAST_DATA", weather)
-                                        startActivity(aIntent)
-                                    }
+                                    apl.lruDtoCache.put(url, weather)
+                                    onForecastDayRequestFinished(
+                                            weather,
+                                            intent.extras.getInt("POSITION")
+                                    )
                             },
                             { error -> System.out.println("Error in response?")},
                             ForecastWeatherDto::class.java)

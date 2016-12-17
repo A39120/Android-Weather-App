@@ -3,7 +3,6 @@ package isel.pdm.trab.openweathermap.presentation
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Spinner
 import isel.pdm.trab.openweathermap.MyWeatherApp
 import isel.pdm.trab.openweathermap.R
 import kotlinx.android.synthetic.main.activity_preference.*
@@ -11,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_preference.view.*
 import java.util.*
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 
 class PreferencesActivity : BaseActivity() {
     override var layoutResId: Int = R.layout.activity_preference
@@ -59,6 +59,8 @@ class PreferencesActivity : BaseActivity() {
         (activity_preference.timePicker).currentMinute = app.timeForNotifications.get(Calendar.MINUTE)
 
         (activity_preference.refreshIntervalSpinner).setSelection(app.refreshTime)
+        (activity_preference.batteryIntervalSpinner).setSelection(app.batteryLevel)
+        (activity_preference.batterySwitch).isChecked = app.enabledBatteryLevel
 
         (activity_preference.subscribeButton).setOnClickListener {
             val location: String = activity_preference.subscribeText.text.toString()
@@ -110,6 +112,14 @@ class PreferencesActivity : BaseActivity() {
                 editor.apply()
         }
 
+        (activity_preference.batterySwitch).setOnCheckedChangeListener {
+            compoundButton, checked ->
+            app.enabledBatteryLevel = checked
+            (activity_preference.batteryIntervalSpinner).isEnabled = checked
+            editor.putBoolean(app.ENABLED_BATTERY_LEVEL_KEY, checked)
+            editor.apply()
+        }
+
         (activity_preference.refreshIntervalSpinner).onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View?, position: Int, id: Long) {
                 /*val refreshInterval: String = activity_preference.refreshIntervalSpinner.selectedItem as String
@@ -119,6 +129,19 @@ class PreferencesActivity : BaseActivity() {
                 // TODO 12h 1day 2days to 12h 24h 48h
                 MyWeatherApp.refreshTime = position
                 editor.putInt(MyWeatherApp.REFRESH_TIME_KEY, position)
+                editor.apply()
+            }
+            override fun onNothingSelected(parentView: AdapterView<*>) {}
+        }
+
+        (activity_preference.batteryIntervalSpinner).onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                /*
+                val selectedItem: String = activity_preference.batteryIntervalSpinner.selectedItem as String
+                val batteryPercentage = selectedItem.split(" ")[0]
+                */
+                MyWeatherApp.batteryLevel = position
+                editor.putInt(MyWeatherApp.BATTERY_LEVEL_KEY, position)
                 editor.apply()
             }
             override fun onNothingSelected(parentView: AdapterView<*>) {}

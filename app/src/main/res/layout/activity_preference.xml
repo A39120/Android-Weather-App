@@ -80,21 +80,45 @@
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <Switch
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/notificationSwitch"
+                    android:id="@+id/batterySwitch"
                     android:layout_weight="1" />
+
+                <TextView
+                    android:text="Poupança de bateria a partir de:"
+                    android:layout_width="179dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/textView" />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:id="@+id/batteryIntervalSpinner"
+                    android:entries="@array/pref_battery_interval_values"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:weightSum="1">
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/notificationSwitch" />
 
                 <TextView
                     android:text="@string/pref_timeForNotifications"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/timeForNotificationText"
-                    android:layout_weight="1" />
+                    android:id="@+id/timeForNotificationText" />
 
             </LinearLayout>
 

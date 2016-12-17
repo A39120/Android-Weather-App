@@ -4,15 +4,11 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
 import isel.pdm.trab.openweathermap.services.LruDtoCache
 import isel.pdm.trab.openweathermap.services.LruImageCache
-import isel.pdm.trab.openweathermap.services.NullImageCache
-import kotlinx.android.synthetic.main.activity_preference.*
-import kotlinx.android.synthetic.main.activity_preference.view.*
 import java.util.*
 
 
@@ -55,13 +51,17 @@ class MyWeatherApp : Application(){
         val ENABLED_TIME_FOR_NOTIFICATIONS_KEY = "isel.pdm.trab.openweathermap.enabledtimefornotifications"
         val TIME_FOR_NOTIFICATIONS_UNIX_KEY = "isel.pdm.trab.openweathermap.timefornotificationsunix"
         val REFRESH_TIME_KEY = "isel.pdm.trab.openweathermap.timefornotifications"
+        val ENABLED_BATTERY_LEVEL_KEY = "isel.pdm.trab.openweathermap.enabledbatterylevel"
+        val BATTERY_LEVEL_KEY = "isel.pdm.trab.openweathermap.batterylevel"
         /* variables */
         lateinit var favouriteLoc: String
         lateinit var subscribedLocs: ArrayList<String>
         var enabledTimeForNotifications: Boolean = false
+        var enabledBatteryLevel: Boolean = false
         var timeForNotificationsUnix: Long = -1
         var timeForNotifications: Calendar = Calendar.getInstance()
         var refreshTime: Int = -1 // TODO change to some default ? maybe 12h ?
+        var batteryLevel: Int = -1
         // val refreshIntervalValues: Array<Int> = arrayOf(12, 24, 48) // 12h, 1day, 2days
         // we can use strings.xml -> see <string-array name="pref_refresh_interval_values">
         // static values can be set there
