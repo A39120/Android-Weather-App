@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_preference.*
 import kotlinx.android.synthetic.main.activity_preference.view.*
 import java.util.*
 import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
 
 class PreferencesActivity : BaseActivity() {
     override var layoutResId: Int = R.layout.activity_preference
@@ -22,10 +23,20 @@ class PreferencesActivity : BaseActivity() {
         val app = MyWeatherApp
         val editor = prefs!!.edit()
 
+        // create adapters for each Spinner
+        // locations we've subscribed from update
+        app.locationsSubbedSpinnerAdapter = ArrayAdapter<String>(PreferencesActivity@this, android.R.layout.simple_spinner_item, app.subscribedLocs)
+        app.locationsSubbedSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // our favourite location -> we'll get notified of stuff about this location
+        app.favouriteLocSpinnerAdapter = ArrayAdapter<String>(PreferencesActivity@this, android.R.layout.simple_spinner_item, app.subscribedLocs)
+        app.favouriteLocSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
         (activity_preference.unsubscribeSpinner as Spinner).adapter = app.locationsSubbedSpinnerAdapter
         (activity_preference.favouriteLocationSpinner).adapter = app.favouriteLocSpinnerAdapter
 
         (activity_preference.unsubscribeSpinner).setSelection(0)
+        app.locationsSubbedSpinnerAdapter.notifyDataSetChanged()
+
 
         var idx = -1
         for (i in app.subscribedLocs.indices) {
@@ -35,6 +46,7 @@ class PreferencesActivity : BaseActivity() {
             }
         }
         if(idx >= 0)(activity_preference.favouriteLocationSpinner).setSelection(idx) // select fav location if it was found
+        app.favouriteLocSpinnerAdapter.notifyDataSetChanged()
 
         if(idx < 0) // user doesn't have favourite city, then disable timePicker
             app.enabledTimeForNotifications = false
@@ -73,7 +85,7 @@ class PreferencesActivity : BaseActivity() {
         }
 
         (activity_preference.favouriteLocationSpinner).onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View, position: Int, id: Long) {
+            override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View?, position: Int, id: Long) {
                 MyWeatherApp.favouriteLoc = activity_preference.favouriteLocationSpinner.selectedItem as String
                 editor.putString(MyWeatherApp.FAVOURITE_LOC_KEY, MyWeatherApp.favouriteLoc)
                 editor.apply()
@@ -99,7 +111,7 @@ class PreferencesActivity : BaseActivity() {
         }
 
         (activity_preference.refreshIntervalSpinner).onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View, position: Int, id: Long) {
+            override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View?, position: Int, id: Long) {
                 /*val refreshInterval: String = activity_preference.refreshIntervalSpinner.selectedItem as String
                 val refreshIntervalTime = refreshInterval.split(" ")[0]
                 val refreshIntervalUnit = refreshInterval.split(" ")[1]*/

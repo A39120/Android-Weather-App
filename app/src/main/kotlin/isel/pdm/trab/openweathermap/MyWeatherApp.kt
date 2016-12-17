@@ -95,12 +95,5 @@ class MyWeatherApp : Application(){
         timeForNotifications.timeInMillis = timeForNotificationsUnix
         // time interval for database refresh (human scale)
         refreshTime = prefs.getInt(REFRESH_TIME_KEY, -1)
-        // create adapters for each Spinner
-        // locations we've subscribed from update
-        locationsSubbedSpinnerAdapter = ArrayAdapter<String>(PreferencesActivity@this, android.R.layout.simple_spinner_item, subscribedLocs)
-        locationsSubbedSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        // our favourite location -> we'll get notified of stuff about this location
-        favouriteLocSpinnerAdapter = ArrayAdapter<String>(PreferencesActivity@this, android.R.layout.simple_spinner_item, subscribedLocs)
-        favouriteLocSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
     }
 }
