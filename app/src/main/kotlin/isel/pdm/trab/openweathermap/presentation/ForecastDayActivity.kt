@@ -42,7 +42,6 @@ class ForecastDayActivity : BaseActivity() {
 
         outState?.putString("activity_forecast_day.curday_temperature", activity_forecast_day.curday_temperature.text.toString())
         outState?.putString("activity_forecast_day.curday_country_textview", activity_forecast_day.curday_country_textview.text.toString())
-        outState?.putBoolean("activity_forecast_day.curday_country_edittext", activity_forecast_day.curday_country_edittext.isEnabled)
         outState?.putString("activity_forecast_day.curday_weather_desc", activity_forecast_day.curday_weather_desc.text.toString())
         outState?.putString("activity_forecast_day.curday_other_info", activity_forecast_day.curday_other_info.text.toString())
         intent.putExtra("WeatherBitmap", (activity_forecast_day.curday_image.drawable as BitmapDrawable).bitmap)
@@ -96,7 +95,6 @@ class ForecastDayActivity : BaseActivity() {
             configuration.setLocale(Locale(MyWeatherApp.language))
             resources.updateConfiguration(configuration, displayMetrics)
 
-            activity_forecast_day.curday_country_edittext.hint = getString(R.string.insert_country_edit_text)
             refreshWeatherInfo(activity_forecast_day.curday_country_textview.text.toString().trim())
 
             Toast.makeText(this,
