@@ -54,7 +54,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:id="@+id/unsubscribeSpinner" />
+                    android:id="@+id/unsubscribeSpinner"
+                    android:textColor="#000000"
+                    android:minHeight="32dp" />
 
                 <Button
                     android:text="@string/pref_unsub"
@@ -72,7 +74,9 @@
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
-                android:id="@+id/favouriteLocationSpinner" />
+                android:id="@+id/favouriteLocationSpinner"
+                android:textColor="#000000"
+                android:minHeight="32dp" />
 
             <LinearLayout
                 android:orientation="horizontal"

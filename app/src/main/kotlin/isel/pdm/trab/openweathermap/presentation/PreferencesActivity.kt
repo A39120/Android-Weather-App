@@ -53,6 +53,8 @@ class PreferencesActivity : BaseActivity() {
             if(!app.subscribedLocs.contains(location) && !location.equals("")) {
                 activity_preference.subscribeText.text.clear()
                 app.subscribedLocs.add(location)
+                app.locationsSubbedSpinnerAdapter.notifyDataSetChanged()
+                app.favouriteLocSpinnerAdapter.notifyDataSetChanged()
                 editor.putStringSet(app.SUBSCRIBED_LOCS_KEY, app.subscribedLocs.toSet())
                 editor.apply()
             }
@@ -62,6 +64,8 @@ class PreferencesActivity : BaseActivity() {
             val location: String = activity_preference.unsubscribeSpinner.selectedItem as String
             if(!location.equals("")){
                 app.subscribedLocs.remove(location)
+                app.locationsSubbedSpinnerAdapter.notifyDataSetChanged()
+                app.favouriteLocSpinnerAdapter.notifyDataSetChanged()
                 activity_preference.unsubscribeSpinner.setSelection(0) // select first one
                 editor.putStringSet(app.SUBSCRIBED_LOCS_KEY, app.subscribedLocs.toSet())
                 editor.apply()

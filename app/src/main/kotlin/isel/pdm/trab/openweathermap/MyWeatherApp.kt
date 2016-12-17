@@ -73,6 +73,7 @@ class MyWeatherApp : Application(){
         super.onCreate()
         instance = this
         loadPreferences() // load preferences
+        city = favouriteLoc // set favourite location as "main" location to search info for
         requestQueue = Volley.newRequestQueue(this)
         //imageLoader = ImageLoader(requestQueue, NullImageCache())
         imageLoader = ImageLoader(requestQueue, LruImageCache(cacheSize))
