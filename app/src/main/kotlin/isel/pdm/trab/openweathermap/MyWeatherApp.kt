@@ -49,9 +49,9 @@ class MyWeatherApp : Application(){
         val FAVOURITE_LOC_KEY = "isel.pdm.trab.openweathermap.favloc"
         val SUBSCRIBED_LOCS_KEY = "isel.pdm.trab.openweathermap.sublocs"
         val ENABLED_TIME_FOR_NOTIFICATIONS_KEY = "isel.pdm.trab.openweathermap.enabledtimefornotifications"
+        val ENABLED_BATTERY_LEVEL_KEY = "isel.pdm.trab.openweathermap.enabledbatterylevel"
         val TIME_FOR_NOTIFICATIONS_UNIX_KEY = "isel.pdm.trab.openweathermap.timefornotificationsunix"
         val REFRESH_TIME_KEY = "isel.pdm.trab.openweathermap.timefornotifications"
-        val ENABLED_BATTERY_LEVEL_KEY = "isel.pdm.trab.openweathermap.enabledbatterylevel"
         val BATTERY_LEVEL_KEY = "isel.pdm.trab.openweathermap.batterylevel"
         /* variables */
         lateinit var favouriteLoc: String
@@ -90,10 +90,14 @@ class MyWeatherApp : Application(){
         subscribedLocs = ArrayList<String>(prefs.getStringSet(SUBSCRIBED_LOCS_KEY, LinkedHashSet<String>()))
         // check to see if a time for notification is set
         enabledTimeForNotifications = prefs.getBoolean(ENABLED_TIME_FOR_NOTIFICATIONS_KEY, false)
+        // check to see if a battery level is set
+        enabledBatteryLevel = prefs.getBoolean(ENABLED_BATTERY_LEVEL_KEY, false)
         // time for notifications (8 in da mornin')
         timeForNotificationsUnix = prefs.getLong(TIME_FOR_NOTIFICATIONS_UNIX_KEY, -1)
         timeForNotifications.timeInMillis = timeForNotificationsUnix
         // time interval for database refresh (human scale)
         refreshTime = prefs.getInt(REFRESH_TIME_KEY, -1)
+        // battery level
+        batteryLevel = prefs.getInt(BATTERY_LEVEL_KEY, -1)
     }
 }

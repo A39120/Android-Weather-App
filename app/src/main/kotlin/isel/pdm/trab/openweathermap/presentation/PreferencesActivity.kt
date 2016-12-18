@@ -75,9 +75,6 @@ class PreferencesActivity : BaseActivity() {
         }
 
         (activity_preference.unsubscribeButton).setOnClickListener {
-            if(app.subscribedLocs.isEmpty())
-                app.favouriteLoc = Locale.getDefault().displayCountry
-
             val location: String = activity_preference.unsubscribeSpinner.selectedItem as String
             if(!location.equals("")){
                 app.subscribedLocs.remove(location)
@@ -85,6 +82,12 @@ class PreferencesActivity : BaseActivity() {
                 app.favouriteLocSpinnerAdapter.notifyDataSetChanged()
                 activity_preference.unsubscribeSpinner.setSelection(0) // select first one
                 editor.putStringSet(app.SUBSCRIBED_LOCS_KEY, app.subscribedLocs.toSet())
+
+                if(app.subscribedLocs.isEmpty()){
+                    app.favouriteLoc = Locale.getDefault().displayCountry
+                    editor.putString(app.FAVOURITE_LOC_KEY, app.favouriteLoc)
+                }
+
                 editor.apply()
             }
         }
