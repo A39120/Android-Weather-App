@@ -49,7 +49,11 @@
         <receiver
             android:name=".receivers.FavouriteReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="isel.pdm.trab.openweathermap.FORECAST_SERVICE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

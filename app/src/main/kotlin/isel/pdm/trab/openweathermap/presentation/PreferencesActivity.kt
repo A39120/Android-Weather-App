@@ -75,6 +75,9 @@ class PreferencesActivity : BaseActivity() {
         }
 
         (activity_preference.unsubscribeButton).setOnClickListener {
+            if(app.subscribedLocs.isEmpty())
+                app.favouriteLoc = Locale.getDefault().displayCountry
+
             val location: String = activity_preference.unsubscribeSpinner.selectedItem as String
             if(!location.equals("")){
                 app.subscribedLocs.remove(location)

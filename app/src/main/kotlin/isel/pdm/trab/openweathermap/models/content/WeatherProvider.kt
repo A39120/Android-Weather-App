@@ -97,7 +97,7 @@ class WeatherProvider: ContentProvider() {
 
         private fun createCurrentTable(db: SQLiteDatabase?, tableName: String) {
             val CREATE_CMD = "CREATE TABLE CURRENT_$tableName ( " +
-                    "$COLUMN_ID INTEGER PRIMARY KEY , "
+                    "$COLUMN_ID INTEGER PRIMARY KEY, "
                     "$COLUMN_UTC LONG," +
                     "$COLUMN_CURRENT_LOCATION VARCHAR(255), " +
                     "$COLUMN_CURRENT_LOCATION_ID INTEGER, " +

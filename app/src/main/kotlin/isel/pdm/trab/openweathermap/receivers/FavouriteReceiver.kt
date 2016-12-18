@@ -10,30 +10,30 @@ import android.app.NotificationManager
 import android.content.Context.NOTIFICATION_SERVICE
 
 
-
 class FavouriteReceiver : BroadcastReceiver() {
 
+    /**
+     *  Receives a ForecastDetail instance from intent to produce a notification
+     */
     override fun onReceive(context: Context, intent: Intent) {
 
         val parcel = intent.extras
-        val forecastList = parcel.getParcelable<ForecastWeatherDto>("FORECAST_FOR_NOTIFY")
+        val weatherDetail = parcel.getParcelable<ForecastWeatherDto.ForecastDetail>("WEATHER_FOR_NOTIFY")
 
-        val weather = forecastList.forecastDetail[0]
-
-        val minTempInfo = getMinTempInfo(weather.temp)
-        val maxTempInfo = getMaxTempInfo(weather.temp)
-        val windInfo = getWindInfo(weather.windSpeed)
-        val rainInfo = getRainInfo(weather.rain)
+        val minTempInfo = getMinTempInfo(weatherDetail.temp)
+        val maxTempInfo = getMaxTempInfo(weatherDetail.temp)
+        val windInfo = getWindInfo(weatherDetail.windSpeed)
+        val rainInfo = getRainInfo(weatherDetail.rain)
 
         val finalMessage = minTempInfo.plus(maxTempInfo).plus(windInfo).plus(rainInfo)
 
         val mBuilder = NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.forecast)
-                .setContentTitle(R.string.app_name.toString())
+                .setSmallIcon(R.drawable.notification_template_icon_bg)
+                .setContentTitle(context.resources.getString(R.string.app_name))
                 .setContentText(finalMessage)
+                .setStyle( NotificationCompat.BigTextStyle().bigText(finalMessage))
 
         val mNotificationId = 1
-
         val mNotifyMgr: NotificationManager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         mNotifyMgr.notify(mNotificationId, mBuilder.build())
     }

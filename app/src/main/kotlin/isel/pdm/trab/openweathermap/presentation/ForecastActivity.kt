@@ -16,6 +16,7 @@ import isel.pdm.trab.openweathermap.R
 import isel.pdm.trab.openweathermap.services.UrlBuilder
 import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.ForecastWeatherDto
+import isel.pdm.trab.openweathermap.services.RefreshForecastService
 import kotlinx.android.synthetic.main.activity_forecast.*
 import kotlinx.android.synthetic.main.activity_forecast.view.*
 import java.util.*
@@ -233,6 +234,12 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
     private fun refreshWeatherInfo(currentCity: String){
         val url = UrlBuilder().buildForecastByCityUrl(resources, currentCity)
         val apl = (application as MyWeatherApp)
+
+        // TODO: this is only to see if the service works, to be DELETED
+        val myIntent = Intent(this, RefreshForecastService::class.java)
+        myIntent.putExtra("FORECAST_CITY", currentCity)
+        startService(myIntent)
+        //
 
         if(apl.lruDtoCache.contains(url))
             onForecastRequestFinished(apl.lruDtoCache[url] as ForecastWeatherDto)

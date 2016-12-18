@@ -18,6 +18,7 @@ import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import isel.pdm.trab.openweathermap.models.ForecastWeatherDto
 import isel.pdm.trab.openweathermap.services.ConvertUtils
+import isel.pdm.trab.openweathermap.services.RefreshCurrentDayService
 import isel.pdm.trab.openweathermap.services.UrlBuilder
 import kotlinx.android.synthetic.main.activity_current_day.*
 import kotlinx.android.synthetic.main.activity_current_day.view.*
@@ -221,6 +222,12 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
     private fun refreshWeatherInfo(currentCity: String){
         val url = UrlBuilder().buildWeatherByCityUrl(resources, currentCity)
         val apl = (application as MyWeatherApp)
+
+        // TODO: this is only to see if the service works, to be DELETED
+        val myIntent = Intent(this, RefreshCurrentDayService::class.java)
+        myIntent.putExtra("CURRENT_CITY", currentCity)
+        startService(myIntent)
+        //
 
         if(apl.lruDtoCache.contains(url))
             onCurrentDayRequestFinished(apl.lruDtoCache[url] as CurrentWeatherDto)

@@ -44,7 +44,7 @@ fun CurrentWeatherDto.toContentValues(): ContentValues {
 }
 
 /**
- * Function that builds a [CurrentWeatherDto] instnce from the given [Cursor]
+ * Function that builds a [CurrentWeatherDto] instance from the given [Cursor]
  * @param [cursor] The cursor pointing to the weather day item data
  * @return The newly created [CurrentWeatherDto]
  */
