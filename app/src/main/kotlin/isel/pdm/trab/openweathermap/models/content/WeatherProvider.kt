@@ -24,35 +24,32 @@ class WeatherProvider: ContentProvider() {
           * and all the information not used was not in there
           */
 
-        //Columns that are equal in all classes
         const val COLUMN_ID = "_ID"
-        //Columns that are equal in Current and Forecast Detail
         const val COLUMN_UTC = "UTC"
-        //Columns that are in Current Weather Dto
         const val COLUMN_CURRENT_LOCATION = "LOCATION"
         const val COLUMN_CURRENT_LOCATION_ID = "LOCATION_ID"
         const val COLUMN_CURRENT_LONGITUDE = "LONGITUDE"
         const val COLUMN_CURRENT_LATITUDE = "LATITUDE"
         // Short Weather Info
-        const val COLUMN_CURRENT_SHORT_INFO_ID = "SHORT_INFO_MAIN"
-        const val COLUMN_CURRENT_SHORT_INFO_MAIN = "SHORT_INFO_DESCRIPTION"
-        const val COLUMN_CURRENT_SHORT_INFO_DESCRIPTION = "SHORT_INFO_ICON"
-        const val COLUMN_CURRENT_SHORT_INFO_ICON = "TEMPERATURE"
+        const val COLUMN_CURRENT_SHORT_INFO_ID = "SHORT_INFO_ID"
+        const val COLUMN_CURRENT_SHORT_INFO_MAIN = "SHORT_INFO_MAIN"
+        const val COLUMN_CURRENT_SHORT_INFO_DESCRIPTION = "SHORT_INFO_DESCRIPTION"
+        const val COLUMN_CURRENT_SHORT_INFO_ICON = "SHORT_INFO_ICON"
         // Weather Info
-        const val COLUMN_CURRENT_TEMPERATURE = "HUMIDITY"
-        const val COLUMN_CURRENT_PRESSURE = "MIN_TEMP"
-        const val COLUMN_CURRENT_HUMIDITY = "MAX_TEMP"
-        const val COLUMN_CURRENT_MIN_TEMP = "WIND_SPEED"
-        const val COLUMN_CURRENT_MAX_TEMP = "WIND DEGGREES"
+        const val COLUMN_CURRENT_TEMPERATURE = "TEMPERATURE"
+        const val COLUMN_CURRENT_PRESSURE = "PRESSURE"
+        const val COLUMN_CURRENT_HUMIDITY = "HUMIDITY"
+        const val COLUMN_CURRENT_MIN_TEMP = "MIN_TEMP"
+        const val COLUMN_CURRENT_MAX_TEMP = "MAX_TEMP"
         // Wind Detail
-        const val COLUMN_CURRENT_WIND_SPEED = "CLOUDS"
-        const val COLUMN_CURRENT_WIND_DEG = "RAIN"
+        const val COLUMN_CURRENT_WIND_SPEED = "WIND_SPEED"
+        const val COLUMN_CURRENT_WIND_DEG = "WIND_DEG"
         // Cloud , Rain and Snow Detail
-        const val COLUMN_CURRENT_CLOUDS = "COUNTRY_CODE"
-        const val COLUMN_CURRENT_RAIN = "SUNRISE"
-        const val COLUMN_CURRENT_SNOW = "SUNSET"
+        const val COLUMN_CURRENT_CLOUDS = "CLOUDS"
+        const val COLUMN_CURRENT_RAIN = "RAIN"
+        const val COLUMN_CURRENT_SNOW = "SNOW"
         // Location Detail
-        const val COLUMN_CURRENT_COUNTRY_CODE = "COUNTRY CODE"
+        const val COLUMN_CURRENT_COUNTRY_CODE = "COUNTRY_CODE"
         const val COLUMN_CURRENT_SUNRISE = "SUNRISE"
         const val COLUMN_CURRENT_SUNSET = "SUNSET"
 
@@ -95,9 +92,9 @@ class WeatherProvider: ContentProvider() {
     private inner class WeatherDbHelper(version: Int = 1, dbName: String = "WEATHER_DB") :
             SQLiteOpenHelper(this@WeatherProvider.context, dbName, null, version) {
 
-        private fun createCurrentTable(db: SQLiteDatabase?, tableName: String) {
-            val CREATE_CMD = "CREATE TABLE CURRENT_$tableName ( " +
-                    "$COLUMN_ID INTEGER PRIMARY KEY, "
+        private fun createCurrentTable(db: SQLiteDatabase?) {
+            val CREATE_CMD = "CREATE TABLE $CURRENT_TABLE_NAME ( " +
+                    "$COLUMN_ID VARCHAR(255) PRIMARY KEY, " +
                     "$COLUMN_UTC LONG," +
                     "$COLUMN_CURRENT_LOCATION VARCHAR(255), " +
                     "$COLUMN_CURRENT_LOCATION_ID INTEGER, " +
@@ -119,22 +116,22 @@ class WeatherProvider: ContentProvider() {
                     "$COLUMN_CURRENT_SNOW DOUBLE, " +
                     "$COLUMN_CURRENT_COUNTRY_CODE VARCHAR(256), " +
                     "$COLUMN_CURRENT_SUNRISE LONG, " +
-                    "$COLUMN_CURRENT_SUNSET LONG) "
+                    "$COLUMN_CURRENT_SUNSET LONG ) "
             db?.execSQL(CREATE_CMD)
         }
 
-        private fun dropCurrentTable(db: SQLiteDatabase?, tableName: String) {
-            val DROP_CMD = "DROP TABLE IF EXISTS CURRENT_$tableName"
+        private fun dropTable(db: SQLiteDatabase?, tableName: String) {
+            val DROP_CMD = "DROP TABLE IF EXISTS $tableName"
             db?.execSQL(DROP_CMD)
         }
 
         override fun onCreate(db: SQLiteDatabase?) {
-            createCurrentTable(db, "DAY")
+            createCurrentTable(db)
         }
 
         override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-            dropCurrentTable(db, "DAY")
-            createCurrentTable(db, "DAY")
+            dropTable(db, CURRENT_TABLE_NAME)
+            createCurrentTable(db)
         }
     }
 
@@ -224,9 +221,7 @@ class WeatherProvider: ContentProvider() {
         return try {
             db.query(params.first, projection, params.second, params.third, null, null, sortOrder)
         }
-        finally {
-            db.close()
-        }
+        finally {}
     }
 
     @MainThread

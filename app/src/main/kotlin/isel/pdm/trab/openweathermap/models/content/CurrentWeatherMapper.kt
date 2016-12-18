@@ -17,7 +17,7 @@ import java.util.*
 fun CurrentWeatherDto.toContentValues(): ContentValues {
     val result = ContentValues()
     with (WeatherProvider) {
-        //result.put(COLUMN_ID, id)
+        result.put(COLUMN_ID, location + ", " + locDetail.countryCode)
         result.put(COLUMN_UTC, utc)
         result.put(COLUMN_CURRENT_LOCATION, location)
         result.put(COLUMN_CURRENT_LOCATION_ID, locationId)
@@ -39,6 +39,7 @@ fun CurrentWeatherDto.toContentValues(): ContentValues {
         result.put(COLUMN_CURRENT_SNOW, snowDetail?.snowVolume)
         result.put(COLUMN_CURRENT_COUNTRY_CODE, locDetail.countryCode)
         result.put(COLUMN_CURRENT_SUNRISE, locDetail.sunriseTime)
+        result.put(COLUMN_CURRENT_SUNSET, locDetail.sunsetTime)
     }
     return result
 }

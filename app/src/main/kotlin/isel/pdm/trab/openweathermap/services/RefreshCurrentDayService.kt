@@ -24,7 +24,9 @@ class RefreshCurrentDayService : Service() {
                         url,
                         { weather ->
                             val tableUri = WeatherProvider.CURRENT_CONTENT_URI
-                            contentResolver.insert(tableUri, weather.toContentValues())
+                            val contentResolver = contentResolver
+                            val wcv = weather.toContentValues()
+                            contentResolver.insert(tableUri, wcv)
 
                             val projection = arrayOf(WeatherProvider.COLUMN_CURRENT_LOCATION)
                             val selectionArgs = arrayOf("")
@@ -33,7 +35,7 @@ class RefreshCurrentDayService : Service() {
                                     projection,
                                     null,
                                     selectionArgs,
-                                    "COLUMN_CURRENT_LOCATION ASC"
+                                    WeatherProvider.COLUMN_CURRENT_LOCATION + " ASC"
                             )
                             println(cursor.count)
                             // TODO: put weather in ContentProvider
