@@ -90,7 +90,7 @@
                     android:layout_weight="1" />
 
                 <TextView
-                    android:text="Poupança de bateria a partir de:"
+                    android:text="@string/pref_batterySaveAt"
                     android:layout_width="179dp"
                     android:layout_height="match_parent"
                     android:id="@+id/textView" />

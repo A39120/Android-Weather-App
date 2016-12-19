@@ -1,5 +1,8 @@
 package isel.pdm.trab.openweathermap.presentation
 
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -11,6 +14,7 @@ import java.util.*
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import isel.pdm.trab.openweathermap.receivers.BatteryStateReceiver
 
 class PreferencesActivity : BaseActivity() {
     override var layoutResId: Int = R.layout.activity_preference
@@ -124,6 +128,12 @@ class PreferencesActivity : BaseActivity() {
             (activity_preference.batteryIntervalSpinner).isEnabled = checked
             editor.putBoolean(app.ENABLED_BATTERY_LEVEL_KEY, checked)
             editor.apply()
+
+            if(checked){ // register BroadcastReceiver
+                this.registerReceiver(BatteryStateReceiver(), IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+            }else{
+                this.unregisterReceiver(BatteryStateReceiver())
+            }
         }
 
         (activity_preference.refreshIntervalSpinner).onItemSelectedListener = object : OnItemSelectedListener {

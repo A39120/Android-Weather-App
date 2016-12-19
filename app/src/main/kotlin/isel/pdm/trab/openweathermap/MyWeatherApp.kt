@@ -62,6 +62,7 @@ class MyWeatherApp : Application(){
         var timeForNotifications: Calendar = Calendar.getInstance()
         var refreshTime: Int = -1 // TODO change to some default ? maybe 12h ?
         var batteryLevel: Int = -1
+        var isBatterySavingMode: Boolean = false /** used by BatteryStateReceiver as a flag, other actions should consult this flag */
         // val refreshIntervalValues: Array<Int> = arrayOf(12, 24, 48) // 12h, 1day, 2days
         // we can use strings.xml -> see <string-array name="pref_refresh_interval_values">
         // static values can be set there

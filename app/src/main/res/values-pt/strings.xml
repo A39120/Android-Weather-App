@@ -27,6 +27,7 @@
     <string name="pref_refreshInterval">Intervalo de refrescamento de dados climáticos:</string>
     <string name="preferences">Preferências</string>
     <string name="pref_timeForNotifications">Tempo para notificações:</string>
+    <string name="pref_batterySaveAt">Poupança de bateria a partir de:</string>
 
     <string-array name="pref_refresh_interval_values">
         <item>12 horas</item>
