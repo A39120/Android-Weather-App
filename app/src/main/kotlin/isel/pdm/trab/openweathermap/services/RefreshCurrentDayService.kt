@@ -24,20 +24,20 @@ class RefreshCurrentDayService : Service() {
                         url,
                         { weather ->
                             val tableUri = WeatherProvider.CURRENT_CONTENT_URI
-                            val contentResolver = contentResolver
-                            val wcv = weather.toContentValues()
-                            contentResolver.insert(tableUri, wcv)
+                            contentResolver.insert(tableUri, weather.toContentValues())
 
                             val projection = arrayOf(WeatherProvider.COLUMN_CURRENT_LOCATION)
-                            val selectionArgs = arrayOf("")
+                            val selectionArgs = arrayOf("$WeatherProvider.COLUMN_CURRENT_LOCATION")
                             val cursor = contentResolver.query(
                                     WeatherProvider.CURRENT_CONTENT_URI,
                                     projection,
                                     null,
-                                    selectionArgs,
+                                    null,
                                     WeatherProvider.COLUMN_CURRENT_LOCATION + " ASC"
                             )
+                            println(cursor.columnCount)
                             println(cursor.count)
+                            cursor.close()
                             // TODO: put weather in ContentProvider
                         },
                         { error -> System.out.println("Error in refresh currentday service?")},

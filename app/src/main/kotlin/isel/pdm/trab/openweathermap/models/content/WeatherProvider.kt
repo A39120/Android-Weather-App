@@ -182,6 +182,7 @@ class WeatherProvider: ContentProvider() {
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
+
         val tableInfo = resolveTableInfoFromUri(uri)
         val db = dbHelper.writableDatabase
         return try {
@@ -216,10 +217,18 @@ class WeatherProvider: ContentProvider() {
     override fun query(uri: Uri, projection: Array<String>?, selection: String?,
                        selectionArgs: Array<String>?, sortOrder: String?): Cursor? {
 
-        val params = resolveTableAndSelectionInfoFromUri(uri, selection, selectionArgs)
+        val params = resolveTableInfoFromUri(uri)
         val db = dbHelper.readableDatabase
+        var selectionAux: String? = selection
+        if(selection != null) selectionAux = selection + "=?"
         return try {
-            db.query(params.first, projection, params.second, params.third, null, null, sortOrder)
+            //(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having,
+            //String orderBy)
+
+            db.query(params.first, projection, selectionAux, selectionArgs, null, null, sortOrder)
+        }catch(e : Exception){
+            e.printStackTrace()
+            throw e
         }
         finally {}
     }
