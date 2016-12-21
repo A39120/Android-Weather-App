@@ -4,7 +4,6 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import com.android.volley.toolbox.Volley
-import isel.pdm.trab.openweathermap.MyWeatherApp
 import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import isel.pdm.trab.openweathermap.models.content.WeatherProvider
@@ -24,21 +23,42 @@ class RefreshCurrentDayService : Service() {
                         url,
                         { weather ->
                             val tableUri = WeatherProvider.CURRENT_CONTENT_URI
-                            contentResolver.insert(tableUri, weather.toContentValues())
-
-                            val projection = arrayOf(WeatherProvider.COLUMN_CURRENT_LOCATION)
-                            val selectionArgs = arrayOf("$WeatherProvider.COLUMN_CURRENT_LOCATION")
+                            val contentResolver = contentResolver
+                            val location = weather.location
+                            val selectionArgs = arrayOf(location)
+                            val projection = arrayOf(WeatherProvider.COLUMN_LOCATION)
                             val cursor = contentResolver.query(
-                                    WeatherProvider.CURRENT_CONTENT_URI,
+                                    tableUri,
                                     projection,
-                                    null,
-                                    null,
-                                    WeatherProvider.COLUMN_CURRENT_LOCATION + " ASC"
+                                    WeatherProvider.COLUMN_LOCATION + "=?",
+                                    selectionArgs,
+                                    WeatherProvider.COLUMN_LOCATION + " ASC"
                             )
-                            println(cursor.columnCount)
-                            println(cursor.count)
+
+                            if(cursor.count == 0){
+                                val wcv = weather.toContentValues()
+                                contentResolver.insert(tableUri, wcv)
+                            }
+                            else{   // It already contains data, update instead
+                                contentResolver.update(
+                                        tableUri,
+                                        weather.toContentValues(),
+                                        WeatherProvider.COLUMN_LOCATION + "=?",
+                                        selectionArgs
+                                )
+                            }
                             cursor.close()
-                            // TODO: put weather in ContentProvider
+
+                            // Debug code to check if insertion/update was successful
+                            val after = contentResolver.query(
+                                    tableUri,
+                                    projection,
+                                    WeatherProvider.COLUMN_LOCATION + "=?",
+                                    selectionArgs,
+                                    WeatherProvider.COLUMN_LOCATION + " ASC"
+                            )
+                            println("debug on refreshcurrentdayservice (count):" + after.count)
+                            // end of debug code
                         },
                         { error -> System.out.println("Error in refresh currentday service?")},
                         CurrentWeatherDto::class.java)

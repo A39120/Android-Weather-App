@@ -1,5 +1,8 @@
 package isel.pdm.trab.openweathermap.presentation
 
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -11,6 +14,7 @@ import java.util.*
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import isel.pdm.trab.openweathermap.receivers.BatteryStateReceiver
 
 class PreferencesActivity : BaseActivity() {
     override var layoutResId: Int = R.layout.activity_preference
@@ -75,9 +79,6 @@ class PreferencesActivity : BaseActivity() {
         }
 
         (activity_preference.unsubscribeButton).setOnClickListener {
-            if(app.subscribedLocs.isEmpty())
-                app.favouriteLoc = Locale.getDefault().displayCountry
-
             val location: String = activity_preference.unsubscribeSpinner.selectedItem as String
             if(!location.equals("")){
                 app.subscribedLocs.remove(location)
@@ -85,6 +86,12 @@ class PreferencesActivity : BaseActivity() {
                 app.favouriteLocSpinnerAdapter.notifyDataSetChanged()
                 activity_preference.unsubscribeSpinner.setSelection(0) // select first one
                 editor.putStringSet(app.SUBSCRIBED_LOCS_KEY, app.subscribedLocs.toSet())
+
+                if(app.subscribedLocs.isEmpty()){
+                    app.favouriteLoc = Locale.getDefault().displayCountry
+                    editor.putString(app.FAVOURITE_LOC_KEY, app.favouriteLoc)
+                }
+
                 editor.apply()
             }
         }
@@ -121,6 +128,12 @@ class PreferencesActivity : BaseActivity() {
             (activity_preference.batteryIntervalSpinner).isEnabled = checked
             editor.putBoolean(app.ENABLED_BATTERY_LEVEL_KEY, checked)
             editor.apply()
+
+            if(checked){ // register BroadcastReceiver
+                this.registerReceiver(BatteryStateReceiver(), IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+            }else{
+                this.unregisterReceiver(BatteryStateReceiver())
+            }
         }
 
         (activity_preference.refreshIntervalSpinner).onItemSelectedListener = object : OnItemSelectedListener {
