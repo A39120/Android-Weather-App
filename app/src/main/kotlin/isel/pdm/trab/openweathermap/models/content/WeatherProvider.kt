@@ -218,10 +218,7 @@ class WeatherProvider: ContentProvider() {
 
         val params = resolveTableAndSelectionInfoFromUri(uri, selection, selectionArgs)
         val db = dbHelper.readableDatabase
-        return try {
-            db.query(params.first, projection, params.second, params.third, null, null, sortOrder)
-        }
-        finally {}
+        return db.query(params.first, projection, params.second, params.third, null, null, sortOrder)
     }
 
     @MainThread
@@ -234,8 +231,18 @@ class WeatherProvider: ContentProvider() {
         }
         return true
     }
-    override fun update(uri: Uri?, values: ContentValues?, selection: String?, selectionArgs: Array<out String>?): Int {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun update(uri: Uri, values: ContentValues?, selection: String?, selectionArgs: Array<String>?): Int {
+        val params = resolveTableAndSelectionInfoFromUri(uri, selection, selectionArgs)
+        val db = dbHelper.writableDatabase
+        try {
+            val updatedCount = db.update(params.first, values, params.second, params.third)
+            if (updatedCount != 0)
+                context.contentResolver.notifyChange(uri, null)
+            return updatedCount
+        }
+        finally {
+            db.close()
+        }
     }
 
 
