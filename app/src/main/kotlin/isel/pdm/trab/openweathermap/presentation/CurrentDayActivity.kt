@@ -202,7 +202,7 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
             snow = "\n" + getString(R.string.snow) + ": " + weather.snowDetail.snowVolume + "mm"
         activity_current_day.curday_other_info.text = String.format(getString(R.string.curday_other_info),
                 weather.windDetail.speed, "km/h",
-                ConvertUtils().convertDegreesToTextDescription(weather.windDetail.windDegrees),
+                ConvertUtils.convertDegreesToTextDescription(weather.windDetail.windDegrees),
                 weather.cloudDetail.clouds,
                 rain,
                 snow,
@@ -210,9 +210,9 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
                 weather.info.maxTemp, "ºC",
                 weather.info.minTemp, "ºC",
                 weather.info.pressure,
-                ConvertUtils().convertUnixToTime(weather.locDetail.sunriseTime),
-                ConvertUtils().convertUnixToTime(weather.locDetail.sunsetTime),
-                ConvertUtils().convertUnixToDateTime(weather.utc))
+                ConvertUtils.convertUnixToTime(weather.locDetail.sunriseTime),
+                ConvertUtils.convertUnixToTime(weather.locDetail.sunsetTime),
+                ConvertUtils.convertUnixToDateTime(weather.utc))
     }
 
     /**

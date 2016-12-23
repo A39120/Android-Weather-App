@@ -26,8 +26,8 @@ fun ForecastWeatherDto.toContentValues(): List<ContentValues> {
         val result = ContentValues()
         with (WeatherProvider) {
             // Primary key is a combination of location, country and day
-        result.put(COLUMN_ID, cityDetail.cityName + ", " +
-                    cityDetail.country + " " +
+        result.put(COLUMN_ID, "${cityDetail.cityName}, " +
+                    "${cityDetail.country} " +
                     ConvertUtils.convertUnixToDate(element.utc*1000))
             result.put(COLUMN_LOCATION_ID, this@toContentValues.cityDetail.id)
             result.put(COLUMN_LOCATION, this@toContentValues.cityDetail.cityName)

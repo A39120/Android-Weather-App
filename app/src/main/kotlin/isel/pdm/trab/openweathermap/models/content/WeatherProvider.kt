@@ -281,9 +281,9 @@ class WeatherProvider: ContentProvider() {
 
         val params = resolveTableInfoFromUri(uri)
         val db = dbHelper.readableDatabase
-        var selectionAux: String? = selection
-        if(selection != null) selectionAux = selection + "=?"
-        return db.query(params.first, projection, selectionAux, selectionArgs, null, null, sortOrder)
+        return try {db.query(params.first, projection, selection, selectionArgs, null, null, sortOrder)}
+        catch(e: Exception){throw e}
+
     }
 
     @MainThread
@@ -293,7 +293,7 @@ class WeatherProvider: ContentProvider() {
         with (uriMatcher) {
             addURI(AUTHORITY, CURRENT_TABLE_PATH, CURRENT_LIST_CODE)
             addURI(AUTHORITY, "$CURRENT_TABLE_PATH/#", CURRENT_ITEM_CODE)
-            addURI(AUTHORITY, FORECAST_TABLE_PATH, FORECAST_ITEM_CODE)
+            addURI(AUTHORITY, FORECAST_TABLE_PATH, FORECAST_LIST_CODE)
             addURI(AUTHORITY, "$FORECAST_TABLE_PATH/#", FORECAST_ITEM_CODE)
         }
         return true

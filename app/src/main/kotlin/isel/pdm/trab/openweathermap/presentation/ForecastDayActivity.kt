@@ -151,7 +151,7 @@ class ForecastDayActivity : BaseActivity() {
 
         activity_forecast_day.curday_other_info.text = String.format(getString(R.string.forday_other_info),
                 weather.windSpeed, "km/h",
-                ConvertUtils().convertDegreesToTextDescription(weather.windDegrees),
+                ConvertUtils.convertDegreesToTextDescription(weather.windDegrees),
                 weather.clouds,
                 rain,
                 snow,
@@ -162,7 +162,7 @@ class ForecastDayActivity : BaseActivity() {
                 weather.temp.night, "ºC",
                 weather.temp.eve, "ºC",
                 weather.temp.morn, "ºC",
-                ConvertUtils().convertUnixToDateTime(weather.utc))
+                ConvertUtils.convertUnixToDateTime(weather.utc))
     }
 
     /**
