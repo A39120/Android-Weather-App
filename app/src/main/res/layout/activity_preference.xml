@@ -93,7 +93,8 @@
                     android:text="@string/pref_batterySaveAt"
                     android:layout_width="179dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/textView" />
+                    android:id="@+id/textView"
+                    android:layout_gravity="center_vertical" />
 
                 <Spinner
                     android:layout_width="wrap_content"
@@ -119,6 +120,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/timeForNotificationText" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mobileDataSwitch"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:text="Allow updating using mobile data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView3"
+                    android:layout_weight="1" />
 
             </LinearLayout>
 

@@ -28,6 +28,7 @@
     <string name="preferences">Preferências</string>
     <string name="pref_timeForNotifications">Tempo para notificações:</string>
     <string name="pref_batterySaveAt">Poupança de bateria a partir de:</string>
+    <string name="pref_useMobileData">Permitir uso de dados móveis para actualizações</string>
 
     <string-array name="pref_refresh_interval_values">
         <item>12 horas</item>

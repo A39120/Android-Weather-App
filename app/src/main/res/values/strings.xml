@@ -44,6 +44,7 @@
     <string name="preferences">Preferences</string>
     <string name="pref_timeForNotifications">Time for notifications:</string>
     <string name="pref_batterySaveAt">Battery saving at:</string>
+    <string name="pref_useMobileData">Allow updating using mobile data</string>
 
     <string-array name="pref_refresh_interval_values">
         <item>12 hours</item>

@@ -124,16 +124,23 @@ class PreferencesActivity : BaseActivity() {
 
         (activity_preference.batterySwitch).setOnCheckedChangeListener {
             compoundButton, checked ->
-            app.enabledBatteryLevel = checked
-            (activity_preference.batteryIntervalSpinner).isEnabled = checked
-            editor.putBoolean(app.ENABLED_BATTERY_LEVEL_KEY, checked)
-            editor.apply()
+                app.enabledBatteryLevel = checked
+                (activity_preference.batteryIntervalSpinner).isEnabled = checked
+                editor.putBoolean(app.ENABLED_BATTERY_LEVEL_KEY, checked)
+                editor.apply()
 
-            if(checked){ // register BroadcastReceiver
-                this.registerReceiver(BatteryStateReceiver(), IntentFilter(Intent.ACTION_BATTERY_CHANGED))
-            }else{
-                this.unregisterReceiver(BatteryStateReceiver())
-            }
+                if(checked){ // register BroadcastReceiver
+                    this.registerReceiver(BatteryStateReceiver(), IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+                }else{
+                    this.unregisterReceiver(BatteryStateReceiver())
+                }
+        }
+
+        (activity_preference.mobileDataSwitch).setOnCheckedChangeListener {
+            compoundButton, checked ->
+                app.canUseMobileData = checked
+                editor.putBoolean(app.USE_MOBILE_DATA_KEY, checked)
+                editor.apply()
         }
 
         (activity_preference.refreshIntervalSpinner).onItemSelectedListener = object : OnItemSelectedListener {

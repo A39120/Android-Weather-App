@@ -53,6 +53,7 @@ class MyWeatherApp : Application(){
         val TIME_FOR_NOTIFICATIONS_UNIX_KEY = "isel.pdm.trab.openweathermap.timefornotificationsunix"
         val REFRESH_TIME_KEY = "isel.pdm.trab.openweathermap.timefornotifications"
         val BATTERY_LEVEL_KEY = "isel.pdm.trab.openweathermap.batterylevel"
+        val USE_MOBILE_DATA_KEY = "isel.pdm.trab.openweathermap.usemobiledata"
         /* variables */
         lateinit var favouriteLoc: String
         lateinit var subscribedLocs: ArrayList<String>
@@ -63,6 +64,7 @@ class MyWeatherApp : Application(){
         var refreshTime: Int = -1 // TODO change to some default ? maybe 12h ?
         var batteryLevel: Int = -1
         var isBatterySavingMode: Boolean = false /** used by BatteryStateReceiver as a flag, other actions should consult this flag */
+        var canUseMobileData: Boolean = false
         // val refreshIntervalValues: Array<Int> = arrayOf(12, 24, 48) // 12h, 1day, 2days
         // we can use strings.xml -> see <string-array name="pref_refresh_interval_values">
         // static values can be set there
@@ -100,5 +102,7 @@ class MyWeatherApp : Application(){
         refreshTime = prefs.getInt(REFRESH_TIME_KEY, -1)
         // battery level
         batteryLevel = prefs.getInt(BATTERY_LEVEL_KEY, -1)
+        // if we can use mobile data for the updates
+        canUseMobileData = prefs.getBoolean(USE_MOBILE_DATA_KEY, false)
     }
 }
