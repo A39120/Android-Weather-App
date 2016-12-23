@@ -31,7 +31,7 @@
             android:name=".models.content.WeatherProvider"
             android:authorities="isel.pdm.trab.openweathermap"
             android:enabled="true"
-            android:exported="true"></provider>
+            android:exported="true" />
 
         <activity
             android:name=".presentation.PreferencesActivity"
@@ -54,16 +54,20 @@
                 <action android:name="isel.pdm.trab.openweathermap.FORECAST_SERVICE" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".receivers.WifiReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
-                <action android:name="android.net.wifi.STATE_CHANGE"/>
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+                <action android:name="android.net.wifi.STATE_CHANGE" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".services.FavNotificationService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

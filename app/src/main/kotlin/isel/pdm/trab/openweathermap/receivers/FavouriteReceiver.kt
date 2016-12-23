@@ -19,13 +19,15 @@ class FavouriteReceiver : BroadcastReceiver() {
 
         val parcel = intent.extras
         val weatherDetail = parcel.getParcelable<ForecastWeatherDto.ForecastDetail>("WEATHER_FOR_NOTIFY")
+        val location = parcel.getString("LOCATION_FOR_NOTIFY")
 
         val minTempInfo = getMinTempInfo(weatherDetail.temp)
         val maxTempInfo = getMaxTempInfo(weatherDetail.temp)
         val windInfo = getWindInfo(weatherDetail.windSpeed)
         val rainInfo = getRainInfo(weatherDetail.rain)
 
-        val finalMessage = minTempInfo.plus(maxTempInfo).plus(windInfo).plus(rainInfo)
+        val intro = "Weather for " + location
+        val finalMessage = intro.plus(minTempInfo.plus(maxTempInfo).plus(windInfo).plus(rainInfo))
 
         val mBuilder = NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.notification_template_icon_bg)

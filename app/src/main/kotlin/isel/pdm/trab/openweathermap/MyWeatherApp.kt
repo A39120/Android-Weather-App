@@ -24,6 +24,8 @@ class MyWeatherApp : Application(){
     val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
     val cacheSize = maxMemory / 8
 
+    var forecastRefreshTimestamp: Long = 0
+
 
     companion object {
         lateinit var instance: MyWeatherApp

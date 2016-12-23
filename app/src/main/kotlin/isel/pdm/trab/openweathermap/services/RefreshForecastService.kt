@@ -12,8 +12,6 @@ import isel.pdm.trab.openweathermap.models.content.WeatherProvider
 import isel.pdm.trab.openweathermap.models.content.*
 class RefreshForecastService : Service() {
 
-    val BROADCAST_ACTION = "isel.pdm.trab.openweathermap.FORECAST_SERVICE"
-
     override fun onBind(intent: Intent): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -25,6 +23,7 @@ class RefreshForecastService : Service() {
                 GetRequest(
                         url,
                         { weather ->
+                            (application as MyWeatherApp).forecastRefreshTimestamp = System.currentTimeMillis()
                             //Forecast Weather Test
                             val tableUri = WeatherProvider.FORECAST_CONTENT_URI
 
@@ -96,12 +95,14 @@ class RefreshForecastService : Service() {
                             cursor.close()
                             // end of debug code
 
-                            val myIntent = Intent()
-                            myIntent.action = BROADCAST_ACTION
-                            myIntent.putExtra("WEATHER_FOR_NOTIFY", weather.forecastDetail[1])
-                            sendBroadcast(myIntent)
+                            // TODO: this is only to see if the service works, to be DELETED
+                            val myIntent = Intent(this, FavNotificationService::class.java)
+                            myIntent.putExtra("FORECAST_CITY_NOTIFY", weather.cityDetail.cityName)
+                            myIntent.putExtra("FORECAST_COUNTRY_NOTIFY", weather.cityDetail.country)
+                            startService(myIntent)
+                            //
                         },
-                        { error -> System.out.println("Error in refresh current service?")},
+                        { error -> System.out.println("Error in refresh forecast service?")},
                         ForecastWeatherDto::class.java)
         )
 

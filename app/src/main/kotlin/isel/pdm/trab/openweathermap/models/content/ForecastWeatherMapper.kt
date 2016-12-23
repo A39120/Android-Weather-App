@@ -63,7 +63,7 @@ fun ForecastWeatherDto.toContentValues(): List<ContentValues> {
  * @param [cursor] The cursor pointing to the weather day item data
  * @return The newly created [ForecastWeatherDto]
  */
-private fun toForecastWeatherDto(cursor: Cursor): ForecastWeatherDto {
+fun toForecastWeatherDto(cursor: Cursor): ForecastWeatherDto {
     with (WeatherProvider.Companion) {
         val list = ArrayList<ForecastDetail>()
 
@@ -110,6 +110,7 @@ private fun toForecastWeatherDto(cursor: Cursor): ForecastWeatherDto {
             )
         }while(cursor.moveToNext())
 
+        /*
         val al = ArrayList<WeatherShortInfo>()
         al.add(WeatherShortInfo(
                 cursor.getInt(COLUMN_CURRENT_SHORT_INFO_ID_IDX),
@@ -117,6 +118,7 @@ private fun toForecastWeatherDto(cursor: Cursor): ForecastWeatherDto {
                 cursor.getString(COLUMN_INFO_DESCRIPTION_IDX),
                 cursor.getString(COLUMN_INFO_ICON_IDX)
         ))
+        */
         return fwDto
     }
 }
