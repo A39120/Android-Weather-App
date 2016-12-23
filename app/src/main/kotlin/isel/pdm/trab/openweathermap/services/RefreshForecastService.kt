@@ -34,7 +34,7 @@ class RefreshForecastService : Service() {
                                     "${WeatherProvider.COLUMN_COUNTRY_CODE}=?"
 
                             val selectionArgs = arrayOf(location, country)
-                            val projection = arrayOf(WeatherProvider.COLUMN_UTC)
+                            val projection = arrayOf(WeatherProvider.COLUMN_ID ,WeatherProvider.COLUMN_UTC)
                             // check if day-month-year is already in db
                             val cursor = contentResolver.query(
                                     tableUri,
@@ -51,23 +51,22 @@ class RefreshForecastService : Service() {
                                     contentResolver.insert(tableUri, element)
                             }
                             else{
-                                do{
+                                while(cursor.moveToNext()){
                                     //check if data of the day is already there
+
                                     val current_utc = weather.forecastDetail[count].utc
-                                    val current_date = ConvertUtils.convertUnixToDate(current_utc*1000)
+                                    val current_date = ConvertUtils.convertUnixToDate(current_utc)
+                                    val content_utc = cursor.getLong(1)     // cursor only has 2 columns
+                                    val content_date = ConvertUtils.convertUnixToDate(content_utc * 1000)
 
-                                    val content_utc = cursor.getLong(WeatherProvider.COLUMN_UTC_IDX)
-                                    val content_date = ConvertUtils.convertUnixToDate(content_utc*1000)
-
+                                    //go to first day that has the same date as first day on ContentProvider
                                     while(content_utc < current_utc && !current_date.equals(content_date)){
                                         //the day is not the same
                                         if(!cursor.moveToNext())
                                             break;
                                     }
-
                                     val updateArgs = arrayOf("$location, $country $current_date")
 
-                                    //TODO: DELETE VALUES OLDER THAN TODAY
                                     //There is a newer version for the weather for that day
                                     contentResolver.update(tableUri,
                                             wcv[count],
@@ -75,7 +74,8 @@ class RefreshForecastService : Service() {
                                             updateArgs
                                     )
                                     count+=1
-                                }while(cursor.moveToNext())
+                                }
+
                                 //Insert the others that didn't exist
                                 while(count < weather.forecastDetail.size){
                                     contentResolver.insert(tableUri, wcv[count])
@@ -83,6 +83,18 @@ class RefreshForecastService : Service() {
                                 }
                             }
                             cursor.close()
+
+                            // Debug code to check if insertion/update was successful
+                            val after = contentResolver.query(
+                                    tableUri,
+                                    projection,
+                                    null,
+                                    null,
+                                    null
+                            )
+                            println("debug on refreshforecastdayservice (count):" + after.count)
+                            cursor.close()
+                            // end of debug code
 
                             val myIntent = Intent()
                             myIntent.action = BROADCAST_ACTION

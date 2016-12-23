@@ -288,6 +288,7 @@ class WeatherProvider: ContentProvider() {
 
     @MainThread
     override fun onCreate(): Boolean {
+
         dbHelper = WeatherDbHelper()
         uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
         with (uriMatcher) {

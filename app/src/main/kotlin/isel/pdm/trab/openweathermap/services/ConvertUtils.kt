@@ -53,13 +53,9 @@ class ConvertUtils{
         /**
          *  Converts a value in unix to an "date" format
          *  @param unixtTime: The time in unix, UTC
-         *  @returns The date and time (dd-MM-yyyy HH:mm:ss)
+         *  @returns The date and time (dd-MM-yyyy)
          */
-        fun convertUnixToDate(unixTime: Long): String {
-            val dateTime: Date = Date(unixTime * 1000)
-            val localDateFormat = SimpleDateFormat("dd-MM-yyyy")
-            return localDateFormat.format(dateTime)
-        }
+        fun convertUnixToDate(unixTime: Long) = convertUnixToDateTime(unixTime).split(" ")[0]
 
         /**
          *  Converts a value in degrees to cardinal description
