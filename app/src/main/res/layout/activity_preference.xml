@@ -135,7 +135,7 @@
                     android:layout_weight="1" />
 
                 <TextView
-                    android:text="Allow updating using mobile data"
+                    android:text="@string/pref_useMobileData"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/textView3"

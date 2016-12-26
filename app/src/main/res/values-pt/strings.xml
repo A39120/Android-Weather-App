@@ -35,4 +35,23 @@
         <item>1 dia</item> <!-- <item>24h</item> -->
         <item>2 dias</item> <!-- <item>48h</item> -->
     </string-array>
+    <string name="weather_for">"Tempo para "</string>
+    <string name="min_temp">"Temp Min: "</string>
+    <string name="min_temp_text1">Está muito frio, vista roupas quentes, luvas e um gorro!</string>
+    <string name="min_temp_text2">Está frio, vista roupas quentes.</string>
+    <string name="min_temp_text3">Está fresco lá fora. Não saia só com uma t-shirt.</string>
+    <string name="default_temp_msg">É uma boa temperatura.</string>
+    <string name="max_temp_text1">Está quente lá fora, leve óculos de sol.</string>
+    <string name="max_temp">"Temp máx: "</string>
+    <string name="max_temp_text2">Está muito quente lá fora, use protetor solar e óculos de sol.</string>
+    <string name="wind_text1">Está um pouco ventoso, é melhor agasalhar-se.</string>
+    <string name="wind_text2">O vento está forte. Cuidado quando sair.</string>
+    <string name="wind_text3">Ventos de tempestade. Saia apenas se necessário.</string>
+    <string name="wind_text4">Aviso de tempestade tropical. Fique em casa.</string>
+    <string name="default_wind_msg">Nenhum ou pouco vento.</string>
+    <string name="rain_text1">Está a chover um pouco, é melhor levar um chapéu de chuva.</string>
+    <string name="rain_text2">Chuva moderada, não esquecer do cahpéu de chuva!</string>
+    <string name="rain_text3">Chuva forte, cuidado quando sair.</string>
+    <string name="rain_text4">Chuva torrencial, fique em casa.</string>
+    <string name="default_rain_msg">Não há chuva.</string>
 </resources>

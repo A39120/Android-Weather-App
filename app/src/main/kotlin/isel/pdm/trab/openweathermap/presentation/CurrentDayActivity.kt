@@ -223,11 +223,9 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         val url = UrlBuilder().buildWeatherByCityUrl(resources, currentCity)
         val apl = (application as MyWeatherApp)
 
-        // TODO: this is only to see if the service works, to be DELETED
         val myIntent = Intent(this, RefreshCurrentDayService::class.java)
         myIntent.putExtra("CURRENT_CITY", currentCity)
         startService(myIntent)
-        //
 
         if(apl.lruDtoCache.contains(url))
             onCurrentDayRequestFinished(apl.lruDtoCache[url] as CurrentWeatherDto)

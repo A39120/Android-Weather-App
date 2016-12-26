@@ -12,8 +12,6 @@ import java.io.IOException
 /**
  * Generic implementation of a custom HTTP GET request.
  *
- * TODO: Inject cache policy provider
- *
  * @param url: The URL that is used to make the HTTP request
  * @param success: The callback in case of a HTTP GET request made a successful response
  * @param error: The VolleyError callback in case of an error

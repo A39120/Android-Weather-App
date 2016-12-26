@@ -7,7 +7,7 @@
     <string name="app_name" translatable="false">Yawa</string>
     <string name="titleTextview" translatable="false">YAWA - Yet Another Weather App</string>
     <string name="by">By</string>
-    <string name="textviewText">João Almeida</string>
+    <string name="textviewText" translatable="false">João Almeida</string>
     <string name="jo_o_lopes" translatable="false">João Lopes</string>
     <string name="tiago_santos" translatable="false">Tiago Santos</string>
     <string name="person3_url" translatable="false">https://github.com/A39120</string>
@@ -20,7 +20,7 @@
     <string name="insert_country_edit_text">Insert a city...</string>
     <string name="could_not_download_icon_for_weather">Could not download icon for weather</string>
     <string name="about_us">About us</string>
-    <string name="language">Language/Idioma</string>
+    <string name="language" translatable="false">Language/Idioma</string>
     <string name="refresh">Refresh</string>
     <string name="connection_problem_wifi_off">Could not establish connection (Wifi is turned off)</string>
     <string name="language_set_to">Language set to:</string>
@@ -64,5 +64,25 @@
         <item>20 %</item>
         <item>10 %</item>
     </string-array>
+
+    <string name="weather_for">Weather for</string>
+    <string name="min_temp">Min Temp:</string>
+    <string name="min_temp_text1">It\'s freezing, get some really warm clothes, some gloves and a bonnet.</string>
+    <string name="min_temp_text2">It\'s really cold, wear some warm clothes.</string>
+    <string name="min_temp_text3">It might be fresh outside, don\'t go with a t-shirt only.</string>
+    <string name="default_temp_msg">It\'s a good temperature.</string>
+    <string name="max_temp_text1">It\'s hot outside, bring some sunglasses.</string>
+    <string name="max_temp">Max Temp:</string>
+    <string name="max_temp_text2">It\'s realy hot outside, wear sun screen and some sunglasses.</string>
+    <string name="wind_text1">It\'s a bit windy, you might wear an extra layer of clothes.</string>
+    <string name="wind_text2">The wind is blowing hard, be careful when going outside.</string>
+    <string name="wind_text3">Storm winds, go outside only if you must.</string>
+    <string name="wind_text4">Hurricane warning, stay indoors and protect yourself.</string>
+    <string name="default_wind_msg">Light or no wind.</string>
+    <string name="rain_text1">It\'s raining lightly, you might wanna bring an umbrella with you.</string>
+    <string name="rain_text2">Moderate rain, don\'t forget the umbrella!</string>
+    <string name="rain_text3">Heavy rain, be careful when going outside.</string>
+    <string name="rain_text4">Torrential rain, stay indoors.</string>
+    <string name="default_rain_msg">No rain.</string>
 
 </resources>

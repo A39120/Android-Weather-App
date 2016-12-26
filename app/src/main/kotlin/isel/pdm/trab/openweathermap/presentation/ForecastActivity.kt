@@ -62,7 +62,7 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
         }else{
             activity_forecast.forecast_country_textview.text = savedInstanceState.getString("activity_forecast_city")
 
-            val list : ArrayList<ForecastWeatherDto.ForecastDetail> = ArrayList<ForecastWeatherDto.ForecastDetail>()
+            val list : ArrayList<ForecastWeatherDto.ForecastDetail> = ArrayList()
             val i: Int = savedInstanceState.getInt("activity_forecast_list_count")
             var j: Int = 0
             while(j < i){
@@ -169,13 +169,12 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
                 }
             })
 
-            itemView.setOnClickListener(object: View.OnClickListener {
-                override fun onClick(view: View): Unit{
-                    val anIntent = Intent(context, ForecastDayActivity::class.java)
-                    anIntent.putExtra("POSITION", position)
-                    anIntent.putExtra("FORECAST_DATA", source)
-                    context.startActivity(anIntent)
-            }})
+            itemView.setOnClickListener(View.OnClickListener {
+                val anIntent = Intent(context, ForecastDayActivity::class.java)
+                anIntent.putExtra("POSITION", position)
+                anIntent.putExtra("FORECAST_DATA", source)
+                context.startActivity(anIntent)
+            })
         return itemView
         }
     }
@@ -235,11 +234,9 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
         val url = UrlBuilder().buildForecastByCityUrl(resources, currentCity)
         val apl = (application as MyWeatherApp)
 
-        // TODO: this is only to see if the service works, to be DELETED
         val myIntent = Intent(this, RefreshForecastService::class.java)
         myIntent.putExtra("FORECAST_CITY", currentCity)
         startService(myIntent)
-        //
 
         if(apl.lruDtoCache.contains(url))
             onForecastRequestFinished(apl.lruDtoCache[url] as ForecastWeatherDto)
