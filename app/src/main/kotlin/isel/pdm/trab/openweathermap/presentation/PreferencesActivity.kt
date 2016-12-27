@@ -130,9 +130,15 @@ class PreferencesActivity : BaseActivity() {
                 editor.apply()
 
                 if(checked){ // register BroadcastReceiver
-                    this.registerReceiver(BatteryStateReceiver(), IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+                    if(MyWeatherApp.batteryStateReceiver == null) {
+                        MyWeatherApp.batteryStateReceiver = BatteryStateReceiver()
+                        this.registerReceiver(MyWeatherApp.batteryStateReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+                    }
                 }else{
-                    this.unregisterReceiver(BatteryStateReceiver())
+                    if(MyWeatherApp.batteryStateReceiver != null) {
+                        this.unregisterReceiver(MyWeatherApp.batteryStateReceiver)
+                        MyWeatherApp.batteryStateReceiver = null
+                    }
                 }
         }
 

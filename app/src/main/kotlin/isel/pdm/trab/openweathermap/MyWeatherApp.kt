@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
+import isel.pdm.trab.openweathermap.receivers.BatteryStateReceiver
 import isel.pdm.trab.openweathermap.services.CurrentInfoGetter
 import isel.pdm.trab.openweathermap.services.ForecastInfoGetter
 import isel.pdm.trab.openweathermap.utils.LruDtoCache
@@ -78,6 +79,8 @@ class MyWeatherApp : Application(){
         // static values can be set there
         lateinit var locationsSubbedSpinnerAdapter: ArrayAdapter<String>
         lateinit var favouriteLocSpinnerAdapter: ArrayAdapter<String>
+
+        var batteryStateReceiver: BatteryStateReceiver? = null
     }
 
     override fun onCreate(){
