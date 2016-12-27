@@ -10,9 +10,10 @@ class RefreshCurrentDayService : Service() {
     override fun onBind(intent: Intent): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val currentCity: String = intent?.getStringExtra("CURRENT_CITY") as String
-
-        (application as MyWeatherApp).currentInfoGetter?.forceUpdateCurrentDayInfoInProvider(currentCity)
+        if(!MyWeatherApp.isBatterySavingMode) {
+            val currentCity: String = intent?.getStringExtra("CURRENT_CITY") as String
+            (application as MyWeatherApp).currentInfoGetter?.forceUpdateCurrentDayInfoInProvider(currentCity)
+        }
 
         return START_REDELIVER_INTENT
     }

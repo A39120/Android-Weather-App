@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import isel.pdm.trab.openweathermap.MyWeatherApp
+import isel.pdm.trab.openweathermap.utils.UrlBuilder
 
 class WifiReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
@@ -16,12 +17,27 @@ class WifiReceiver : BroadcastReceiver() {
         val isMobileDataConnected = mobile != null && mobile.isConnectedOrConnecting
 
         if(isWifiConnected || (MyWeatherApp.canUseMobileData && isMobileDataConnected)){
-            // TODO update with wifi code goes here
-            // update only if last update timestamp "tells" the info can be outdated
-            // TODO currentday timestamp check goes here
-            (MyWeatherApp.instance).currentInfoGetter?.forceUpdateCurrentDayInfoInProvider(MyWeatherApp.favouriteLoc)
-            // TODO forecast timestamp check goes here
-            (MyWeatherApp.instance).forecastInfoGetter?.forceUpdateForecastInfoInProvider(MyWeatherApp.favouriteLoc)
+            if(!MyWeatherApp.isBatterySavingMode) {
+                val app = (MyWeatherApp.instance)
+                val currentTimestamp = app.currentTimestampMap[UrlBuilder().buildWeatherByCityUrl(app.resources, MyWeatherApp.favouriteLoc)] as Long
+                val forecastTimestamp = app.forecastTimestampMap[UrlBuilder().buildForecastByCityUrl(app.resources, MyWeatherApp.favouriteLoc)] as Long
+                val currentTime = System.currentTimeMillis()
+
+                // TODO this is just ugly...   >.<
+                var interval: Long = -1
+                if(MyWeatherApp.refreshTime == 0) interval = 12
+                if(MyWeatherApp.refreshTime == 1) interval = 24
+                if(MyWeatherApp.refreshTime == 2) interval = 48
+
+                val currentDayDifferenceInIntervals = ((currentTime - currentTimestamp)  / (1000*60*60*interval)).toInt()
+                val forecastDifferenceInIntervals = ((currentTime - forecastTimestamp)  / (1000*60*60*interval)).toInt()
+
+                if(currentDayDifferenceInIntervals > 0) // current day is outdated
+                    (MyWeatherApp.instance).currentInfoGetter?.forceUpdateCurrentDayInfoInProvider(MyWeatherApp.favouriteLoc)
+
+                if(forecastDifferenceInIntervals > 0) // forecast is outdated
+                    (MyWeatherApp.instance).forecastInfoGetter?.forceUpdateForecastInfoInProvider(MyWeatherApp.favouriteLoc)
+            }
         }
     }
 }
