@@ -16,11 +16,12 @@ import isel.pdm.trab.openweathermap.utils.UrlBuilder
 class ForecastInfoGetter(val application: Application, val contentResolver: ContentResolver) {
 
     fun getForecastInfo(city: String): ForecastWeatherDto? {
-        val url = UrlBuilder().buildForecastByCityUrl(application.resources, city)
+        val location = city.capitalize()
+        val url = UrlBuilder().buildForecastByCityUrl(application.resources, location)
 
         var weather = getForecastFromCache(url)
         if(weather == null)
-            weather =  getForecastFromProvider(city)
+            weather =  getForecastFromProvider(location)
 
         return weather
     }

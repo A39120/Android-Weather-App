@@ -14,10 +14,11 @@ import isel.pdm.trab.openweathermap.utils.UrlBuilder
 class CurrentInfoGetter(val application: Application, val contentResolver: ContentResolver) {
 
     fun getCurrentDayInfo(city: String): CurrentWeatherDto? {
-        val url = UrlBuilder().buildWeatherByCityUrl(application.resources, city)
+        val location = city.capitalize()
+        val url = UrlBuilder().buildWeatherByCityUrl(application.resources, location)
         var weather = getCurrentFromCache(url)
         if(weather == null)
-            weather = getCurrentFromProvider(city)
+            weather = getCurrentFromProvider(location)
 
         return weather
     }
