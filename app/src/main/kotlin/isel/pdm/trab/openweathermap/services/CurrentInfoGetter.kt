@@ -2,12 +2,14 @@ package isel.pdm.trab.openweathermap.services
 
 import android.app.Application
 import android.content.ContentResolver
+import com.android.volley.toolbox.Volley
 import isel.pdm.trab.openweathermap.MyWeatherApp
+import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import isel.pdm.trab.openweathermap.models.content.WeatherProvider
+import isel.pdm.trab.openweathermap.models.content.toContentValues
 import isel.pdm.trab.openweathermap.models.content.toCurrentWeatherDto
 import isel.pdm.trab.openweathermap.utils.UrlBuilder
-
 
 class CurrentInfoGetter(val application: Application, val contentResolver: ContentResolver) {
 
@@ -19,6 +21,45 @@ class CurrentInfoGetter(val application: Application, val contentResolver: Conte
             weather = getCurrentFromProvider(city)
         }
         return weather
+    }
+
+    fun forceUpdateCurrentDayInfoInProvider(city: String){
+        val url = UrlBuilder().buildWeatherByCityUrl(MyWeatherApp@this.application.resources, city)
+
+        Volley.newRequestQueue(MyWeatherApp@this.application).add(
+            GetRequest(
+                url,
+                { weather ->
+                    val tableUri = WeatherProvider.CURRENT_CONTENT_URI
+                    val contentResolver = contentResolver
+                    val location = weather.location
+                    val selectionArgs = arrayOf(location)
+                    val projection = arrayOf(WeatherProvider.COLUMN_LOCATION)
+                    val cursor = contentResolver.query(
+                            tableUri,
+                            projection,
+                            WeatherProvider.COLUMN_LOCATION + "=?",
+                            selectionArgs,
+                            WeatherProvider.COLUMN_LOCATION + " ASC"
+                    )
+
+                    if(cursor.count == 0){
+                        val wcv = weather.toContentValues()
+                        contentResolver.insert(tableUri, wcv)
+                    }
+                    else{   // It already contains data, update instead
+                        contentResolver.update(
+                                tableUri,
+                                weather.toContentValues(),
+                                WeatherProvider.COLUMN_LOCATION + "=?",
+                                selectionArgs
+                        )
+                    }
+                    cursor.close()
+                },
+                { error -> System.out.println("Error refreshing currentday info?")},
+                CurrentWeatherDto::class.java)
+        )
     }
 
     private fun getCurrentFromCache(url: String): CurrentWeatherDto?{
