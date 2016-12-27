@@ -12,7 +12,6 @@ import isel.pdm.trab.openweathermap.services.CurrentInfoGetter
 import isel.pdm.trab.openweathermap.services.ForecastInfoGetter
 import isel.pdm.trab.openweathermap.utils.LruDtoCache
 import isel.pdm.trab.openweathermap.utils.LruImageCache
-import org.jetbrains.annotations.Mutable
 import java.util.*
 
 

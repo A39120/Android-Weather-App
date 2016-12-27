@@ -1,5 +1,7 @@
 package isel.pdm.trab.openweathermap.presentation
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -15,6 +17,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import isel.pdm.trab.openweathermap.receivers.BatteryStateReceiver
+import isel.pdm.trab.openweathermap.services.FavNotificationService
 
 class PreferencesActivity : BaseActivity() {
     override var layoutResId: Int = R.layout.activity_preference
@@ -112,6 +115,21 @@ class PreferencesActivity : BaseActivity() {
                 app.timeForNotificationsUnix = app.timeForNotifications.timeInMillis
                 editor.putLong(app.TIME_FOR_NOTIFICATIONS_UNIX_KEY,app.timeForNotificationsUnix)
                 editor.apply()
+                val action = Intent(app.instance, FavNotificationService::class.java)
+                        .putExtra("FORECAST_CITY_NOTIFY", MyWeatherApp.favouriteLoc)
+                        .putExtra("FORECAST_COUNTRY_NOTIFY", "")
+                (getSystemService(ALARM_SERVICE) as AlarmManager).setInexactRepeating(
+                        AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        app.timeForNotificationsUnix,
+                        AlarmManager.INTERVAL_DAY,
+                        PendingIntent.getService(app.instance, 1, action, PendingIntent.FLAG_UPDATE_CURRENT)
+                )
+                /*
+                    TODO mudar as strings hardcoded para constantes...
+                    TODO falta o country... como visto em FavNotificationService:
+                    val location: String = intent?.getStringExtra("FORECAST_CITY_NOTIFY") as String
+                    val country: String = intent?.getStringExtra("FORECAST_COUNTRY_NOTIFY") as String
+                */
         }
 
         (activity_preference.notificationSwitch).setOnCheckedChangeListener {
