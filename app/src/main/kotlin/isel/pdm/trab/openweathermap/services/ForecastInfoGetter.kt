@@ -21,6 +21,8 @@ class ForecastInfoGetter(val application: Application, val contentResolver: Cont
         var weather = getForecastFromCache(url)
         if(weather == null){
             weather =  getForecastFromProvider(city)
+            if(weather != null)
+                (application as MyWeatherApp).lruDtoCache.put(url, weather)
         }
         return weather
     }

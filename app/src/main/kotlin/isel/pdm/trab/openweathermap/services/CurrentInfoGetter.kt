@@ -19,6 +19,8 @@ class CurrentInfoGetter(val application: Application, val contentResolver: Conte
         var weather = getCurrentFromCache(url)
         if(weather == null){
             weather = getCurrentFromProvider(city)
+            if(weather != null)
+                (application as MyWeatherApp).lruDtoCache.put(url, weather)
         }
         return weather
     }
