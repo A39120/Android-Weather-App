@@ -16,12 +16,14 @@ class WifiReceiver : BroadcastReceiver() {
         val isMobileDataConnected = mobile != null && mobile.isConnectedOrConnecting
 
         if(isWifiConnected || (MyWeatherApp.canUseMobileData && isMobileDataConnected)){
-            // TODO update with wifi code goes here
-            // update only if last update timestamp "tells" the info can be outdated
-            // TODO currentday timestamp check goes here
-            (MyWeatherApp.instance).currentInfoGetter?.forceUpdateCurrentDayInfoInProvider(MyWeatherApp.favouriteLoc)
-            // TODO forecast timestamp check goes here
-            (MyWeatherApp.instance).forecastInfoGetter?.forceUpdateForecastInfoInProvider(MyWeatherApp.favouriteLoc)
+            if(!MyWeatherApp.isBatterySavingMode) {
+                // TODO update with wifi code goes here
+                // update only if last update timestamp "tells" the info can be outdated
+                // TODO currentday timestamp check goes here
+                (MyWeatherApp.instance).currentInfoGetter?.forceUpdateCurrentDayInfoInProvider(MyWeatherApp.favouriteLoc)
+                // TODO forecast timestamp check goes here
+                (MyWeatherApp.instance).forecastInfoGetter?.forceUpdateForecastInfoInProvider(MyWeatherApp.favouriteLoc)
+            }
         }
     }
 }

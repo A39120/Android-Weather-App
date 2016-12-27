@@ -20,10 +20,6 @@ import isel.pdm.trab.openweathermap.receivers.BatteryStateReceiver
 import isel.pdm.trab.openweathermap.services.FavNotificationService
 import isel.pdm.trab.openweathermap.services.RefreshCurrentDayService
 import isel.pdm.trab.openweathermap.services.RefreshForecastService
-import isel.pdm.trab.openweathermap.utils.ConvertUtils
-import android.content.Intent
-
-
 
 class PreferencesActivity : BaseActivity() {
     override var layoutResId: Int = R.layout.activity_preference
