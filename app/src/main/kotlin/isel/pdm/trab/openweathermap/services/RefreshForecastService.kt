@@ -10,6 +10,9 @@ import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.ForecastWeatherDto
 import isel.pdm.trab.openweathermap.models.content.WeatherProvider
 import isel.pdm.trab.openweathermap.models.content.*
+import isel.pdm.trab.openweathermap.utils.ConvertUtils
+import isel.pdm.trab.openweathermap.utils.UrlBuilder
+
 class RefreshForecastService : Service() {
 
     override fun onBind(intent: Intent): IBinder? = null
@@ -23,8 +26,6 @@ class RefreshForecastService : Service() {
                 GetRequest(
                         url,
                         { weather ->
-                            (application as MyWeatherApp).forecastRefreshTimestamp = System.currentTimeMillis()
-                            //Forecast Weather Test
                             val tableUri = WeatherProvider.FORECAST_CONTENT_URI
 
                             val location = weather.cityDetail.cityName
@@ -83,24 +84,13 @@ class RefreshForecastService : Service() {
                             }
                             cursor.close()
 
-                            // Debug code to check if insertion/update was successful
-                            val after = contentResolver.query(
-                                    tableUri,
-                                    projection,
-                                    null,
-                                    null,
-                                    null
-                            )
-                            println("debug on refreshforecastdayservice (count):" + after.count)
-                            cursor.close()
-                            // end of debug code
-
                             // TODO: this is only to see if the service works, to be DELETED
+                            /*
                             val myIntent = Intent(this, FavNotificationService::class.java)
                             myIntent.putExtra("FORECAST_CITY_NOTIFY", weather.cityDetail.cityName)
                             myIntent.putExtra("FORECAST_COUNTRY_NOTIFY", weather.cityDetail.country)
                             startService(myIntent)
-                            //
+                            */
                         },
                         { error -> System.out.println("Error in refresh forecast service?")},
                         ForecastWeatherDto::class.java)

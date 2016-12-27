@@ -13,7 +13,7 @@ import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
 import isel.pdm.trab.openweathermap.MyWeatherApp
 import isel.pdm.trab.openweathermap.R
-import isel.pdm.trab.openweathermap.services.UrlBuilder
+import isel.pdm.trab.openweathermap.utils.UrlBuilder
 import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.ForecastWeatherDto
 import isel.pdm.trab.openweathermap.services.RefreshForecastService
@@ -234,22 +234,25 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
         val url = UrlBuilder().buildForecastByCityUrl(resources, currentCity)
         val apl = (application as MyWeatherApp)
 
-        val myIntent = Intent(this, RefreshForecastService::class.java)
-        myIntent.putExtra("FORECAST_CITY", currentCity)
-        startService(myIntent)
+        val weatherInfo = (application as MyWeatherApp).forecastInfoGetter?.getForecastInfo(currentCity)
+        if(weatherInfo != null)
+            onForecastRequestFinished(weatherInfo)
+        else {
+            val myIntent = Intent(this, RefreshForecastService::class.java)
+            myIntent.putExtra("FORECAST_CITY", currentCity)
+            startService(myIntent)
 
-        if(apl.lruDtoCache.contains(url))
-            onForecastRequestFinished(apl.lruDtoCache[url] as ForecastWeatherDto)
-        else
             Volley.newRequestQueue(this).add(
                     GetRequest(
                             url,
                             { weather ->
                                 apl.lruDtoCache.put(url, weather)
+                                apl.forecastTimestampMap.put(url, System.currentTimeMillis())
                                 onForecastRequestFinished(weather)
                             },
-                            { error -> System.out.println("Error in response?")},
+                            { error -> System.out.println("Error in response?") },
                             ForecastWeatherDto::class.java)
             )
+        }
     }
 }

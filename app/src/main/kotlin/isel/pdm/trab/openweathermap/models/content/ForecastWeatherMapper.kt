@@ -9,7 +9,7 @@ import isel.pdm.trab.openweathermap.models.ForecastWeatherDto
 import isel.pdm.trab.openweathermap.models.*
 import isel.pdm.trab.openweathermap.models.ForecastWeatherDto.*
 import isel.pdm.trab.openweathermap.presentation.ForecastActivity
-import isel.pdm.trab.openweathermap.services.ConvertUtils
+import isel.pdm.trab.openweathermap.utils.ConvertUtils
 import java.text.SimpleDateFormat
 import java.util.*
 

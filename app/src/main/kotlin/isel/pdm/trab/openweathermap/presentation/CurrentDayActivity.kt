@@ -17,9 +17,13 @@ import isel.pdm.trab.openweathermap.*
 import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import isel.pdm.trab.openweathermap.models.ForecastWeatherDto
-import isel.pdm.trab.openweathermap.services.ConvertUtils
+import isel.pdm.trab.openweathermap.models.content.WeatherProvider
+import isel.pdm.trab.openweathermap.models.content.toContentValues
+import isel.pdm.trab.openweathermap.models.content.toCurrentWeatherDto
+import isel.pdm.trab.openweathermap.utils.ConvertUtils
 import isel.pdm.trab.openweathermap.services.RefreshCurrentDayService
-import isel.pdm.trab.openweathermap.services.UrlBuilder
+import isel.pdm.trab.openweathermap.services.RefreshForecastService
+import isel.pdm.trab.openweathermap.utils.UrlBuilder
 import kotlinx.android.synthetic.main.activity_current_day.*
 import kotlinx.android.synthetic.main.activity_current_day.view.*
 import java.util.*
@@ -28,7 +32,6 @@ import java.util.*
  * Activity responsible for displaying the current day's weather information
  */
 class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
-    val UPDATE_TIMEOUT: Long = 1000 * 60 * 60 // (1000 milis) * (60 seconds) * (60 minutes) = 1 hour
 
     override val layoutResId: Int = R.layout.activity_current_day
     override val actionBarId: Int? = R.id.toolbar
@@ -66,11 +69,6 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
             activity_current_day.curday_image.setImageBitmap(parcel.getParcelable("WeatherBitmap"))
         }
         activity_current_day.curday_country_edittext.setOnEditorActionListener(this)
-
-
-        Handler(mainLooper).postDelayed({
-            refreshWeatherInfo(activity_current_day.curday_country_textview.text.toString())
-        }, UPDATE_TIMEOUT)
     }
 
     /**
@@ -111,17 +109,24 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
 
             val url = UrlBuilder().buildForecastByCityUrl(resources, city)
             val apl = (application as MyWeatherApp)
-            if(apl.lruDtoCache.contains(url)){
+
+            val weatherInfo = (application as MyWeatherApp).forecastInfoGetter?.getForecastInfo(city)
+            if(weatherInfo != null){
                 anIntent.putExtra("FORECAST_DATA", apl.lruDtoCache[url] as ForecastWeatherDto)
                 startActivity(anIntent)
             }
-            else
+            else{
+                val myIntent = Intent(this, RefreshForecastService::class.java)
+                myIntent.putExtra("FORECAST_CITY", city)
+                startService(myIntent)
+
                 Volley.newRequestQueue(this).add(
                         GetRequest(
                                 url,
                                 { weather ->
                                     run {
                                         apl.lruDtoCache.put(url, weather)
+                                        apl.forecastTimestampMap.put(url, System.currentTimeMillis())
                                         anIntent.putExtra("FORECAST_DATA", weather)
                                         startActivity(anIntent)
                                     }
@@ -129,6 +134,8 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
                                 { error -> System.out.println("Error in response?")},
                                 ForecastWeatherDto::class.java)
                 )
+            }
+
             true
         }
 
@@ -223,23 +230,25 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         val url = UrlBuilder().buildWeatherByCityUrl(resources, currentCity)
         val apl = (application as MyWeatherApp)
 
-        val myIntent = Intent(this, RefreshCurrentDayService::class.java)
-        myIntent.putExtra("CURRENT_CITY", currentCity)
-        startService(myIntent)
+        val weatherInfo = (application as MyWeatherApp).currentInfoGetter?.getCurrentDayInfo(MyWeatherApp.city)
+        if(weatherInfo != null)
+            onCurrentDayRequestFinished(weatherInfo)
+        else{
+            val myIntent = Intent(this, RefreshCurrentDayService::class.java)
+            myIntent.putExtra("CURRENT_CITY", currentCity)
+            startService(myIntent)
 
-        if(apl.lruDtoCache.contains(url))
-            onCurrentDayRequestFinished(apl.lruDtoCache[url] as CurrentWeatherDto)
-        else
             Volley.newRequestQueue(this).add(
                     GetRequest(
                             url,
                             { weather ->
                                 apl.lruDtoCache.put(url, weather)
+                                apl.currentTimestampMap.put(url, System.currentTimeMillis())
                                 onCurrentDayRequestFinished(weather)
                             },
                             { error -> System.out.println("Error in response?")},
                             CurrentWeatherDto::class.java)
             )
-
+        }
     }
 }

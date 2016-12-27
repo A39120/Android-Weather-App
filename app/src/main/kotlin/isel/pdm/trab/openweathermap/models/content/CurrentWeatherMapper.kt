@@ -49,7 +49,7 @@ fun CurrentWeatherDto.toContentValues(): ContentValues {
  * @param [cursor] The cursor pointing to the weather day item data
  * @return The newly created [CurrentWeatherDto]
  */
-private fun toCurrentWeatherDto(cursor: Cursor): CurrentWeatherDto {
+fun toCurrentWeatherDto(cursor: Cursor): CurrentWeatherDto {
     with (WeatherProvider.Companion) {
         val al = ArrayList<WeatherShortInfo>()
         al.add(WeatherShortInfo(

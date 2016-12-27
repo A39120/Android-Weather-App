@@ -7,8 +7,11 @@ import android.widget.ArrayAdapter
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
-import isel.pdm.trab.openweathermap.services.LruDtoCache
-import isel.pdm.trab.openweathermap.services.LruImageCache
+import isel.pdm.trab.openweathermap.services.CurrentInfoGetter
+import isel.pdm.trab.openweathermap.services.ForecastInfoGetter
+import isel.pdm.trab.openweathermap.utils.LruDtoCache
+import isel.pdm.trab.openweathermap.utils.LruImageCache
+import org.jetbrains.annotations.Mutable
 import java.util.*
 
 
@@ -24,8 +27,11 @@ class MyWeatherApp : Application(){
     val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
     val cacheSize = maxMemory / 8
 
-    var forecastRefreshTimestamp: Long = 0
+    var currentInfoGetter: CurrentInfoGetter? = null
+    var forecastInfoGetter: ForecastInfoGetter? = null
 
+    var currentTimestampMap: MutableMap<String, Long> = mutableMapOf()
+    var forecastTimestampMap: MutableMap<String, Long> = mutableMapOf()
 
     companion object {
         lateinit var instance: MyWeatherApp

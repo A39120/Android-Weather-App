@@ -4,10 +4,12 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import com.android.volley.toolbox.Volley
+import isel.pdm.trab.openweathermap.MyWeatherApp
 import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
 import isel.pdm.trab.openweathermap.models.content.WeatherProvider
 import isel.pdm.trab.openweathermap.models.content.toContentValues
+import isel.pdm.trab.openweathermap.utils.UrlBuilder
 
 class RefreshCurrentDayService : Service() {
 
@@ -48,17 +50,6 @@ class RefreshCurrentDayService : Service() {
                                 )
                             }
                             cursor.close()
-
-                            // Debug code to check if insertion/update was successful
-                            val after = contentResolver.query(
-                                    tableUri,
-                                    projection,
-                                    WeatherProvider.COLUMN_LOCATION + "=?",
-                                    selectionArgs,
-                                    WeatherProvider.COLUMN_LOCATION + " ASC"
-                            )
-                            println("debug on refreshcurrentdayservice (count):" + after.count)
-                            // end of debug code
                         },
                         { error -> System.out.println("Error in refresh currentday service?")},
                         CurrentWeatherDto::class.java)

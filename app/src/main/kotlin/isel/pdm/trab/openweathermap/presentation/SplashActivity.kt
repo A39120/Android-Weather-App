@@ -8,9 +8,13 @@ import android.os.Handler
 import android.widget.Toast
 import isel.pdm.trab.openweathermap.MyWeatherApp
 import isel.pdm.trab.openweathermap.R
-import isel.pdm.trab.openweathermap.services.UrlBuilder
+import isel.pdm.trab.openweathermap.utils.UrlBuilder
 import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
+import isel.pdm.trab.openweathermap.models.content.*
+import isel.pdm.trab.openweathermap.services.CurrentInfoGetter
+import isel.pdm.trab.openweathermap.services.ForecastInfoGetter
+import isel.pdm.trab.openweathermap.services.RefreshCurrentDayService
 import java.util.*
 
 /**
@@ -23,7 +27,11 @@ class SplashActivity : BaseActivity() {
     //TODO add proper handling to notify user is he has network disabled (took me some time to figure why it wasn't working)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val aIntent = Intent(this, CurrentDayActivity::class.java)
+
+        val app = (application as MyWeatherApp)
+
+        app.currentInfoGetter = CurrentInfoGetter(application, contentResolver)
+        app.forecastInfoGetter = ForecastInfoGetter(application, contentResolver)
 
         // To force the Locale to the one set in @MyWeatherApp.language
         val displayMetrics = resources.displayMetrics
@@ -32,33 +40,46 @@ class SplashActivity : BaseActivity() {
         resources.updateConfiguration(configuration, displayMetrics)
 
         val url = UrlBuilder().buildWeatherByCityUrl(resources)
-        //TODO ask to turn wifi on, right about here
-        (application as MyWeatherApp).requestQueue.add(
-                GetRequest(url,
-                        {
-                            weather ->
-                            run {
-                                (application as MyWeatherApp).lruDtoCache.put(url, weather)
-                                aIntent.putExtra("WEATHER_DATA", weather)
-                                startActivity(aIntent)
-                            }
-                        },
-                        {
-                            error ->
-                            run {
-                                //check if it was caused because wifi was turned off (stackoverflow)
-                                val connManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                                if (connManager.activeNetworkInfo != null) {
-                                    if(connManager.activeNetworkInfo.isConnected) // problem in the web api
-                                        Toast.makeText(this, R.string.splash_api_unreachable, Toast.LENGTH_LONG).show()
-                                }else{ // user problem (wifi turned off)
-                                    Toast.makeText(this, R.string.connection_problem_wifi_off, Toast.LENGTH_LONG).show()
+        val weatherInfo = app.currentInfoGetter?.getCurrentDayInfo(MyWeatherApp.city)
+
+        if(weatherInfo != null)
+            launchCurrentDayActivity(url, weatherInfo)
+        else{
+            val myIntent = Intent(this, RefreshCurrentDayService::class.java)
+            myIntent.putExtra("CURRENT_CITY", MyWeatherApp.city)
+            startService(myIntent)
+            //TODO ask to turn wifi on, right about here
+            app.requestQueue.add(
+                    GetRequest(url,
+                            {
+                                weather ->
+                                app.currentTimestampMap.put(url, System.currentTimeMillis())
+                                launchCurrentDayActivity(url, weather)
+                            },
+                            {
+                                error ->
+                                run {
+                                    //check if it was caused because wifi was turned off (stackoverflow)
+                                    val connManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                                    if (connManager.activeNetworkInfo != null) {
+                                        if(connManager.activeNetworkInfo.isConnected) // problem in the web api
+                                            Toast.makeText(this, R.string.splash_api_unreachable, Toast.LENGTH_LONG).show()
+                                    }else{ // user problem (wifi turned off)
+                                        Toast.makeText(this, R.string.connection_problem_wifi_off, Toast.LENGTH_LONG).show()
+                                    }
+                                    Handler(mainLooper).postDelayed({ finish() }, 3000)
                                 }
-                                Handler(mainLooper).postDelayed({ finish() }, 3000)
-                            }
-                        },
-                        CurrentWeatherDto::class.java
-                )
-        )
+                            },
+                            CurrentWeatherDto::class.java
+                    )
+            )
+        }
+    }
+
+    private fun  launchCurrentDayActivity(url: String, weather: CurrentWeatherDto) {
+        (application as MyWeatherApp).lruDtoCache.put(url, weather)
+        val aIntent = Intent(this, CurrentDayActivity::class.java)
+        aIntent.putExtra("WEATHER_DATA", weather)
+        startActivity(aIntent)
     }
 }

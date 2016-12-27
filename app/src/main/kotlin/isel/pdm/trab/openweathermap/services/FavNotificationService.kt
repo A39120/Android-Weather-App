@@ -6,6 +6,7 @@ import android.os.IBinder
 import isel.pdm.trab.openweathermap.MyWeatherApp
 import isel.pdm.trab.openweathermap.models.content.WeatherProvider
 import isel.pdm.trab.openweathermap.models.content.toForecastWeatherDto
+import isel.pdm.trab.openweathermap.utils.UrlBuilder
 
 class FavNotificationService : Service() {
 
@@ -32,14 +33,16 @@ class FavNotificationService : Service() {
                 "${WeatherProvider.COLUMN_UTC} ASC"
         )
 
-        if(cursor != null){
-            val timestamp = (application as MyWeatherApp).forecastRefreshTimestamp
+        if(cursor.count != 0){
+            cursor.moveToFirst()
+            val weather = toForecastWeatherDto(cursor)
+
+            val timestamp = (application as MyWeatherApp)
+                    .forecastTimestampMap[UrlBuilder().buildForecastByCityUrl(resources, location)] as Long
             val currentTime = System.currentTimeMillis()
             val days = ((currentTime-timestamp)  / (1000*60*60*24)).toInt()
 
             if(days < 6){
-                cursor.moveToFirst()
-                val weather = toForecastWeatherDto(cursor)
 
                 val myIntent = Intent()
                 myIntent.action = BROADCAST_ACTION

@@ -16,8 +16,9 @@ import com.android.volley.toolbox.Volley
 import isel.pdm.trab.openweathermap.*
 import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.ForecastWeatherDto
-import isel.pdm.trab.openweathermap.services.ConvertUtils
-import isel.pdm.trab.openweathermap.services.UrlBuilder
+import isel.pdm.trab.openweathermap.services.RefreshForecastService
+import isel.pdm.trab.openweathermap.utils.ConvertUtils
+import isel.pdm.trab.openweathermap.utils.UrlBuilder
 import kotlinx.android.synthetic.main.activity_forecast_day.*
 import kotlinx.android.synthetic.main.activity_forecast_day.view.*
 import java.util.*
@@ -27,8 +28,7 @@ import java.util.*
  */
 class ForecastDayActivity : BaseActivity() {
 
-    val UPDATE_TIMEOUT: Long = 1000 * 60 * 60 // (1000 milis) * (60 seconds) * (60 minutes) = 1 hour
-
+   
     override val layoutResId: Int = R.layout.activity_forecast_day
     override val actionBarId: Int? = R.id.toolbar
     override val actionBarMenuResId: Int? = R.menu.action_bar_activity_forecast
@@ -63,10 +63,6 @@ class ForecastDayActivity : BaseActivity() {
 
             activity_forecast_day.curday_image.setImageBitmap(parcel.getParcelable("WeatherBitmap"))
         }
-
-        Handler(mainLooper).postDelayed({
-            refreshWeatherInfo(activity_forecast_day.curday_country_textview.text.toString())
-        }, UPDATE_TIMEOUT)
     }
 
     /**
@@ -170,14 +166,14 @@ class ForecastDayActivity : BaseActivity() {
      * @param currentCity City to get weather information about
      */
     private fun refreshWeatherInfo(currentCity: String){
-        //val aIntent = Intent(this, ForecastDayActivity::class.java)
         val url = UrlBuilder().buildForecastByCityUrl(resources, currentCity)
 
         val apl = (application as MyWeatherApp)
 
-        if(apl.lruDtoCache.contains(url)){
+        val weatherInfo = (application as MyWeatherApp).forecastInfoGetter?.getForecastInfo(currentCity)
+        if(weatherInfo != null){
             onForecastDayRequestFinished(
-                    apl.lruDtoCache[url] as ForecastWeatherDto,
+                    weatherInfo,
                     intent.extras.getInt("POSITION")
             )
         }
@@ -187,6 +183,10 @@ class ForecastDayActivity : BaseActivity() {
                             url,
                             { weather ->
                                     apl.lruDtoCache.put(url, weather)
+                                    val myIntent = Intent(this, RefreshForecastService::class.java)
+                                    myIntent.putExtra("FORECAST_CITY", currentCity)
+                                    startService(myIntent)
+                                    apl.forecastTimestampMap.put(url, System.currentTimeMillis())
                                     onForecastDayRequestFinished(
                                             weather,
                                             intent.extras.getInt("POSITION")

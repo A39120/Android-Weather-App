@@ -1,4 +1,4 @@
-package isel.pdm.trab.openweathermap.services
+package isel.pdm.trab.openweathermap.utils
 
 import android.graphics.Bitmap
 import android.util.LruCache

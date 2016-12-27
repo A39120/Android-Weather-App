@@ -1,4 +1,4 @@
-package isel.pdm.trab.openweathermap.services
+package isel.pdm.trab.openweathermap.utils
 
 import android.content.res.Resources
 import isel.pdm.trab.openweathermap.MyWeatherApp
