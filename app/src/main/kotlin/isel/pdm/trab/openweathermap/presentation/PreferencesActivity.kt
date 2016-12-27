@@ -18,6 +18,12 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import isel.pdm.trab.openweathermap.receivers.BatteryStateReceiver
 import isel.pdm.trab.openweathermap.services.FavNotificationService
+import isel.pdm.trab.openweathermap.services.RefreshCurrentDayService
+import isel.pdm.trab.openweathermap.services.RefreshForecastService
+import isel.pdm.trab.openweathermap.utils.ConvertUtils
+import android.content.Intent
+
+
 
 class PreferencesActivity : BaseActivity() {
     override var layoutResId: Int = R.layout.activity_preference
@@ -177,8 +183,41 @@ class PreferencesActivity : BaseActivity() {
                 MyWeatherApp.refreshTime = position
                 editor.putInt(MyWeatherApp.REFRESH_TIME_KEY, position)
                 editor.apply()
+                var interval: Long = -1
+                // TODO this is just ugly...   >.<
+                if(position == 0) interval = 12
+                if(position == 1) interval = 24
+                if(position == 2) interval = 48
+                interval *=  (60 * 60 * 1000)
+
+                // TODO mudar as strings hardcoded para constantes...
+                if(MyWeatherApp.favouriteLoc == null){
+                    // remove alarm in case we don't have a favourite location
+                    cancelAlarm(app.instance, Intent(app.instance, RefreshCurrentDayService::class.java))
+                    cancelAlarm(app.instance, Intent(app.instance, RefreshForecastService::class.java))
+                }else {
+                    val action1 = Intent(app.instance, RefreshCurrentDayService::class.java)
+                            .putExtra("CURRENT_CITY", MyWeatherApp.favouriteLoc)
+                    val action2 = Intent(app.instance, RefreshForecastService::class.java)
+                            .putExtra("FORECAST_CITY", MyWeatherApp.favouriteLoc)
+                    setAlarm(app.instance, interval, action1) /* remember PendingIntent.FLAG_UPDATE_CURRENT updates the old one */
+                    setAlarm(app.instance, interval, action2) /* so old alarms will be updated (?) ---------------------------- */
+                }
             }
             override fun onNothingSelected(parentView: AdapterView<*>) {}
+            private fun setAlarm(context: Context, interval: Long, action: Intent){
+                (getSystemService(ALARM_SERVICE) as AlarmManager).setInexactRepeating(
+                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    0,
+                    interval,
+                    PendingIntent.getService(context, 1, action, PendingIntent.FLAG_UPDATE_CURRENT)
+                )
+            }
+            private fun cancelAlarm(context: Context, intent: Intent){
+                (getSystemService(ALARM_SERVICE) as AlarmManager).cancel(
+                    PendingIntent.getService(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                )
+            }
         }
 
         (activity_preference.batteryIntervalSpinner).onItemSelectedListener = object : OnItemSelectedListener {
