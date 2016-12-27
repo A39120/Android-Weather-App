@@ -11,11 +11,11 @@ import isel.pdm.trab.openweathermap.R
 import isel.pdm.trab.openweathermap.utils.UrlBuilder
 import isel.pdm.trab.openweathermap.comms.GetRequest
 import isel.pdm.trab.openweathermap.models.CurrentWeatherDto
-import isel.pdm.trab.openweathermap.models.content.*
 import isel.pdm.trab.openweathermap.services.CurrentInfoGetter
 import isel.pdm.trab.openweathermap.services.ForecastInfoGetter
 import isel.pdm.trab.openweathermap.services.RefreshCurrentDayService
 import java.util.*
+import android.provider.*
 
 /**
  * Activity responsible for displaying a splash screen while the app is launching
@@ -49,6 +49,7 @@ class SplashActivity : BaseActivity() {
             myIntent.putExtra("CURRENT_CITY", MyWeatherApp.city)
             startService(myIntent)
             //TODO ask to turn wifi on, right about here
+
             app.requestQueue.add(
                     GetRequest(url,
                             {
@@ -59,14 +60,18 @@ class SplashActivity : BaseActivity() {
                             {
                                 error ->
                                 run {
-                                    //check if it was caused because wifi was turned off (stackoverflow)
                                     val connManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                                    if (connManager.activeNetworkInfo != null) {
-                                        if(connManager.activeNetworkInfo.isConnected) // problem in the web api
-                                            Toast.makeText(this, R.string.splash_api_unreachable, Toast.LENGTH_LONG).show()
-                                    }else{ // user problem (wifi turned off)
+                                    //val net: Network = connManager.activeNetwork // API 23 and above...
+                                    val wifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+                                    val mobile = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+                                    val isWifiConnected = wifi != null && wifi.isConnectedOrConnecting
+                                    val isMobileDataConnected = mobile != null && mobile.isConnectedOrConnecting
+                                    if(isWifiConnected || (MyWeatherApp.canUseMobileData && isMobileDataConnected)) {
+                                        Toast.makeText(this, R.string.splash_api_unreachable, Toast.LENGTH_LONG).show()
+                                    }else{
                                         Toast.makeText(this, R.string.connection_problem_wifi_off, Toast.LENGTH_LONG).show()
                                     }
+
                                     Handler(mainLooper).postDelayed({ finish() }, 3000)
                                 }
                             },
