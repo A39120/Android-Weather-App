@@ -7,6 +7,7 @@ import android.database.CursorIndexOutOfBoundsException
 import android.net.Uri
 import isel.pdm.trab.openweathermap.models.*
 import java.util.*
+import 	android.database.DatabaseUtils;
 
 /**
  * Extension function that maps a given [CurrentWeatherDto] to the corresponding URI and
@@ -23,11 +24,9 @@ fun CurrentWeatherDto.toContentValues(): ContentValues {
         result.put(COLUMN_LOCATION_ID, locationId)
         result.put(COLUMN_LONGITUDE, coord.longitude)
         result.put(COLUMN_LATITUDE, coord.latitude)
-        result.put(COLUMN_CURRENT_SHORT_INFO_ID, shortInfo[0].id)
         result.put(COLUMN_INFO_MAIN, shortInfo[0].mainWeather)
         result.put(COLUMN_INFO_DESCRIPTION, shortInfo[0].description)
         result.put(COLUMN_INFO_ICON, shortInfo[0].icon)
-        result.put(COLUMN_CURRENT_TEMPERATURE, info.temperature)
         result.put(COLUMN_PRESSURE, info.pressure)
         result.put(COLUMN_HUMIDITY, info.humidity)
         result.put(COLUMN_MIN_TEMP, info.minTemp)
@@ -38,6 +37,8 @@ fun CurrentWeatherDto.toContentValues(): ContentValues {
         result.put(COLUMN_RAIN, rainDetail?.rainVolume)
         result.put(COLUMN_SNOW, snowDetail?.snowVolume)
         result.put(COLUMN_COUNTRY_CODE, locDetail.countryCode)
+        result.put(COLUMN_CURRENT_TEMPERATURE, info.temperature)
+        result.put(COLUMN_CURRENT_SHORT_INFO_ID, shortInfo[0].id)
         result.put(COLUMN_CURRENT_SUNRISE, locDetail.sunriseTime)
         result.put(COLUMN_CURRENT_SUNSET, locDetail.sunsetTime)
     }
@@ -52,12 +53,14 @@ fun CurrentWeatherDto.toContentValues(): ContentValues {
 fun toCurrentWeatherDto(cursor: Cursor): CurrentWeatherDto {
     with (WeatherProvider.Companion) {
         val al = ArrayList<WeatherShortInfo>()
+
         al.add(WeatherShortInfo(
                 cursor.getInt(COLUMN_CURRENT_SHORT_INFO_ID_IDX),
                 cursor.getString(COLUMN_INFO_MAIN_IDX),
                 cursor.getString(COLUMN_INFO_DESCRIPTION_IDX),
                 cursor.getString(COLUMN_INFO_ICON_IDX)
         ))
+
         return CurrentWeatherDto(
                 location = cursor.getString(COLUMN_LOCATION_IDX),
                 locationId = cursor.getInt(COLUMN_LOCATION_ID_IDX),

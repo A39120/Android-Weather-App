@@ -112,7 +112,7 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
 
             val weatherInfo = (application as MyWeatherApp).forecastInfoGetter?.getForecastInfo(city)
             if(weatherInfo != null){
-                anIntent.putExtra("FORECAST_DATA", apl.lruDtoCache[url] as ForecastWeatherDto)
+                anIntent.putExtra("FORECAST_DATA", weatherInfo)
                 startActivity(anIntent)
             }
             else{
