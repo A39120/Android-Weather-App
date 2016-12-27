@@ -2,6 +2,7 @@ package isel.pdm.trab.openweathermap.services
 
 import android.app.Application
 import android.content.ContentResolver
+import android.database.DatabaseUtils
 import com.android.volley.toolbox.Volley
 import isel.pdm.trab.openweathermap.MyWeatherApp
 import isel.pdm.trab.openweathermap.comms.GetRequest
@@ -112,8 +113,7 @@ class ForecastInfoGetter(val application: Application, val contentResolver: Cont
 
     private fun getForecastFromProvider(city: String): ForecastWeatherDto? {
         val tableUri = WeatherProvider.FORECAST_CONTENT_URI
-        val selection = "${WeatherProvider.COLUMN_LOCATION}=? AND " +
-                "${WeatherProvider.COLUMN_COUNTRY_CODE}=?"
+        val selection = "${WeatherProvider.COLUMN_LOCATION}=?"
 
         val selectionArgs = arrayOf(city)
 
@@ -124,11 +124,13 @@ class ForecastInfoGetter(val application: Application, val contentResolver: Cont
                 selectionArgs,
                 "${WeatherProvider.COLUMN_UTC} ASC"
         )
-
-        if (cursor.count != 0) {
+        val a2 = DatabaseUtils.dumpCursorToString(cursor)
+        if (cursor.count == 0) return null
+        else {
             cursor.moveToFirst()
-            return toForecastWeatherDto(cursor)
+            val fwd = toForecastWeatherDto(cursor)
+            cursor.close()
+            return fwd
         }
-        return null
     }
 }

@@ -73,10 +73,9 @@ class CurrentInfoGetter(val application: Application, val contentResolver: Conte
     private fun getCurrentFromProvider(city: String): CurrentWeatherDto? {
         val tableUri = WeatherProvider.CURRENT_CONTENT_URI
         val selectionArgs = arrayOf(city)
-        val projection = arrayOf(WeatherProvider.COLUMN_LOCATION)
         val cursor = contentResolver.query(
                 tableUri,
-                projection,
+                null,
                 WeatherProvider.COLUMN_LOCATION + "=?",
                 selectionArgs,
                 WeatherProvider.COLUMN_LOCATION + " ASC"
@@ -85,7 +84,9 @@ class CurrentInfoGetter(val application: Application, val contentResolver: Conte
         if(cursor.count == 0) return null
         else{
             cursor.moveToFirst()
-            return toCurrentWeatherDto(cursor)
+            val cwd = toCurrentWeatherDto(cursor)
+            cursor.close()
+            return cwd
         }
     }
 }

@@ -127,11 +127,9 @@ class WeatherProvider: ContentProvider() {
                     "$COLUMN_LOCATION_ID INTEGER, " +
                     "$COLUMN_LONGITUDE DOUBLE, " +
                     "$COLUMN_LATITUDE  DOUBLE, " +
-                    "$COLUMN_CURRENT_SHORT_INFO_ID INTEGER, " +
                     "$COLUMN_INFO_MAIN VARCHAR(256), " +
                     "$COLUMN_INFO_DESCRIPTION VARCHAR(1024), " +
                     "$COLUMN_INFO_ICON VARCHAR(255), " +
-                    "$COLUMN_CURRENT_TEMPERATURE DOUBLE, " +
                     "$COLUMN_PRESSURE DOUBLE, " +
                     "$COLUMN_HUMIDITY INTEGER, " +
                     "$COLUMN_MIN_TEMP DOUBLE, " +
@@ -142,6 +140,8 @@ class WeatherProvider: ContentProvider() {
                     "$COLUMN_RAIN DOUBLE, " +
                     "$COLUMN_SNOW DOUBLE, " +
                     "$COLUMN_COUNTRY_CODE VARCHAR(256), " +
+                    "$COLUMN_CURRENT_TEMPERATURE DOUBLE, " +
+                    "$COLUMN_CURRENT_SHORT_INFO_ID INTEGER, " +
                     "$COLUMN_CURRENT_SUNRISE LONG, " +
                     "$COLUMN_CURRENT_SUNSET LONG ) "
             db?.execSQL(CREATE_CMD)

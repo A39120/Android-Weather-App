@@ -110,15 +110,6 @@ fun toForecastWeatherDto(cursor: Cursor): ForecastWeatherDto {
             )
         }while(cursor.moveToNext())
 
-        /*
-        val al = ArrayList<WeatherShortInfo>()
-        al.add(WeatherShortInfo(
-                cursor.getInt(COLUMN_CURRENT_SHORT_INFO_ID_IDX),
-                cursor.getString(COLUMN_INFO_MAIN_IDX),
-                cursor.getString(COLUMN_INFO_DESCRIPTION_IDX),
-                cursor.getString(COLUMN_INFO_ICON_IDX)
-        ))
-        */
         return fwDto
     }
 }
