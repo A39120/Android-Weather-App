@@ -15,13 +15,10 @@ class CurrentInfoGetter(val application: Application, val contentResolver: Conte
 
     fun getCurrentDayInfo(city: String): CurrentWeatherDto? {
         val url = UrlBuilder().buildWeatherByCityUrl(application.resources, city)
-
         var weather = getCurrentFromCache(url)
-        if(weather == null){
+        if(weather == null)
             weather = getCurrentFromProvider(city)
-            if(weather != null)
-                (application as MyWeatherApp).lruDtoCache.put(url, weather)
-        }
+
         return weather
     }
 
