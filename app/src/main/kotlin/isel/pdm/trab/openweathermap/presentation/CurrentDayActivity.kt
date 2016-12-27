@@ -230,7 +230,7 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
         val url = UrlBuilder().buildWeatherByCityUrl(resources, currentCity)
         val apl = (application as MyWeatherApp)
 
-        val weatherInfo = (application as MyWeatherApp).currentInfoGetter?.getCurrentDayInfo(MyWeatherApp.city)
+        val weatherInfo = (application as MyWeatherApp).currentInfoGetter?.getCurrentDayInfo(currentCity)
         if(weatherInfo != null)
             onCurrentDayRequestFinished(weatherInfo)
         else{
