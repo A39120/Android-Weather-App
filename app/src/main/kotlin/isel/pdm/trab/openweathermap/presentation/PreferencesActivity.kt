@@ -119,7 +119,7 @@ class PreferencesActivity : BaseActivity() {
                         .putExtra("FORECAST_CITY_NOTIFY", MyWeatherApp.favouriteLoc)
                         .putExtra("FORECAST_COUNTRY_NOTIFY", "")
                 (getSystemService(ALARM_SERVICE) as AlarmManager).setInexactRepeating(
-                        AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                        AlarmManager.RTC_WAKEUP, //ELAPSED_REALTIME_WAKEUP we don't want the alarm to be based on boot time
                         app.timeForNotificationsUnix,
                         AlarmManager.INTERVAL_DAY,
                         PendingIntent.getService(app.instance, 1, action, PendingIntent.FLAG_UPDATE_CURRENT)
