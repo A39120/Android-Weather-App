@@ -229,7 +229,7 @@ class ForecastWeatherDto(
     data class CityDetail(
             val id: Int,
             @JsonProperty("name")    val cityName: String,
-            @JsonProperty("coord")   val cityCoordinates: Coordinates,
+            @JsonProperty("coord")   val cityCoordinates: Coordinates?,
             val country: String
     ) : Parcelable {
         companion object {

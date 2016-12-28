@@ -107,7 +107,7 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
             val anIntent = Intent(CurrentDayActivity@this, ForecastActivity::class.java)
             val city = (activity_current_day.curday_country_textview.text as String).split(",")[0]
 
-            val url = UrlBuilder().buildForecastByCityUrl(resources, city)
+            val url = UrlBuilder().buildForecastByCityUrl(resources, city.toLowerCase())
             val apl = (application as MyWeatherApp)
 
             val weatherInfo = (application as MyWeatherApp).forecastInfoGetter?.getForecastInfo(city)

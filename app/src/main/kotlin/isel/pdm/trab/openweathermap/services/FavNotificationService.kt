@@ -45,19 +45,23 @@ class FavNotificationService : Service() {
             cursor.moveToFirst()
             val weather = toForecastWeatherDto(cursor)
 
-            val timestamp = (application as MyWeatherApp)
-                    .forecastTimestampMap[UrlBuilder().buildForecastByCityUrl(resources, location)] as Long
-            val currentTime = System.currentTimeMillis()
-            val days = ((currentTime-timestamp)  / (1000*60*60*24)).toInt()
+            val app = (application as MyWeatherApp)
+            val url = UrlBuilder().buildForecastByCityUrl(resources, location.toLowerCase())
+            if(app.forecastTimestampMap.contains(url)){
+                val timestamp = app.forecastTimestampMap[url] as Long
+                val currentTime = System.currentTimeMillis()
+                val days = ((currentTime-timestamp)  / (1000*60*60*24)).toInt()
 
-            if(days < 6){
+                if(days < 6){
 
-                val myIntent = Intent()
-                myIntent.action = BROADCAST_ACTION
-                myIntent.putExtra("WEATHER_FOR_NOTIFY", weather.forecastDetail[days+1])
-                myIntent.putExtra("LOCATION_FOR_NOTIFY", "$location, $country.")
-                sendBroadcast(myIntent)
+                    val myIntent = Intent()
+                    myIntent.action = BROADCAST_ACTION
+                    myIntent.putExtra("WEATHER_FOR_NOTIFY", weather.forecastDetail[days+1])
+                    myIntent.putExtra("LOCATION_FOR_NOTIFY", "$location, $country.")
+                    sendBroadcast(myIntent)
+                }
             }
+            cursor.close()
         }
         return START_REDELIVER_INTENT
     }

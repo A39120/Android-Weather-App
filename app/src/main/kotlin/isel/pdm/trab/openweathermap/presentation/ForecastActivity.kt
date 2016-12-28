@@ -231,7 +231,7 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
      * @param currentCity City to get weather information about
      */
     private fun refreshWeatherInfo(currentCity: String){
-        val url = UrlBuilder().buildForecastByCityUrl(resources, currentCity)
+        val url = UrlBuilder().buildForecastByCityUrl(resources, currentCity.toLowerCase())
         val apl = (application as MyWeatherApp)
 
         val weatherInfo = (application as MyWeatherApp).forecastInfoGetter?.getForecastInfo(currentCity)

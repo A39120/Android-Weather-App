@@ -33,7 +33,7 @@ class FavouriteReceiver : BroadcastReceiver() {
         val windInfo = getWindInfo(weatherDetail.windSpeed)
         val rainInfo = getRainInfo(weatherDetail.rain)
 
-        val intro = resources.getString(weather_for) + location
+        val intro = resources.getString(weather_for) + " " + location + ". "
         val finalMessage = intro.plus(minTempInfo.plus(maxTempInfo).plus(windInfo).plus(rainInfo))
 
         val mBuilder = NotificationCompat.Builder(context)
