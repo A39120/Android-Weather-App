@@ -234,6 +234,8 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
         val url = UrlBuilder().buildForecastByCityUrl(resources, currentCity.toLowerCase())
         val apl = (application as MyWeatherApp)
 
+        apl.forecastTimestampMap.put(url, System.currentTimeMillis())
+
         val weatherInfo = (application as MyWeatherApp).forecastInfoGetter?.getForecastInfo(currentCity)
         if(weatherInfo != null)
             onForecastRequestFinished(weatherInfo)
@@ -247,7 +249,6 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
                             url,
                             { weather ->
                                 apl.lruDtoCache.put(url, weather)
-                                apl.forecastTimestampMap.put(url, System.currentTimeMillis())
                                 onForecastRequestFinished(weather)
                             },
                             { error -> System.out.println("Error in response?") },

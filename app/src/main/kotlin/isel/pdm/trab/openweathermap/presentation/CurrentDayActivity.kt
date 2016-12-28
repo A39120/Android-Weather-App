@@ -110,6 +110,8 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
             val url = UrlBuilder().buildForecastByCityUrl(resources, city.toLowerCase())
             val apl = (application as MyWeatherApp)
 
+            apl.forecastTimestampMap.put(url, System.currentTimeMillis())
+
             val weatherInfo = (application as MyWeatherApp).forecastInfoGetter?.getForecastInfo(city)
             if(weatherInfo != null){
                 anIntent.putExtra("FORECAST_DATA", weatherInfo)
@@ -126,7 +128,6 @@ class CurrentDayActivity : BaseActivity(), TextView.OnEditorActionListener {
                                 { weather ->
                                     run {
                                         apl.lruDtoCache.put(url, weather)
-                                        apl.forecastTimestampMap.put(url, System.currentTimeMillis())
                                         anIntent.putExtra("FORECAST_DATA", weather)
                                         startActivity(anIntent)
                                     }
