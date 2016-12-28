@@ -76,7 +76,7 @@ class PreferencesActivity : BaseActivity() {
         (activity_preference.batterySwitch).isChecked = app.enabledBatteryLevel
 
         (activity_preference.subscribeButton).setOnClickListener {
-            val location: String = activity_preference.subscribeText.text.toString()
+            val location: String = activity_preference.subscribeText.text.toString().capitalize()
             if(!app.subscribedLocs.contains(location) && !location.equals("")) {
                 activity_preference.subscribeText.text.clear()
                 app.subscribedLocs.add(location)

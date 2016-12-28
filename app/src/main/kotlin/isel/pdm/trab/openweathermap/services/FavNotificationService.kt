@@ -24,10 +24,14 @@ class FavNotificationService : Service() {
         val country: String = intent?.getStringExtra(FORECAST_COUNTRY_NOTIFY) as String
 
         val tableUri = WeatherProvider.FORECAST_CONTENT_URI
-        val selection = "${WeatherProvider.COLUMN_LOCATION}=? AND " +
-                "${WeatherProvider.COLUMN_COUNTRY_CODE}=?"
+        var selection = "${WeatherProvider.COLUMN_LOCATION}=?"
+        if(!country.equals("")) selection += " AND ${WeatherProvider.COLUMN_COUNTRY_CODE}=?"
 
-        val selectionArgs = arrayOf(location, country)
+        var selectionArgs: Array<String>
+        if(country.equals(""))
+            selectionArgs = arrayOf(location)
+        else
+            selectionArgs = arrayOf(location, country)
 
         val cursor = contentResolver.query(
                 tableUri,
