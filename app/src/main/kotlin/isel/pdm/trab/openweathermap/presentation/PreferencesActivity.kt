@@ -18,8 +18,12 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import isel.pdm.trab.openweathermap.receivers.BatteryStateReceiver
 import isel.pdm.trab.openweathermap.services.FavNotificationService
+import isel.pdm.trab.openweathermap.services.FavNotificationService.Companion.FORECAST_CITY_NOTIFY
+import isel.pdm.trab.openweathermap.services.FavNotificationService.Companion.FORECAST_COUNTRY_NOTIFY
 import isel.pdm.trab.openweathermap.services.RefreshCurrentDayService
+import isel.pdm.trab.openweathermap.services.RefreshCurrentDayService.Companion.CURRENT_CITY
 import isel.pdm.trab.openweathermap.services.RefreshForecastService
+import isel.pdm.trab.openweathermap.services.RefreshForecastService.Companion.FORECAST_CITY
 
 class PreferencesActivity : BaseActivity() {
     override var layoutResId: Int = R.layout.activity_preference
@@ -118,8 +122,8 @@ class PreferencesActivity : BaseActivity() {
                 editor.putLong(app.TIME_FOR_NOTIFICATIONS_UNIX_KEY,app.timeForNotificationsUnix)
                 editor.apply()
                 val action = Intent(app.instance, FavNotificationService::class.java)
-                        .putExtra("FORECAST_CITY_NOTIFY", MyWeatherApp.favouriteLoc)
-                        .putExtra("FORECAST_COUNTRY_NOTIFY", "")
+                        .putExtra(FORECAST_CITY_NOTIFY, MyWeatherApp.favouriteLoc)
+                        .putExtra(FORECAST_COUNTRY_NOTIFY, "")
                 (getSystemService(ALARM_SERVICE) as AlarmManager).setInexactRepeating(
                         AlarmManager.RTC_WAKEUP, //ELAPSED_REALTIME_WAKEUP we don't want the alarm to be based on boot time
                         app.timeForNotificationsUnix,
@@ -127,7 +131,6 @@ class PreferencesActivity : BaseActivity() {
                         PendingIntent.getService(app.instance, 1, action, PendingIntent.FLAG_UPDATE_CURRENT)
                 )
                 /*
-                    TODO mudar as strings hardcoded para constantes...
                     TODO falta o country... como visto em FavNotificationService:
                     val location: String = intent?.getStringExtra("FORECAST_CITY_NOTIFY") as String
                     val country: String = intent?.getStringExtra("FORECAST_COUNTRY_NOTIFY") as String
@@ -186,16 +189,15 @@ class PreferencesActivity : BaseActivity() {
                 if(position == 2) interval = 48
                 interval *=  (60 * 60 * 1000)
 
-                // TODO mudar as strings hardcoded para constantes...
                 if(MyWeatherApp.favouriteLoc == null){
                     // remove alarm in case we don't have a favourite location
                     cancelAlarm(app.instance, Intent(app.instance, RefreshCurrentDayService::class.java))
                     cancelAlarm(app.instance, Intent(app.instance, RefreshForecastService::class.java))
                 }else {
                     val action1 = Intent(app.instance, RefreshCurrentDayService::class.java)
-                            .putExtra("CURRENT_CITY", MyWeatherApp.favouriteLoc)
+                            .putExtra(CURRENT_CITY, MyWeatherApp.favouriteLoc)
                     val action2 = Intent(app.instance, RefreshForecastService::class.java)
-                            .putExtra("FORECAST_CITY", MyWeatherApp.favouriteLoc)
+                            .putExtra(FORECAST_CITY, MyWeatherApp.favouriteLoc)
                     setAlarm(app.instance, interval, action1) /* remember PendingIntent.FLAG_UPDATE_CURRENT updates the old one */
                     setAlarm(app.instance, interval, action2) /* so old alarms will be updated (?) ---------------------------- */
                 }

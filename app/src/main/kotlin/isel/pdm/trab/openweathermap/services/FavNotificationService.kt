@@ -9,6 +9,10 @@ import isel.pdm.trab.openweathermap.models.content.toForecastWeatherDto
 import isel.pdm.trab.openweathermap.utils.UrlBuilder
 
 class FavNotificationService : Service() {
+    companion object {
+        val FORECAST_CITY_NOTIFY = "FORECAST_CITY_NOTIFY"
+        val FORECAST_COUNTRY_NOTIFY = "FORECAST_COUNTRY_NOTIFY"
+    }
 
     val BROADCAST_ACTION = "isel.pdm.trab.openweathermap.FORECAST_SERVICE"
 
@@ -16,8 +20,8 @@ class FavNotificationService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        val location: String = intent?.getStringExtra("FORECAST_CITY_NOTIFY") as String
-        val country: String = intent?.getStringExtra("FORECAST_COUNTRY_NOTIFY") as String
+        val location: String = intent?.getStringExtra(FORECAST_CITY_NOTIFY) as String
+        val country: String = intent?.getStringExtra(FORECAST_COUNTRY_NOTIFY) as String
 
         val tableUri = WeatherProvider.FORECAST_CONTENT_URI
         val selection = "${WeatherProvider.COLUMN_LOCATION}=? AND " +

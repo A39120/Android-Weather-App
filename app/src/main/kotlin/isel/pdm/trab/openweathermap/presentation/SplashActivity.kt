@@ -24,7 +24,6 @@ class SplashActivity : BaseActivity() {
 
     override var layoutResId: Int = R.layout.activity_splash
 
-    //TODO add proper handling to notify user is he has network disabled (took me some time to figure why it wasn't working)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
