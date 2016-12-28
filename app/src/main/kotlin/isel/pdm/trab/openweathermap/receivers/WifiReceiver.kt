@@ -20,10 +20,10 @@ class WifiReceiver : BroadcastReceiver() {
             if(!MyWeatherApp.isBatterySavingMode) {
                 val app = (MyWeatherApp.instance)
                 var currentTimestamp: Long = 0
-                if(app.currentTimestampMap[UrlBuilder().buildWeatherByCityUrl(app.resources, MyWeatherApp.favouriteLoc)] != null)
+                if(app.currentTimestampMap.contains(UrlBuilder().buildWeatherByCityUrl(app.resources, MyWeatherApp.favouriteLoc)))
                     currentTimestamp = app.currentTimestampMap[UrlBuilder().buildWeatherByCityUrl(app.resources, MyWeatherApp.favouriteLoc)] as Long
                 var forecastTimestamp: Long = 0
-                if(app.forecastTimestampMap[UrlBuilder().buildForecastByCityUrl(app.resources, MyWeatherApp.favouriteLoc)] != null)
+                if(app.forecastTimestampMap.contains(UrlBuilder().buildForecastByCityUrl(app.resources, MyWeatherApp.favouriteLoc)))
                     forecastTimestamp = app.forecastTimestampMap[UrlBuilder().buildForecastByCityUrl(app.resources, MyWeatherApp.favouriteLoc)] as Long
                 val currentTime = System.currentTimeMillis()
 
