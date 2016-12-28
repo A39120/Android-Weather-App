@@ -107,25 +107,6 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:weightSum="1">
-
-                <Switch
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/notificationSwitch" />
-
-                <TextView
-                    android:text="@string/pref_timeForNotifications"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/timeForNotificationText" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <Switch
@@ -140,6 +121,25 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/textView3"
                     android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:weightSum="1">
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/notificationSwitch" />
+
+                <TextView
+                    android:text="@string/pref_timeForNotifications"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/timeForNotificationText" />
 
             </LinearLayout>
 
