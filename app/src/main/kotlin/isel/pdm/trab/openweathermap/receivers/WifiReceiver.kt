@@ -19,8 +19,12 @@ class WifiReceiver : BroadcastReceiver() {
         if(isWifiConnected || (MyWeatherApp.canUseMobileData && isMobileDataConnected)){
             if(!MyWeatherApp.isBatterySavingMode) {
                 val app = (MyWeatherApp.instance)
-                val currentTimestamp = app.currentTimestampMap[UrlBuilder().buildWeatherByCityUrl(app.resources, MyWeatherApp.favouriteLoc)] as Long
-                val forecastTimestamp = app.forecastTimestampMap[UrlBuilder().buildForecastByCityUrl(app.resources, MyWeatherApp.favouriteLoc)] as Long
+                var currentTimestamp: Long = 0
+                if(app.currentTimestampMap[UrlBuilder().buildWeatherByCityUrl(app.resources, MyWeatherApp.favouriteLoc)] != null)
+                    currentTimestamp = app.currentTimestampMap[UrlBuilder().buildWeatherByCityUrl(app.resources, MyWeatherApp.favouriteLoc)] as Long
+                var forecastTimestamp: Long = 0
+                if(app.forecastTimestampMap[UrlBuilder().buildForecastByCityUrl(app.resources, MyWeatherApp.favouriteLoc)] != null)
+                    forecastTimestamp = app.forecastTimestampMap[UrlBuilder().buildForecastByCityUrl(app.resources, MyWeatherApp.favouriteLoc)] as Long
                 val currentTime = System.currentTimeMillis()
 
                 // TODO this is just ugly...   >.<
