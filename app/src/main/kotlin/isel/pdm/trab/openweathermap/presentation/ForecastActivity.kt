@@ -100,7 +100,7 @@ class ForecastActivity : BaseActivity(), TextView.OnEditorActionListener {
             activity_forecast.forecast_country_edittext.isEnabled = false
             val inputCityName: String = activity_forecast.forecast_country_edittext.text.toString()
 			refreshWeatherInfo(inputCityName)
-            Toast.makeText(this, "Getting forecast for the next 5 days for $inputCityName...", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Getting forecast for the next 6 days for $inputCityName...", Toast.LENGTH_LONG).show()
         }
         return true
     }

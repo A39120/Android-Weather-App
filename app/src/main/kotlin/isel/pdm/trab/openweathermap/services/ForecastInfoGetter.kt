@@ -58,30 +58,19 @@ class ForecastInfoGetter(val application: Application, val contentResolver: Cont
                             contentResolver.insert(tableUri, element)
                     }
                     else{
-                        while(cursor.moveToNext()){
-                            //check if data of the day is already there
+                        cursor.moveToNext()
+                        //check if data of the day is already there
+                        val current_utc = weather.forecastDetail[count].utc
+                        val current_date = ConvertUtils.convertUnixToDate(current_utc)
+                        val content_utc = cursor.getLong(1)     // cursor only has 2 columns
+                        val content_date = ConvertUtils.convertUnixToDate(content_utc * 1000)
 
-                            val current_utc = weather.forecastDetail[count].utc
-                            val current_date = ConvertUtils.convertUnixToDate(current_utc)
-                            val content_utc = cursor.getLong(1)     // cursor only has 2 columns
-                            val content_date = ConvertUtils.convertUnixToDate(content_utc * 1000)
-
-                            //go to first day that has the same date as first day on ContentProvider
-                            while(content_utc < current_utc && !current_date.equals(content_date)){
-                                //the day is not the same
-                                if(!cursor.moveToNext())
-                                    break;
-                            }
-                            val updateArgs = arrayOf("$location, $country $current_date")
-
-                            //There is a newer version for the weather for that day
-                            contentResolver.update(tableUri,
-                                    wcv[count],
-                                    "${WeatherProvider.COLUMN_ID}=? ",
-                                    updateArgs
-                            )
-                            count+=1
+                        if(content_utc < current_utc){
+                            contentResolver.delete(tableUri,
+                                    selection,
+                                    selectionArgs)
                         }
+                        cursor.moveToFirst()
 
                         //Insert the others that didn't exist
                         while(count < weather.forecastDetail.size){
@@ -90,14 +79,6 @@ class ForecastInfoGetter(val application: Application, val contentResolver: Cont
                         }
                     }
                     cursor.close()
-
-                    // TODO: this is only to see if the service works, to be DELETED
-                    /*
-                    val myIntent = Intent(this, FavNotificationService::class.java)
-                    myIntent.putExtra("FORECAST_CITY_NOTIFY", weather.cityDetail.cityName)
-                    myIntent.putExtra("FORECAST_COUNTRY_NOTIFY", weather.cityDetail.country)
-                    startService(myIntent)
-                    */
                 },
                 { error -> System.out.println("Error in refresh forecast service?")},
                 ForecastWeatherDto::class.java)
